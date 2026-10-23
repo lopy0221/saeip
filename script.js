@@ -169,13 +169,19 @@ function renderWeeklySchedule() {
       .map(event => {
         let typeText = "방송";
 
-        if (event.type === "collab") {
-          typeText = "합방";
-        } else if (event.type === "off") {
-          typeText = "휴방";
-        } else if (event.type === "etc") {
-          typeText = "기타";
-        }
+if (event.type === "morning") {
+  typeText = "아침 방송";
+} else if (event.type === "afternoon") {
+  typeText = "낮 방송";
+} else if (event.type === "evening") {
+  typeText = "저녁 방송";
+} else if (event.type === "collab") {
+  typeText = "합방";
+} else if (event.type === "off") {
+  typeText = "휴방";
+} else if (event.type === "etc") {
+  typeText = "기타";
+}
 
         return escapeHTML(typeText);
       })
