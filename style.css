@@ -711,13 +711,13 @@ body.dark-mode #mainNav a.active {
   top: 6px;
   right: 6px;
 
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.9);
   color: #5d91d5;
 
-  font-size: 7px;
+  font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.5px;
 
