@@ -408,7 +408,7 @@
 
           <div class="field">
             <label for="time">시간</label>
-            <input id="time" type="time">
+            <input id="time" type="time" value="12:00">
           </div>
 
           <div class="field">
@@ -425,7 +425,7 @@
           <div class="field">
             <label for="type">일정 종류</label>
 
-            <select id="scheduleType">
+            <select id="type">
   <option value="live">방송</option>
   <option value="collab">합방</option>
   <option value="off">휴방</option>
@@ -877,6 +877,7 @@
       editingId = null;
 
       scheduleForm.reset();
+  document.querySelector("#time").value = "12:00";
 
       formTitle.textContent =
         "새 일정 추가";
