@@ -562,20 +562,21 @@ body.dark-mode #mainNav a.active {
 
 .home-saeip-logo {
   position: absolute;
-  top: 90px;
-  right: 70px;
-  z-index: 3;
+  top: 7%;
+  right: 8%;
+  z-index: 5;
 
-  font-size: 90px;
-  font-style: italic;
+  font-size: clamp(70px, 8vw, 140px);
   font-weight: 300;
-  letter-spacing: -4px;
+  font-style: italic;
 
   color: transparent;
-  -webkit-text-stroke: 2px #8abcf5;
+  -webkit-text-stroke: 2px #92BCEF;
 
-  white-space: nowrap;
-  pointer-events: none;
+  letter-spacing: -7px;
+  transform: rotate(-3deg);
+
+  opacity: 0.9;
 }
 
 .home-weekly-grid {
