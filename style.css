@@ -562,8 +562,8 @@ body.dark-mode #mainNav a.active {
 
 .home-saeip-logo {
   position: absolute;
-  top: 7%;
-  right: 8%;
+  top: 5%;
+  right: 14%;
   z-index: 5;
 
   font-size: clamp(70px, 8vw, 140px);
