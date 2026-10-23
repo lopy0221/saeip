@@ -477,9 +477,14 @@ body.dark-mode #mainNav a.active {
 
 .home-weekly {
   position: absolute;
-  left: calc(50% - 570px);
+
+  /* 일정표 전체 위치 */
+  left: calc(50% - 640px);
   bottom: 60px;
-  width: 650px;
+
+  /* 일정표 전체 너비 */
+  width: 760px;
+
   z-index: 5;
 }
 
@@ -572,4 +577,15 @@ body.dark-mode #mainNav a.active {
   transform: rotate(-3deg);
 
   opacity: 0.9;
+}
+
+.home-weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.home-weekly-day {
+  min-width: 0;
+  padding: 16px 18px;
 }
