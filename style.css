@@ -470,3 +470,107 @@ body.dark-mode #mainNav a.active {
   position: relative;
   z-index: 2;
 }
+
+/* =========================
+   메인 주간 일정표
+========================= */
+
+.home-weekly {
+  position: absolute;
+  left: 6%;
+  bottom: 6%;
+  z-index: 5;
+
+  width: 54%;
+  max-width: 900px;
+
+  color: #fff;
+}
+
+.weekly-title {
+  margin-bottom: 10px;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+
+  color: #b9d8ff;
+}
+
+.weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  background: rgba(10, 18, 32, 0.72);
+  border: 1px solid rgba(190, 220, 255, 0.35);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.weekly-day {
+  min-height: 110px;
+  padding: 14px 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-right: 1px solid rgba(190, 220, 255, 0.22);
+}
+
+.weekly-day:last-child {
+  border-right: none;
+}
+
+.weekly-day small {
+  margin-bottom: 7px;
+
+  font-size: 10px;
+  color: #91a4bd;
+}
+
+.weekly-day b {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.weekly-day strong {
+  margin-top: 10px;
+
+  font-size: 17px;
+  letter-spacing: 1.5px;
+
+  color: #bcd9ff;
+}
+
+.weekly-day span {
+  margin-top: 6px;
+
+  font-size: 11px;
+  color: #d9e5f3;
+}
+
+
+/* =========================
+   오른쪽 위 SAEIP
+========================= */
+
+.home-saeip-logo {
+  position: absolute;
+  top: 7%;
+  right: 8%;
+  z-index: 5;
+
+  font-size: clamp(70px, 8vw, 140px);
+  font-weight: 300;
+  font-style: italic;
+
+  color: transparent;
+  -webkit-text-stroke: 2px #92BCEF;
+
+  letter-spacing: -7px;
+  transform: rotate(-3deg);
+
+  opacity: 0.9;
+}
