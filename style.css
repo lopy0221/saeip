@@ -23,3 +23,65 @@
 @media(max-width:900px){nav{gap:10px;font-size:10px}.profile-layout{gap:30px}.rules-grid{grid-template-columns:repeat(2,1fr)}.page-section{padding-left:24px;padding-right:24px}.hero-layout{gap:25px}}
 @media(max-width:700px){.topbar{height:64px;padding:0 18px}.menu-toggle{display:block}nav{display:none;position:absolute;top:63px;left:0;right:0;padding:17px 22px 20px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;gap:15px;font-size:12px}nav.open{display:flex}.fullpage{padding-top:64px}.page-section{height:auto;min-height:calc(100svh - 64px);padding:36px 19px 44px;scroll-margin-top:64px}.hero-layout{grid-template-columns:1fr;gap:25px}.hero h1{font-size:43px}.hero-art{height:260px;min-height:260px}.character-placeholder{transform:scale(.82) rotate(-4deg)}.scroll-hint{display:none}.section-heading{align-items:flex-start;margin-bottom:22px}.section-heading h2{font-size:27px}.section-chip{display:none}.profile-layout{grid-template-columns:1fr;gap:23px}.profile-portrait{height:220px}.portrait-emoji{font-size:80px}.portrait-ring{width:180px;height:180px}.profile-details h3{font-size:34px}.rules-grid{grid-template-columns:1fr 1fr;gap:9px}.rule-card{padding:19px 14px;min-height:205px}.rule-card h3{font-size:12px}.rule-card p{font-size:10px}.schedule-showcase{grid-template-columns:1fr;gap:13px}.calendar-graphic{min-height:160px}.calendar-number{font-size:48px}.calendar-graphic:before{width:180px;height:180px}.calendar-graphic:after{width:135px;height:135px}.schedule-panel{padding:12px 17px}.schedule-row{padding:14px 0}.clip-grid{grid-template-columns:1fr;gap:12px}.clip-cover{height:140px}.external-links{gap:10px}.page-dots{right:9px;gap:9px}.page-dots a{width:6px;height:6px}.profile-facts{gap:8px}.profile-facts>div{padding:12px}.hero-copy>p:not(.disclaimer){font-size:13px}}
 @media(max-height:720px) and (min-width:701px){.page-section{padding-top:28px;padding-bottom:32px}.hero-art{height:320px;min-height:280px}.profile-portrait{height:270px}.rule-card{min-height:185px;padding:18px}.clip-cover{height:135px}.section-heading{margin-bottom:20px}}
+
+/* 방송 일정 달력 크게 */
+#schedule .section-inner {
+  width: min(1400px, 94vw);
+  max-width: none;
+}
+
+#schedule .calendar-shell {
+  width: 100%;
+  max-width: none;
+  padding: 24px 28px 20px;
+}
+
+#schedule .calendar-day {
+  min-height: 82px;
+  padding: 10px;
+}
+
+#schedule .calendar-day .day-number {
+  font-size: 12px;
+}
+
+#schedule .calendar-day .event-label {
+  font-size: 10px;
+  line-height: 1.45;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+#schedule .calendar-title b {
+  font-size: 26px;
+}
+
+#schedule .calendar-weekdays span {
+  font-size: 11px;
+}
+
+#schedule .calendar-detail {
+  width: 100%;
+  max-width: none;
+  padding: 16px 20px;
+}
+
+.detail-events {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.detail-event-item + .detail-event-item {
+  padding-top: 10px;
+  border-top: 1px solid #d9e6f8;
+}
+
+.detail-event-item h3 {
+  margin: 0 0 4px;
+}
+
+.detail-event-item p {
+  margin: 0;
+}
