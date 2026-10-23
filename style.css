@@ -391,12 +391,28 @@ body.dark-mode .dark-mode-toggle {
 body.dark-mode #mainNav a.active {
   color: #8eb7ff;
 }
-/* 왼쪽 상단 새잎 로고 */
+
+/* =========================
+   상단바 최종 정렬
+========================= */
+
+.topbar {
+  height: 72px;
+  padding: 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+/* 새잎 Saeip 로고 */
 .topbar .brand {
   display: inline-flex;
   align-items: baseline;
-  justify-content: flex-start;
-  gap: 5px;
+  gap: 6px;
+
   width: auto;
   flex: 0 0 auto;
 }
@@ -415,3 +431,16 @@ body.dark-mode #mainNav a.active {
   margin: 0;
 }
 
+/* 상단 메뉴 */
+.topbar #mainNav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 24px;
+  margin-left: auto;
+}
+
+.topbar #mainNav a {
+  white-space: nowrap;
+}
