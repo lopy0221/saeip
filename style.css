@@ -566,23 +566,13 @@ body.dark-mode #mainNav a.active {
   right: 70px;
   z-index: 3;
 
-  font-family: "Arial", "Helvetica", sans-serif;
-  font-size: 115px;
+  font-size: 90px;
+  font-style: italic;
   font-weight: 300;
-  font-style: normal;
+  letter-spacing: -4px;
 
-  transform: scaleX(1.18);
-  transform-origin: right center;
-
-  letter-spacing: 3px;
-
-  /* 내부는 투명 + 얇은 외곽선 */
   color: transparent;
-  -webkit-text-stroke: 1.3px rgba(115, 170, 240, 0.9);
-
-  /* 외곽선을 은은하게 */
-  text-shadow:
-    0 0 5px rgba(115, 170, 240, 0.12);
+  -webkit-text-stroke: 2px #8abcf5;
 
   white-space: nowrap;
   pointer-events: none;
