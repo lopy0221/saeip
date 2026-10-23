@@ -492,13 +492,11 @@ body.dark-mode #mainNav a.active {
 }
 
 .weekly-title {
-  margin-bottom: 10px;
-
-  font-size: 11px;
+  color: #92BCEF !important;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 3px;
-
-  color: #b9d8ff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
 }
 
 .weekly-grid {
