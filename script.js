@@ -42,27 +42,98 @@ $("#menuToggle").addEventListener("click", () => $("#mainNav").classList.toggle(
 document.querySelectorAll("#mainNav a").forEach(a => a.addEventListener("click", () => $("#mainNav").classList.remove("open")));
 
 
-// 방송 일정 달력 ----------------------------------------------------
-// 시작 월은 2026년 10월입니다.
-// 일정 추가 예시:
-// "2026-10-23": { title: "저녁 방송", time: "20:00", type: "live", description: "게임 방송" },
-// type은 "live" 또는 "special"을 사용할 수 있습니다.
-const streamSchedule = {
-  // 실제 방송 일정이 확인되면 여기에 추가하세요.
-};
+// 방송 일정 달력 + Supabase --------------------------------------------
+
+// Supabase 설정
+const SUPABASE_URL = "https://txwlwxldagplfhlgopyl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
+
+// Supabase에서 불러온 일정이 저장되는 곳
+const streamSchedule = {};
 
 let calendarYear = 2026;
-let calendarMonth = 9; // JavaScript: 0=1월, 9=10월
+let calendarMonth = 9; // 0=1월, 9=10월
 let selectedCalendarKey = "";
 
+// Supabase에서 방송 일정 불러오기
+async function loadStreamSchedule() {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/stream_schedule?select=*&order=date.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`일정 불러오기 실패: ${response.status}`);
+    }
+
+    const schedules = await response.json();
+
+    // 기존 데이터 초기화
+    Object.keys(streamSchedule).forEach(key => {
+      delete streamSchedule[key];
+    });
+
+    // Supabase 데이터를 기존 달력 형식으로 변환
+    schedules.forEach(item => {
+      streamSchedule[item.date] = {
+        id: item.id,
+        title: item.title || "방송",
+        time: item.time ? String(item.time).slice(0, 5) : "",
+        type: item.type || "live",
+        description: item.description || ""
+      };
+    });
+
+    renderCalendar();
+
+  } catch (error) {
+    console.error("방송 일정을 불러오지 못했습니다.", error);
+
+    const detail = document.querySelector("#calendarDetail");
+
+    if (detail) {
+      detail.innerHTML = `
+        <span class="detail-date">SCHEDULE</span>
+        <h3>일정을 불러오지 못했어요.</h3>
+        <p>잠시 후 새로고침해 주세요.</p>
+      `;
+    }
+
+    renderCalendar();
+  }
+}
+
+
 function renderCalendar() {
-  const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
-  const lastDate = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const firstDay = new Date(
+    calendarYear,
+    calendarMonth,
+    1
+  ).getDay();
+
+  const lastDate = new Date(
+    calendarYear,
+    calendarMonth + 1,
+    0
+  ).getDate();
+
   const days = document.querySelector("#calendarDays");
-  document.querySelector("#calendarYear").textContent = calendarYear;
-  document.querySelector("#calendarMonth").textContent = `${calendarMonth + 1}월`;
+
+  document.querySelector("#calendarYear").textContent =
+    calendarYear;
+
+  document.querySelector("#calendarMonth").textContent =
+    `${calendarMonth + 1}월`;
+
   days.innerHTML = "";
 
+  // 앞쪽 빈 날짜
   for (let i = 0; i < firstDay; i++) {
     const blank = document.createElement("div");
     blank.className = "calendar-day empty";
@@ -70,55 +141,179 @@ function renderCalendar() {
   }
 
   const now = new Date();
+
   for (let date = 1; date <= lastDate; date++) {
-    const key = `${calendarYear}-${String(calendarMonth+1).padStart(2,"0")}-${String(date).padStart(2,"0")}`;
+
+    const key =
+      `${calendarYear}-` +
+      `${String(calendarMonth + 1).padStart(2, "0")}-` +
+      `${String(date).padStart(2, "0")}`;
+
     const event = streamSchedule[key];
-    const weekday = new Date(calendarYear, calendarMonth, date).getDay();
+
+    const weekday =
+      new Date(calendarYear, calendarMonth, date).getDay();
+
     const button = document.createElement("button");
+
     button.type = "button";
     button.className = "calendar-day";
-    if (weekday === 0) button.classList.add("sunday");
-    if (weekday === 6) button.classList.add("saturday");
-    if (now.getFullYear()===calendarYear && now.getMonth()===calendarMonth && now.getDate()===date) button.classList.add("today");
-    if (key === selectedCalendarKey) button.classList.add("selected");
+
+    // 일요일
+    if (weekday === 0) {
+      button.classList.add("sunday");
+    }
+
+    // 토요일
+    if (weekday === 6) {
+      button.classList.add("saturday");
+    }
+
+    // 오늘 날짜
+    if (
+      now.getFullYear() === calendarYear &&
+      now.getMonth() === calendarMonth &&
+      now.getDate() === date
+    ) {
+      button.classList.add("today");
+    }
+
+    // 선택한 날짜
+    if (key === selectedCalendarKey) {
+      button.classList.add("selected");
+    }
+
+    // 일정 존재
     if (event) {
       button.classList.add("has-event");
-      if (event.type === "special") button.classList.add("special-event");
+
+      if (event.type === "special") {
+        button.classList.add("special-event");
+      }
     }
-    button.innerHTML = `<span class="day-number">${date}</span>${event ? `<span class="event-label">${escapeHTML(event.title)}</span>` : ""}`;
-    button.addEventListener("click", () => showCalendarDetail(key, event));
+
+    button.innerHTML = `
+      <span class="day-number">${date}</span>
+      ${
+        event
+          ? `<span class="event-label">${escapeHTML(event.title)}</span>`
+          : ""
+      }
+    `;
+
+    button.addEventListener("click", () => {
+      showCalendarDetail(key, event);
+    });
+
     days.appendChild(button);
   }
-  // Start is October 2026, so prevent going earlier.
-  document.querySelector("#prevMonth").disabled = calendarYear === 2026 && calendarMonth === 9;
+
+  // 2026년 10월보다 이전으로 이동 금지
+  document.querySelector("#prevMonth").disabled =
+    calendarYear === 2026 &&
+    calendarMonth === 9;
 }
+
 
 function showCalendarDetail(key, event) {
+
   selectedCalendarKey = key;
-  const detail = document.querySelector("#calendarDetail");
-  const [year,month,date] = key.split("-");
+
+  const detail =
+    document.querySelector("#calendarDetail");
+
+  const [year, month, date] =
+    key.split("-");
+
   if (event) {
-    detail.innerHTML = `<span class="detail-date">${year}.${month}.${date}</span><h3>${escapeHTML(event.title)} ${event.time ? `· ${escapeHTML(event.time)}` : ""}</h3><p>${escapeHTML(event.description || "방송 일정")}</p>`;
+
+    detail.innerHTML = `
+      <span class="detail-date">
+        ${year}.${month}.${date}
+      </span>
+
+      <h3>
+        ${escapeHTML(event.title)}
+        ${
+          event.time
+            ? `· ${escapeHTML(event.time)}`
+            : ""
+        }
+      </h3>
+
+      <p>
+        ${escapeHTML(
+          event.description || "방송 일정"
+        )}
+      </p>
+    `;
+
   } else {
-    detail.innerHTML = `<span class="detail-date">${year}.${month}.${date}</span><h3>등록된 일정이 없어요.</h3><p>실제 방송 일정이 확인되면 이 날짜에 추가할 수 있어요.</p>`;
+
+    detail.innerHTML = `
+      <span class="detail-date">
+        ${year}.${month}.${date}
+      </span>
+
+      <h3>
+        등록된 일정이 없어요.
+      </h3>
+
+      <p>
+        방송 일정이 등록되면 이곳에 표시돼요.
+      </p>
+    `;
   }
+
   renderCalendar();
 }
 
-document.querySelector("#prevMonth").addEventListener("click", () => {
-  if (calendarYear === 2026 && calendarMonth === 9) return;
-  calendarMonth--;
-  if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
-  selectedCalendarKey = "";
-  renderCalendar();
-});
-document.querySelector("#nextMonth").addEventListener("click", () => {
-  calendarMonth++;
-  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
-  selectedCalendarKey = "";
-  renderCalendar();
-});
-renderCalendar();
+
+// 이전 달
+document
+  .querySelector("#prevMonth")
+  .addEventListener("click", () => {
+
+    if (
+      calendarYear === 2026 &&
+      calendarMonth === 9
+    ) {
+      return;
+    }
+
+    calendarMonth--;
+
+    if (calendarMonth < 0) {
+      calendarMonth = 11;
+      calendarYear--;
+    }
+
+    selectedCalendarKey = "";
+
+    renderCalendar();
+  });
+
+
+// 다음 달
+document
+  .querySelector("#nextMonth")
+  .addEventListener("click", () => {
+
+    calendarMonth++;
+
+    if (calendarMonth > 11) {
+      calendarMonth = 0;
+      calendarYear++;
+    }
+
+    selectedCalendarKey = "";
+
+    renderCalendar();
+  });
+
+
+// 처음 사이트를 열었을 때 Supabase에서 일정 가져오기
+loadStreamSchedule();
 
 const sections = [...document.querySelectorAll(".page-section")];
 const dots = [...document.querySelectorAll("#pageDots a")];
