@@ -452,25 +452,29 @@ body.dark-mode #mainNav a.active {
 #home {
   position: relative;
   overflow: hidden;
-  background: #f1f7ff;
+
+  /* 좌우 기본 하늘색 */
+  background: #eaf4ff;
 }
 
-/* 좌우 블러 배경 */
+/* 좌우에 은은하게 보이는 사진 */
 #home::before {
   content: "";
   position: absolute;
   inset: 0;
 
-  background-image: url("./assets/saeip-bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background:
+    rgba(220, 238, 255, 0.55)
+    url("./assets/saeip-bg.png")
+    center / cover no-repeat;
 
-  filter: blur(25px);
+  background-blend-mode: screen;
+
+  filter: blur(30px);
   transform: scale(1.08);
 
-  opacity: 0.35;
-filter: blur(35px);
+  opacity: 0.45;
+  z-index: 0;
 }
 
 /* 가운데 원본 사진 */
@@ -479,15 +483,12 @@ filter: blur(35px);
   position: absolute;
   inset: 0;
 
-  background-image: url("./assets/saeip-bg.png");
-  background-size: auto 100%;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url("./assets/saeip-bg.png")
+    center / auto 100% no-repeat;
 
   z-index: 1;
 }
 
-/* 메인 내부 요소가 사진 위에 오도록 */
 #home .section-inner {
   position: relative;
   z-index: 2;
