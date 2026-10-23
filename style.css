@@ -447,22 +447,23 @@ body.dark-mode #mainNav a.active {
   white-space: nowrap;
 }
 
-/* 메인 화면 배경 이미지 - 그라데이션 없음 */
-/* 메인 화면 */
-/* 메인 화면 */
 #home {
-  position: relative;
+  position: relative !important;
 
-  /* 좌우 여백 */
-  background-color: #EAF4FF !important;
+  background:
+    url("./assets/saeip-bg.png")
+    center center / auto 100%
+    no-repeat
+    #EAF4FF !important;
 
-  /* 가운데 사진 */
-  background-image: url("./assets/saeip-bg.png") !important;
-  background-size: auto 100% !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
+  overflow: hidden !important;
+}
 
-  overflow: hidden;
+/* 혹시 남아있는 가상 배경 완전히 제거 */
+#home::before,
+#home::after {
+  content: none !important;
+  display: none !important;
 }
 
 #home .section-inner {
