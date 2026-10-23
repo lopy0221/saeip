@@ -511,7 +511,6 @@ body.dark-mode #mainNav a.active {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-}
 
 .weekly-day {
   min-height: 110px;
