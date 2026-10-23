@@ -477,12 +477,11 @@ body.dark-mode #mainNav a.active {
 
 .home-weekly {
   position: absolute;
-  left: 6%;
-  bottom: 6%;
+  left: calc(50% - 570px);
+  bottom: 60px;
+  width: 650px;
   z-index: 5;
-
-  width: 54%;
-  max-width: 900px;
+}
 
   color: #fff;
 }
