@@ -372,3 +372,22 @@ body.dark-mode .dark-mode-toggle {
     display: flex;
   }
 }
+
+/* 현재 보고 있는 상단 메뉴 */
+#mainNav a.active {
+  color: #477de0;
+}
+
+#mainNav a.active:not(.admin-login-link)::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 4px;
+  border-radius: 10px;
+  background: #6d9df7;
+}
+
+body.dark-mode #mainNav a.active {
+  color: #8eb7ff;
+}
