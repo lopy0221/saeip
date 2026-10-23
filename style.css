@@ -571,7 +571,6 @@ body.dark-mode #mainNav a.active {
   font-weight: 300;
   font-style: normal;
 
-  /* NANCHO처럼 글자를 옆으로 넓게 */
   transform: scaleX(1.18);
   transform-origin: right center;
 
