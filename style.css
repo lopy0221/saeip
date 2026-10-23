@@ -454,7 +454,7 @@ body.dark-mode #mainNav a.active {
     url("./assets/saeip-bg.png")
     center center / auto 100%
     no-repeat
-    #EAF4FF !important;
+    #F1F7FF !important;
 
   overflow: hidden !important;
 }
