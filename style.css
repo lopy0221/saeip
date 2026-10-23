@@ -646,7 +646,9 @@ body.dark-mode #mainNav a.active {
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* WEEKLY TRANSMISSION 제목 색상 강제 적용 */
+/* WEEKLY TRANSMISSION 제목 */
 .home-weekly > div:first-child {
-  color: #92BCEF !important;
+  color: #5f96d8 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
 }
