@@ -395,7 +395,7 @@ body.dark-mode #mainNav a.active {
 .brand {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 3px;
 }
 
 .brand-name {
