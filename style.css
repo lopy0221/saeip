@@ -332,3 +332,43 @@ body.dark-mode .dark-mode-toggle {
   border-color: #405675;
   color: #f2d98b;
 }
+
+/* ==================================================
+   상단 메뉴 클릭 방식 페이지 전환
+================================================== */
+
+.fullpage {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-section {
+  display: none;
+  height: calc(100vh - 76px);
+  min-height: calc(100vh - 76px);
+  overflow: hidden;
+}
+
+/* 현재 선택된 화면만 표시 */
+.page-section.active-page {
+  display: flex;
+}
+
+/* 모바일에서도 페이지 방식 유지 */
+@media (max-width: 700px) {
+  .fullpage {
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .page-section {
+    display: none;
+    height: calc(100svh - 64px);
+    min-height: calc(100svh - 64px);
+    overflow-y: auto;
+  }
+
+  .page-section.active-page {
+    display: flex;
+  }
+}
