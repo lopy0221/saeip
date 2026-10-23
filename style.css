@@ -125,9 +125,9 @@
 }
 
 #schedule .calendar-day {
-  min-height: 62px;
-  height: 7.2vh;
-  max-height: 72px;
+  min-height: 68px;
+  height: 7.8vh;
+  max-height: 80px;
   padding: 7px 9px;
 }
 
@@ -164,4 +164,34 @@
 
 #schedule .detail-event-item p {
   margin: 0;
+}
+
+/* 달력 칸 안의 여러 일정이 잘리지 않도록 조정 */
+#schedule .calendar-day {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+#schedule .calendar-day .day-number {
+  flex-shrink: 0;
+  margin-bottom: 5px;
+}
+
+#schedule .calendar-day .event-label {
+  display: block;
+  width: 100%;
+  margin-top: 0;
+  font-size: 9px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 일정이 여러 개일 때 간격 */
+#schedule .calendar-day .event-label + .event-label {
+  margin-top: 2px;
 }
