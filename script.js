@@ -325,104 +325,96 @@ document
 // 처음 사이트를 열었을 때 Supabase에서 일정 가져오기
 loadStreamSchedule();
 
+// ==================================================
+// 상단 메뉴 클릭 방식 페이지 전환
+// ==================================================
+
 const sections = [...document.querySelectorAll(".page-section")];
+const navLinks = [...document.querySelectorAll('#mainNav a[href^="#"]')];
 const dots = [...document.querySelectorAll("#pageDots a")];
-let currentSection = 0;
-let navigationLocked = false;
-let unlockTimer;
 
-const headerHeight = () => document.querySelector(".topbar").offsetHeight;
+function showPage(hash, updateURL = true) {
+  let targetHash = hash;
 
-// Because .fullpage already reserves the fixed header height at the top,
-// each section's offsetTop is the exact document Y where that section
-// should sit directly underneath the fixed header.
-const sectionTop = index => Math.round(sections[index].offsetTop - headerHeight());
-
-function setActiveSection(index) {
-  currentSection = Math.max(0, Math.min(index, sections.length - 1));
-  dots.forEach((dot, i) => dot.classList.toggle("active", i === currentSection));
-}
-
-function nearestSectionIndex() {
-  let best = 0;
-  let distance = Infinity;
-  sections.forEach((section, index) => {
-    const d = Math.abs(sectionTop(index) - window.scrollY);
-    if (d < distance) { distance = d; best = index; }
-  });
-  return best;
-}
-
-function goToSection(index, updateHash = true) {
-  const next = Math.max(0, Math.min(index, sections.length - 1));
-  navigationLocked = true;
-  setActiveSection(next);
-
-  window.scrollTo({ top: sectionTop(next), behavior: "smooth" });
-
-  if (updateHash) {
-    history.replaceState(null, "", "#" + sections[next].id);
+  // 잘못된 주소거나 #가 없으면 메인 화면
+  if (!targetHash || targetHash === "#") {
+    targetHash = "#home";
   }
 
-  clearTimeout(unlockTimer);
-  unlockTimer = setTimeout(() => {
-    // Final exact alignment after smooth scrolling.
-    window.scrollTo({ top: sectionTop(next), behavior: "auto" });
-    navigationLocked = false;
-  }, 700);
+  let targetIndex = sections.findIndex(
+    section => "#" + section.id === targetHash
+  );
+
+  if (targetIndex === -1) {
+    targetIndex = 0;
+    targetHash = "#home";
+  }
+
+  // 모든 화면 숨기기
+  sections.forEach(section => {
+    section.classList.remove("active-page");
+  });
+
+  // 선택한 화면만 표시
+  sections[targetIndex].classList.add("active-page");
+
+  // 오른쪽 점 표시
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active", index === targetIndex);
+  });
+
+  // 상단 메뉴 현재 위치 표시
+  navLinks.forEach(link => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === targetHash
+    );
+  });
+
+  // 모바일 메뉴 닫기
+  document.querySelector("#mainNav")?.classList.remove("open");
+
+  // 주소의 #profile 같은 부분 변경
+  if (updateURL) {
+    history.replaceState(null, "", targetHash);
+  }
+
+  // 혹시 이전 스크롤 위치가 남아 있으면 맨 위로
+  window.scrollTo(0, 0);
 }
 
 
-// IMPORTANT: every internal #section link uses the same exact positioning.
-// This fixes the top navigation, hero buttons, schedule button, and dot buttons.
+// 상단 메뉴 + 내부 이동 버튼 + 오른쪽 점
 document.addEventListener("click", event => {
   const link = event.target.closest('a[href^="#"]');
+
   if (!link) return;
 
   const hash = link.getAttribute("href");
+
   if (!hash || hash === "#") return;
 
-  const index = sections.findIndex(section => "#" + section.id === hash);
-  if (index < 0) return;
+  const exists = sections.some(
+    section => "#" + section.id === hash
+  );
+
+  if (!exists) return;
 
   event.preventDefault();
-  document.querySelector("#mainNav")?.classList.remove("open");
 
-  if (window.innerWidth > 700) {
-    if (!navigationLocked) goToSection(index);
-  } else {
-    sections[index].scrollIntoView({ behavior: "smooth", block: "start" });
-    history.replaceState(null, "", hash);
-  }
+  showPage(hash);
 });
 
-const observer = new IntersectionObserver(entries => {
-  if (navigationLocked) return;
-  entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-      setActiveSection(sections.indexOf(entry.target));
-    }
-  });
-}, { threshold: [0.5, 0.7] });
 
-sections.forEach(section => observer.observe(section));
-
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 700) {
-    navigationLocked = false;
-    const index = nearestSectionIndex();
-    setActiveSection(index);
-    window.scrollTo({ top: sectionTop(index), behavior: "auto" });
-  }
+// 브라우저 뒤로가기/앞으로가기 대응
+window.addEventListener("popstate", () => {
+  showPage(location.hash || "#home", false);
 });
 
+
+// 사이트 처음 열었을 때
 window.addEventListener("load", () => {
-  const hashIndex = sections.findIndex(section => "#" + section.id === location.hash);
-  const index = hashIndex >= 0 ? hashIndex : nearestSectionIndex();
-  setActiveSection(index);
-  if (window.innerWidth > 700) {
-    window.scrollTo({ top: sectionTop(index), behavior: "auto" });
-  }
+  showPage(location.hash || "#home", false);
 });
 
 // 다크모드 ----------------------------------------------------
