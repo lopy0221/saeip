@@ -563,14 +563,17 @@ body.dark-mode #mainNav a.active {
 .home-saeip-logo {
   position: absolute;
   top: 5%;
-  right: 25%;
+  right: 14%;
   z-index: 5;
 
   font-size: clamp(70px, 8vw, 140px);
   font-weight: 300;
   font-style: italic;
 
-  color: transparent;
+  /* 글자 안쪽 */
+  color: rgba(146, 188, 239, 0.18);
+
+  /* 글자 테두리 */
   -webkit-text-stroke: 2px #92BCEF;
 
   letter-spacing: -7px;
