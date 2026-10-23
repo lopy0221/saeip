@@ -505,11 +505,14 @@ body.dark-mode #mainNav a.active {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 
-  background: rgba(10, 18, 32, 0.72);
-  border: 1px solid rgba(190, 220, 255, 0.35);
+  /* 하늘색 반투명 */
+  background: rgba(146, 188, 239, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.45);
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
 }
 
 .weekly-day {
@@ -519,7 +522,7 @@ body.dark-mode #mainNav a.active {
   display: flex;
   flex-direction: column;
 
-  border-right: 1px solid rgba(190, 220, 255, 0.22);
+  border-right: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .weekly-day:last-child {
