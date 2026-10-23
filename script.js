@@ -372,17 +372,6 @@ function goToSection(index, updateHash = true) {
   }, 700);
 }
 
-// Small wheel movement = exactly one full section on desktop.
-window.addEventListener("wheel", event => {
-  if (window.innerWidth <= 700 || Math.abs(event.deltaY) < 1) return;
-  event.preventDefault();
-  if (navigationLocked) return;
-
-  const from = nearestSectionIndex();
-  const next = from + (event.deltaY > 0 ? 1 : -1);
-  if (next < 0 || next >= sections.length) return;
-  goToSection(next);
-}, { passive: false });
 
 // IMPORTANT: every internal #section link uses the same exact positioning.
 // This fixes the top navigation, hero buttons, schedule button, and dot buttons.
