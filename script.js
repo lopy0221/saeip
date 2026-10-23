@@ -140,9 +140,17 @@ function renderWeeklySchedule() {
   const diff = day === 0 ? -6 : 1 - day;
   monday.setDate(today.getDate() + diff);
 
-  weeklyItems.forEach((item, index) => {
-    const targetDate = new Date(monday);
-    targetDate.setDate(monday.getDate() + index);
+ weeklyItems.forEach((item, index) => {
+  const targetDate = new Date(monday);
+  targetDate.setDate(monday.getDate() + index);
+
+  // 오늘 요일 강조
+  const isToday =
+    targetDate.getFullYear() === today.getFullYear() &&
+    targetDate.getMonth() === today.getMonth() &&
+    targetDate.getDate() === today.getDate();
+
+  item.classList.toggle("today", isToday);
 
     const year = targetDate.getFullYear();
     const month = String(targetDate.getMonth() + 1).padStart(2, "0");
