@@ -81,14 +81,18 @@ async function loadStreamSchedule() {
 
     // Supabase 데이터를 기존 달력 형식으로 변환
     schedules.forEach(item => {
-      streamSchedule[item.date] = {
-        id: item.id,
-        title: item.title || "방송",
-        time: item.time ? String(item.time).slice(0, 5) : "",
-        type: item.type || "live",
-        description: item.description || ""
-      };
-    });
+  if (!streamSchedule[item.date]) {
+    streamSchedule[item.date] = [];
+  }
+
+  streamSchedule[item.date].push({
+    id: item.id,
+    title: item.title || "방송",
+    time: item.time ? String(item.time).slice(0, 5) : "",
+    type: item.type || "live",
+    description: item.description || ""
+  });
+});
 
     renderCalendar();
 
@@ -149,8 +153,8 @@ function renderCalendar() {
       `${String(calendarMonth + 1).padStart(2, "0")}-` +
       `${String(date).padStart(2, "0")}`;
 
-    const event = streamSchedule[key];
-
+    const events = streamSchedule[key] || [];
+    
     const weekday =
       new Date(calendarYear, calendarMonth, date).getDay();
 
@@ -184,26 +188,28 @@ function renderCalendar() {
     }
 
     // 일정 존재
-    if (event) {
-      button.classList.add("has-event");
+    if (events.length) {
+  button.classList.add("has-event");
 
-      if (event.type === "special") {
-        button.classList.add("special-event");
-      }
-    }
+  if (events.some(event => event.type === "special")) {
+    button.classList.add("special-event");
+  }
+}
 
     button.innerHTML = `
-      <span class="day-number">${date}</span>
-      ${
-        event
-          ? `<span class="event-label">${escapeHTML(event.title)}</span>`
-          : ""
-      }
-    `;
+  <span class="day-number">${date}</span>
+  ${
+    events.length
+      ? `<span class="event-label">
+          ${events.map(event => escapeHTML(event.title)).join("<br>")}
+        </span>`
+      : ""
+  }
+`;
 
     button.addEventListener("click", () => {
-      showCalendarDetail(key, event);
-    });
+  showCalendarDetail(key, events);
+});
 
     days.appendChild(button);
   }
@@ -215,49 +221,44 @@ function renderCalendar() {
 }
 
 
-function showCalendarDetail(key, event) {
-
+function showCalendarDetail(key, events) {
   selectedCalendarKey = key;
 
-  const detail =
-    document.querySelector("#calendarDetail");
+  const detail = document.querySelector("#calendarDetail");
+  const [year, month, date] = key.split("-");
 
-  const [year, month, date] =
-    key.split("-");
-
-  if (event) {
-
+  if (events && events.length) {
     detail.innerHTML = `
       <span class="detail-date">
         ${year}.${month}.${date}
       </span>
 
-      <h3>
-        ${escapeHTML(event.title)}
-        ${
-          event.time
-            ? `· ${escapeHTML(event.time)}`
-            : ""
-        }
-      </h3>
+      <div class="detail-events">
+        ${events.map(event => `
+          <div class="detail-event-item">
+            <h3>
+              ${escapeHTML(event.title)}
+              ${
+                event.time
+                  ? `· ${escapeHTML(event.time)}`
+                  : ""
+              }
+            </h3>
 
-      <p>
-        ${escapeHTML(
-          event.description || "방송 일정"
-        )}
-      </p>
+            <p>
+              ${escapeHTML(event.description || "방송 일정")}
+            </p>
+          </div>
+        `).join("")}
+      </div>
     `;
-
   } else {
-
     detail.innerHTML = `
       <span class="detail-date">
         ${year}.${month}.${date}
       </span>
 
-      <h3>
-        등록된 일정이 없어요.
-      </h3>
+      <h3>등록된 일정이 없어요.</h3>
 
       <p>
         방송 일정이 등록되면 이곳에 표시돼요.
