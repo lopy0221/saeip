@@ -391,3 +391,15 @@ body.dark-mode .dark-mode-toggle {
 body.dark-mode #mainNav a.active {
   color: #8eb7ff;
 }
+/* 왼쪽 상단 새잎 로고 */
+.brand-name {
+  font-size: 25px;
+  font-weight: 800;
+  color: #79bfff;
+  letter-spacing: -1px;
+}
+
+.brand-light {
+  font-size: 14px;
+  margin-left: 5px;
+}
