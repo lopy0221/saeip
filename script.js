@@ -1,0 +1,232 @@
+/*
+  새잎 팬사이트 설정
+  공식 채널 URL을 links에 입력하고 노래 목록을 songs에 추가해 주세요.
+*/
+const links = {
+  soop: "",
+  youtube: "",
+  sns: ""
+};
+const songs = [
+  // { title: "곡명", artist: "가수 이름", url: "https://..." },
+];
+const $ = selector => document.querySelector(selector);
+const songList = $("#songList");
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function safeURL(value) {
+  try { const url = new URL(value); return ["https:", "http:"].includes(url.protocol) ? url.href : "#"; }
+  catch { return "#"; }
+}
+function renderSongs(query = "") {
+  const filtered = songs.filter(song => `${song.title} ${song.artist}`.toLowerCase().includes(query.toLowerCase()));
+  if (!filtered.length) {
+    songList.innerHTML = `<div class="empty-state"><span>♫</span><b>${songs.length ? "검색 결과가 없어요" : "노래 목록을 준비 중이에요"}</b><p>${songs.length ? "다른 곡명이나 가수 이름으로 검색해 보세요." : "script.js의 songs 배열에 실제 곡 정보를 추가해 주세요."}</p></div>`;
+    return;
+  }
+  songList.innerHTML = filtered.map(song => `<article class="song-row"><span class="song-disc">♫</span><span class="song-meta"><b>${escapeHTML(song.title)}</b><small>${escapeHTML(song.artist)}</small></span>${song.url ? `<a href="${safeURL(song.url)}" target="_blank" rel="noopener noreferrer">듣기 ↗</a>` : ""}</article>`).join("");
+}
+renderSongs();
+$("#songSearch").addEventListener("input", e => renderSongs(e.target.value));
+document.querySelectorAll("[data-link]").forEach(anchor => {
+  const key = anchor.dataset.link;
+  if (links[key]) {
+    anchor.href = safeURL(links[key]); anchor.target = "_blank"; anchor.rel = "noopener noreferrer";
+  } else {
+    anchor.href = "#";
+    anchor.addEventListener("click", e => { e.preventDefault(); alert("script.js 파일의 links." + key + "에 공식 채널 URL을 입력해 주세요."); });
+  }
+});
+$("#menuToggle").addEventListener("click", () => $("#mainNav").classList.toggle("open"));
+document.querySelectorAll("#mainNav a").forEach(a => a.addEventListener("click", () => $("#mainNav").classList.remove("open")));
+
+
+// 방송 일정 달력 ----------------------------------------------------
+// 시작 월은 2026년 10월입니다.
+// 일정 추가 예시:
+// "2026-10-23": { title: "저녁 방송", time: "20:00", type: "live", description: "게임 방송" },
+// type은 "live" 또는 "special"을 사용할 수 있습니다.
+const streamSchedule = {
+  // 실제 방송 일정이 확인되면 여기에 추가하세요.
+};
+
+let calendarYear = 2026;
+let calendarMonth = 9; // JavaScript: 0=1월, 9=10월
+let selectedCalendarKey = "";
+
+function renderCalendar() {
+  const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+  const lastDate = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const days = document.querySelector("#calendarDays");
+  document.querySelector("#calendarYear").textContent = calendarYear;
+  document.querySelector("#calendarMonth").textContent = `${calendarMonth + 1}월`;
+  days.innerHTML = "";
+
+  for (let i = 0; i < firstDay; i++) {
+    const blank = document.createElement("div");
+    blank.className = "calendar-day empty";
+    days.appendChild(blank);
+  }
+
+  const now = new Date();
+  for (let date = 1; date <= lastDate; date++) {
+    const key = `${calendarYear}-${String(calendarMonth+1).padStart(2,"0")}-${String(date).padStart(2,"0")}`;
+    const event = streamSchedule[key];
+    const weekday = new Date(calendarYear, calendarMonth, date).getDay();
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "calendar-day";
+    if (weekday === 0) button.classList.add("sunday");
+    if (weekday === 6) button.classList.add("saturday");
+    if (now.getFullYear()===calendarYear && now.getMonth()===calendarMonth && now.getDate()===date) button.classList.add("today");
+    if (key === selectedCalendarKey) button.classList.add("selected");
+    if (event) {
+      button.classList.add("has-event");
+      if (event.type === "special") button.classList.add("special-event");
+    }
+    button.innerHTML = `<span class="day-number">${date}</span>${event ? `<span class="event-label">${escapeHTML(event.title)}</span>` : ""}`;
+    button.addEventListener("click", () => showCalendarDetail(key, event));
+    days.appendChild(button);
+  }
+  // Start is October 2026, so prevent going earlier.
+  document.querySelector("#prevMonth").disabled = calendarYear === 2026 && calendarMonth === 9;
+}
+
+function showCalendarDetail(key, event) {
+  selectedCalendarKey = key;
+  const detail = document.querySelector("#calendarDetail");
+  const [year,month,date] = key.split("-");
+  if (event) {
+    detail.innerHTML = `<span class="detail-date">${year}.${month}.${date}</span><h3>${escapeHTML(event.title)} ${event.time ? `· ${escapeHTML(event.time)}` : ""}</h3><p>${escapeHTML(event.description || "방송 일정")}</p>`;
+  } else {
+    detail.innerHTML = `<span class="detail-date">${year}.${month}.${date}</span><h3>등록된 일정이 없어요.</h3><p>실제 방송 일정이 확인되면 이 날짜에 추가할 수 있어요.</p>`;
+  }
+  renderCalendar();
+}
+
+document.querySelector("#prevMonth").addEventListener("click", () => {
+  if (calendarYear === 2026 && calendarMonth === 9) return;
+  calendarMonth--;
+  if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+  selectedCalendarKey = "";
+  renderCalendar();
+});
+document.querySelector("#nextMonth").addEventListener("click", () => {
+  calendarMonth++;
+  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+  selectedCalendarKey = "";
+  renderCalendar();
+});
+renderCalendar();
+
+const sections = [...document.querySelectorAll(".page-section")];
+const dots = [...document.querySelectorAll("#pageDots a")];
+let currentSection = 0;
+let navigationLocked = false;
+let unlockTimer;
+
+const headerHeight = () => document.querySelector(".topbar").offsetHeight;
+
+// Because .fullpage already reserves the fixed header height at the top,
+// each section's offsetTop is the exact document Y where that section
+// should sit directly underneath the fixed header.
+const sectionTop = index => Math.round(sections[index].offsetTop - headerHeight());
+
+function setActiveSection(index) {
+  currentSection = Math.max(0, Math.min(index, sections.length - 1));
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === currentSection));
+}
+
+function nearestSectionIndex() {
+  let best = 0;
+  let distance = Infinity;
+  sections.forEach((section, index) => {
+    const d = Math.abs(sectionTop(index) - window.scrollY);
+    if (d < distance) { distance = d; best = index; }
+  });
+  return best;
+}
+
+function goToSection(index, updateHash = true) {
+  const next = Math.max(0, Math.min(index, sections.length - 1));
+  navigationLocked = true;
+  setActiveSection(next);
+
+  window.scrollTo({ top: sectionTop(next), behavior: "smooth" });
+
+  if (updateHash) {
+    history.replaceState(null, "", "#" + sections[next].id);
+  }
+
+  clearTimeout(unlockTimer);
+  unlockTimer = setTimeout(() => {
+    // Final exact alignment after smooth scrolling.
+    window.scrollTo({ top: sectionTop(next), behavior: "auto" });
+    navigationLocked = false;
+  }, 700);
+}
+
+// Small wheel movement = exactly one full section on desktop.
+window.addEventListener("wheel", event => {
+  if (window.innerWidth <= 700 || Math.abs(event.deltaY) < 1) return;
+  event.preventDefault();
+  if (navigationLocked) return;
+
+  const from = nearestSectionIndex();
+  const next = from + (event.deltaY > 0 ? 1 : -1);
+  if (next < 0 || next >= sections.length) return;
+  goToSection(next);
+}, { passive: false });
+
+// IMPORTANT: every internal #section link uses the same exact positioning.
+// This fixes the top navigation, hero buttons, schedule button, and dot buttons.
+document.addEventListener("click", event => {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link) return;
+
+  const hash = link.getAttribute("href");
+  if (!hash || hash === "#") return;
+
+  const index = sections.findIndex(section => "#" + section.id === hash);
+  if (index < 0) return;
+
+  event.preventDefault();
+  document.querySelector("#mainNav")?.classList.remove("open");
+
+  if (window.innerWidth > 700) {
+    if (!navigationLocked) goToSection(index);
+  } else {
+    sections[index].scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", hash);
+  }
+});
+
+const observer = new IntersectionObserver(entries => {
+  if (navigationLocked) return;
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+      setActiveSection(sections.indexOf(entry.target));
+    }
+  });
+}, { threshold: [0.5, 0.7] });
+
+sections.forEach(section => observer.observe(section));
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 700) {
+    navigationLocked = false;
+    const index = nearestSectionIndex();
+    setActiveSection(index);
+    window.scrollTo({ top: sectionTop(index), behavior: "auto" });
+  }
+});
+
+window.addEventListener("load", () => {
+  const hashIndex = sections.findIndex(section => "#" + section.id === location.hash);
+  const index = hashIndex >= 0 ? hashIndex : nearestSectionIndex();
+  setActiveSection(index);
+  if (window.innerWidth > 700) {
+    window.scrollTo({ top: sectionTop(index), behavior: "auto" });
+  }
+});
