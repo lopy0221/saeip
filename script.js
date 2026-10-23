@@ -94,6 +94,15 @@ async function loadStreamSchedule() {
   });
 });
 
+// 같은 날짜의 일정은 빠른 시간부터 정렬
+Object.values(streamSchedule).forEach(events => {
+  events.sort((a, b) => {
+    const timeA = a.time || "23:59";
+    const timeB = b.time || "23:59";
+    return timeA.localeCompare(timeB);
+  });
+});
+
     renderCalendar();
 
   } catch (error) {
