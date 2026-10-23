@@ -104,6 +104,7 @@ Object.values(streamSchedule).forEach(events => {
 });
 
     renderCalendar();
+renderWeeklySchedule();
 
   } catch (error) {
     console.error("방송 일정을 불러오지 못했습니다.", error);
@@ -120,6 +121,70 @@ Object.values(streamSchedule).forEach(events => {
 
     renderCalendar();
   }
+}
+
+// 메인화면 주간 일정표 --------------------------------------------
+
+function renderWeeklySchedule() {
+  const weeklyItems = document.querySelectorAll(".weekly-day");
+
+  if (!weeklyItems.length) return;
+
+  // 오늘 날짜
+  const today = new Date();
+
+  // 이번 주 월요일 구하기
+  const day = today.getDay();
+  const monday = new Date(today);
+
+  const diff = day === 0 ? -6 : 1 - day;
+  monday.setDate(today.getDate() + diff);
+
+  weeklyItems.forEach((item, index) => {
+    const targetDate = new Date(monday);
+    targetDate.setDate(monday.getDate() + index);
+
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+    const date = String(targetDate.getDate()).padStart(2, "0");
+
+    const key = `${year}-${month}-${date}`;
+
+    const events = streamSchedule[key] || [];
+
+    const typeElement = item.querySelector(".weekly-type");
+    const timeElement = item.querySelector(".weekly-time");
+
+    if (!typeElement || !timeElement) return;
+
+    // 일정 없음
+    if (!events.length) {
+      typeElement.textContent = "-";
+      timeElement.textContent = "-";
+      return;
+    }
+
+    // 같은 날 여러 일정이 있으면 모두 표시
+    typeElement.innerHTML = events
+      .map(event => {
+        let typeText = "방송";
+
+        if (event.type === "collab") {
+          typeText = "합방";
+        } else if (event.type === "off") {
+          typeText = "휴방";
+        } else if (event.type === "etc") {
+          typeText = "기타";
+        }
+
+        return escapeHTML(typeText);
+      })
+      .join("<br>");
+
+    timeElement.innerHTML = events
+      .map(event => escapeHTML(event.time || "-"))
+      .join("<br>");
+  });
 }
 
 
