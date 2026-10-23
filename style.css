@@ -414,3 +414,18 @@ body.dark-mode #mainNav a.active {
   color: #8a9bb6;
   margin: 0;
 }
+
+/* 상단바 위치 정리 */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar .brand {
+  flex: 0 0 auto;
+}
+
+.topbar #mainNav {
+  margin-left: auto;
+}
