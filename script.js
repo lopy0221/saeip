@@ -435,3 +435,34 @@ window.addEventListener("load", () => {
     window.scrollTo({ top: sectionTop(index), behavior: "auto" });
   }
 });
+
+// 다크모드 ----------------------------------------------------
+
+const darkModeToggle = document.querySelector("#darkModeToggle");
+
+function setDarkMode(enabled) {
+  document.body.classList.toggle("dark-mode", enabled);
+
+  if (darkModeToggle) {
+    darkModeToggle.textContent = enabled ? "☀" : "☾";
+    darkModeToggle.setAttribute(
+      "aria-label",
+      enabled ? "밝은 모드로 변경" : "어두운 모드로 변경"
+    );
+  }
+
+  localStorage.setItem(
+    "saeip-dark-mode",
+    enabled ? "dark" : "light"
+  );
+}
+
+const savedTheme = localStorage.getItem("saeip-dark-mode");
+
+setDarkMode(savedTheme === "dark");
+
+darkModeToggle?.addEventListener("click", () => {
+  setDarkMode(
+    !document.body.classList.contains("dark-mode")
+  );
+});
