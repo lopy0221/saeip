@@ -675,3 +675,51 @@ body.dark-mode #mainNav a.active {
 .weekly-event span {
   display: block;
 }
+
+/* 주간 일정표 - 오늘 요일 강조 */
+.weekly-day.today {
+  position: relative;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(83, 145, 225, 0.82) 0%,
+      rgba(111, 169, 235, 0.72) 48%,
+      rgba(73, 130, 210, 0.82) 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.65),
+    0 0 18px rgba(83, 145, 225, 0.38);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* 오늘의 요일/일정 글씨를 조금 더 선명하게 */
+.weekly-day.today small,
+.weekly-day.today b,
+.weekly-day.today strong,
+.weekly-day.today span {
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(42, 91, 155, 0.35);
+}
+
+/* TODAY 표시 */
+.weekly-day.today::after {
+  content: "TODAY";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+
+  padding: 2px 5px;
+  border-radius: 5px;
+
+  background: rgba(255, 255, 255, 0.9);
+  color: #5d91d5;
+
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+
+  box-shadow: 0 2px 6px rgba(62, 112, 180, 0.18);
+}
