@@ -392,20 +392,25 @@ body.dark-mode #mainNav a.active {
   color: #8eb7ff;
 }
 /* 왼쪽 상단 새잎 로고 */
-.brand {
-  display: flex;
+.topbar .brand {
+  display: inline-flex;
   align-items: baseline;
-  gap: 3px;
+  justify-content: flex-start;
+  gap: 5px;
+  width: auto;
+  flex: 0 0 auto;
 }
 
-.brand-name {
+.topbar .brand-name {
   font-size: 25px;
   font-weight: 800;
   color: #92BCEF;
   letter-spacing: -1px;
 }
 
-.brand-light {
+.topbar .brand-light {
   font-size: 14px;
-  margin-left: 0;
+  font-weight: 500;
+  color: #8a9bb6;
+  margin: 0;
 }
