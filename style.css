@@ -446,3 +446,23 @@ body.dark-mode #mainNav a.active {
 .topbar #mainNav a {
   white-space: nowrap;
 }
+
+/* 메인 화면 배경 이미지 */
+#home {
+  position: relative;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.75) 35%,
+      rgba(255, 255, 255, 0.15) 70%,
+      rgba(255, 255, 255, 0.05) 100%
+    ),
+    url("assets/saeip-bg.png") center center / cover no-repeat;
+}
+
+/* 메인 글씨가 배경보다 앞으로 */
+#home .section-inner {
+  position: relative;
+  z-index: 2;
+}
