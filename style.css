@@ -592,3 +592,59 @@ body.dark-mode #mainNav a.active {
   min-width: 0;
   padding: 16px 18px;
 }
+
+/* 주간 일정표 최종 모양 */
+.weekly-grid {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  width: 100% !important;
+
+  background: rgba(146, 188, 239, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.weekly-day {
+  box-sizing: border-box;
+  min-height: 115px !important;
+  padding: 14px 16px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.weekly-day:last-child {
+  border-right: none;
+}
+
+.weekly-day small {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.weekly-day b {
+  display: block;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.weekly-day strong {
+  display: block;
+  margin-top: 9px;
+  font-size: 17px;
+  color: #ffffff;
+}
+
+.weekly-day span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.9);
+}
