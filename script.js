@@ -149,7 +149,6 @@ function renderWeeklySchedule() {
     const date = String(targetDate.getDate()).padStart(2, "0");
 
     const key = `${year}-${month}-${date}`;
-
     const events = streamSchedule[key] || [];
 
     const typeElement = item.querySelector(".weekly-type");
@@ -159,37 +158,40 @@ function renderWeeklySchedule() {
 
     // 일정 없음
     if (!events.length) {
-      typeElement.textContent = "-";
-      timeElement.textContent = "-";
+      typeElement.innerHTML = "-";
+      timeElement.innerHTML = "";
       return;
     }
 
-    // 같은 날 여러 일정이 있으면 모두 표시
+    // 일정 종류와 시간을 한 묶음으로 표시
     typeElement.innerHTML = events
       .map(event => {
         let typeText = "방송";
 
-if (event.type === "morning") {
-  typeText = "아침 방송";
-} else if (event.type === "afternoon") {
-  typeText = "낮 방송";
-} else if (event.type === "evening") {
-  typeText = "저녁 방송";
-} else if (event.type === "collab") {
-  typeText = "합방";
-} else if (event.type === "off") {
-  typeText = "휴방";
-} else if (event.type === "etc") {
-  typeText = "기타";
-}
+        if (event.type === "morning") {
+          typeText = "아침 방송";
+        } else if (event.type === "afternoon") {
+          typeText = "낮 방송";
+        } else if (event.type === "evening") {
+          typeText = "저녁 방송";
+        } else if (event.type === "collab") {
+          typeText = "합방";
+        } else if (event.type === "off") {
+          typeText = "휴방";
+        } else if (event.type === "etc") {
+          typeText = "기타";
+        }
 
-        return escapeHTML(typeText);
+        return `
+          <span class="weekly-event">
+            <strong>${escapeHTML(typeText)}</strong>
+            <span>${escapeHTML(event.time || "-")}</span>
+          </span>
+        `;
       })
-      .join("<br>");
+      .join("");
 
-    timeElement.innerHTML = events
-      .map(event => escapeHTML(event.time || "-"))
-      .join("<br>");
+    timeElement.innerHTML = "";
   });
 }
 
