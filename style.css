@@ -659,3 +659,19 @@ body.dark-mode #mainNav a.active {
 .weekly-grid {
   background: rgba(146, 188, 239, 0.58);
 }
+
+.weekly-event {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 5px;
+}
+
+.weekly-event:last-child {
+  margin-bottom: 0;
+}
+
+.weekly-event strong,
+.weekly-event span {
+  display: block;
+}
