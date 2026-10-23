@@ -195,3 +195,140 @@
 #schedule .calendar-day .event-label + .event-label {
   margin-top: 2px;
 }
+
+/* 관리자 로그인 버튼 */
+.admin-login-link {
+  padding: 7px 13px;
+  margin-left: 5px;
+  border: 1px solid #d9e7f8;
+  border-radius: 10px;
+  background: #f5f9ff;
+  color: #6d91c4 !important;
+  transition: .2s;
+}
+
+.admin-login-link:hover {
+  background: #e8f2ff;
+  border-color: #bcd5f5;
+}
+
+
+/* 다크모드 버튼 */
+.dark-mode-toggle {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 9999;
+
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid #d6e4f5;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, .95);
+  color: #6688b8;
+
+  font-size: 21px;
+  cursor: pointer;
+
+  box-shadow: 0 8px 25px rgba(60, 90, 130, .16);
+  transition: .25s;
+}
+
+.dark-mode-toggle:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode {
+  background: #111827;
+  color: #dbe7f7;
+}
+
+body.dark-mode .topbar {
+  background: rgba(17, 24, 39, .96);
+  border-color: #28364a;
+}
+
+body.dark-mode .page-section {
+  background: #111827;
+}
+
+body.dark-mode .section-soft {
+  background: #151f2e;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode b,
+body.dark-mode strong {
+  color: #edf5ff;
+}
+
+body.dark-mode p,
+body.dark-mode small {
+  color: #aabbd0;
+}
+
+body.dark-mode .calendar-shell {
+  background: #182334;
+  border-color: #2c3c52;
+}
+
+body.dark-mode .calendar-day {
+  background: #1d293b;
+  color: #d8e5f5;
+}
+
+body.dark-mode .calendar-day:hover {
+  background: #26364c;
+  border-color: #5278ad;
+}
+
+body.dark-mode .calendar-day.selected {
+  background: #263d5e;
+  border-color: #6fa2eb;
+}
+
+body.dark-mode .calendar-detail {
+  background: #18283e;
+  border-color: #304967;
+}
+
+body.dark-mode .calendar-weekdays,
+body.dark-mode .calendar-legend {
+  border-color: #2b3b50;
+}
+
+body.dark-mode .profile-card,
+body.dark-mode .rule-card,
+body.dark-mode .link-card,
+body.dark-mode .song-row,
+body.dark-mode .empty-state {
+  background: #182334;
+  border-color: #2b3b50;
+}
+
+body.dark-mode input {
+  background: #1b2738;
+  color: #e5effc;
+  border-color: #34465f;
+}
+
+body.dark-mode .admin-login-link {
+  background: #1d2b3f;
+  border-color: #344b69;
+  color: #a9c9f5 !important;
+}
+
+body.dark-mode .dark-mode-toggle {
+  background: #24344b;
+  border-color: #405675;
+  color: #f2d98b;
+}
