@@ -434,6 +434,8 @@ body.dark-mode #mainNav a.active {
   font-weight: 500;
   color: #8a9bb6;
   margin: 0;
+
+  transform: translateY(5px);
 }
 
 /* 오른쪽 메뉴 */
