@@ -729,3 +729,181 @@ body.dark-mode #mainNav a.active {
 
   box-shadow: 0 2px 6px rgba(62, 112, 180, 0.18);
 }
+
+/* ==================================================
+   DARK MODE - 메인 화면
+================================================== */
+
+/* 메인 화면 양옆 배경 */
+body.dark-mode #home {
+  background-color: #081426 !important;
+}
+
+/* 메인 사진 위에 어두운 필터 */
+body.dark-mode #home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      rgba(5, 18, 38, 0.48),
+      rgba(5, 18, 38, 0.58)
+    );
+
+  pointer-events: none;
+}
+
+/* 사진 위 요소들은 필터보다 위에 표시 */
+body.dark-mode .home-weekly,
+body.dark-mode .home-saeip-logo {
+  position: absolute;
+  z-index: 5;
+}
+
+
+/* ==================================================
+   SAEIP 로고
+================================================== */
+
+body.dark-mode .home-saeip-logo {
+  color: rgba(126, 181, 255, 0.10);
+
+  -webkit-text-stroke: 2px #7eb5ff;
+
+  text-shadow:
+    0 0 6px rgba(90, 160, 255, 0.8),
+    0 0 16px rgba(90, 160, 255, 0.55),
+    0 0 32px rgba(70, 135, 255, 0.35);
+
+  opacity: 1;
+}
+
+
+/* ==================================================
+   WEEKLY TRANSMISSION
+================================================== */
+
+body.dark-mode .weekly-title {
+  color: #78b5ff !important;
+
+  text-shadow:
+    0 0 8px rgba(75, 145, 255, 0.45);
+}
+
+/* 일정표 전체 배경 */
+body.dark-mode .weekly-grid {
+  background: rgba(8, 27, 55, 0.68);
+
+  border-color: rgba(145, 190, 255, 0.45);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* 각 요일 칸 */
+body.dark-mode .weekly-day {
+  color: #f4f8ff;
+
+  border-color: rgba(180, 210, 255, 0.25);
+}
+
+/* MON TUE WED */
+body.dark-mode .weekly-day small {
+  color: #a9cbf7;
+}
+
+/* 월 화 수 목 금 토 일 */
+body.dark-mode .weekly-day b {
+  color: #ffffff;
+}
+
+/* 방송 종류 */
+body.dark-mode .weekly-day strong {
+  color: #ffffff;
+}
+
+/* 시간 */
+body.dark-mode .weekly-day span {
+  color: #dceaff;
+}
+
+
+/* ==================================================
+   오늘 날짜
+================================================== */
+
+body.dark-mode .weekly-day.today {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(48, 118, 225, 0.95) 0%,
+      rgba(34, 91, 190, 0.92) 55%,
+      rgba(25, 67, 150, 0.95) 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px rgba(160, 205, 255, 0.75),
+    0 0 22px rgba(50, 125, 255, 0.42);
+}
+
+body.dark-mode .weekly-day.today small,
+body.dark-mode .weekly-day.today b,
+body.dark-mode .weekly-day.today strong,
+body.dark-mode .weekly-day.today span {
+  color: #ffffff;
+}
+
+
+/* TODAY 배지 */
+body.dark-mode .weekly-day.today::after {
+  background: #eaf4ff;
+  color: #397bd5;
+
+  box-shadow:
+    0 0 10px rgba(105, 170, 255, 0.55);
+}
+
+
+/* ==================================================
+   상단 메뉴
+================================================== */
+
+body.dark-mode .topbar {
+  background: #091426 !important;
+  border-color: #1d3452 !important;
+}
+
+body.dark-mode #mainNav a {
+  color: #aebfd6;
+}
+
+body.dark-mode #mainNav a:hover {
+  color: #ffffff;
+}
+
+body.dark-mode #mainNav a.active {
+  color: #80b9ff;
+}
+
+body.dark-mode .brand-name {
+  color: #8fc1ff;
+}
+
+body.dark-mode .brand-light {
+  color: #a6b8cf;
+}
+
+
+/* ==================================================
+   메인 화면 외부
+================================================== */
+
+body.dark-mode {
+  background: #07111f;
+}
+
+body.dark-mode .page-section {
+  background-color: #0a1628;
+}
