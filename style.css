@@ -953,3 +953,17 @@ body:not(.dark-mode) .topbar {
   background: #F1F7FF !important;
   border-bottom: none !important;
 }
+
+/* 일반모드 - 상단바와 메인화면 사이 경계 완전히 제거 */
+body:not(.dark-mode) .topbar {
+  background: #F1F7FF !important;
+  border: none !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+body:not(.dark-mode) #home {
+  border: none !important;
+  border-top: 0 !important;
+  box-shadow: none !important;
+}
