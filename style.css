@@ -967,3 +967,8 @@ body:not(.dark-mode) #home {
   border-top: 0 !important;
   box-shadow: none !important;
 }
+
+/* 상단바와 메인화면 사이 틈 제거 */
+.fullpage {
+  padding-top: 72px !important;
+}
