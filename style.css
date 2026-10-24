@@ -947,3 +947,9 @@ body.dark-mode .home-weekly {
   position: absolute;
   z-index: 10;
 }
+
+/* 일반모드 - 상단바를 바깥 배경색과 동일하게 */
+body:not(.dark-mode) .topbar {
+  background: #F1F7FF !important;
+  border-bottom-color: #E3EEFA;
+}
