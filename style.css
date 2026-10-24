@@ -908,37 +908,37 @@ body.dark-mode .page-section {
   background-color: #0a1628;
 }
 
-#home {
-  position: relative;
-  overflow: hidden;
+/* 일반모드에서는 페이드 효과 없음 */
+#home::after {
+  display: none;
 }
 
-#home::after {
+/* 다크모드에서만 사진 아래쪽 어두운 페이드 */
+body.dark-mode #home::after {
   content: "";
-  position: absolute;
+  display: block;
 
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
 
-  height: 65%;
-
-  background: linear-gradient(
-  to bottom,
-  rgba(235, 243, 252, 0) 0%,
-  rgba(235, 243, 252, 0.10) 15%,
-  rgba(235, 243, 252, 0.45) 45%,
-  rgba(235, 243, 252, 0.78) 70%,
-  rgba(235, 243, 252, 0.96) 100%
-);
-
+  height: 70%;
   z-index: 2;
   pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 15, 32, 0) 0%,
+    rgba(5, 15, 32, 0.10) 20%,
+    rgba(5, 15, 32, 0.38) 48%,
+    rgba(5, 15, 32, 0.72) 72%,
+    rgba(5, 15, 32, 0.95) 100%
+  );
 }
 
-/* 글씨와 일정표는 페이드 위로 */
-#home .home-saeip-logo,
-#home .home-weekly {
-  position: absolute;
+/* SAEIP와 일정표는 페이드 위에 표시 */
+body.dark-mode .home-saeip-logo,
+body.dark-mode .home-weekly {
   z-index: 10;
 }
