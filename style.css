@@ -563,20 +563,26 @@ body.dark-mode #mainNav a.active {
 .home-saeip-logo {
   position: absolute;
   top: 5%;
-  right: 25%;
+  right: 14%;
   z-index: 5;
 
   font-size: clamp(70px, 8vw, 140px);
   font-weight: 300;
   font-style: italic;
 
-  color: transparent;
+  color: rgba(146, 188, 239, 0.18);
   -webkit-text-stroke: 2px #92BCEF;
 
   letter-spacing: -7px;
   transform: rotate(-3deg);
 
   opacity: 0.9;
+
+  /* 하늘색 빛 효과 */
+  text-shadow:
+    0 0 6px rgba(146, 188, 239, 0.65),
+    0 0 14px rgba(146, 188, 239, 0.45),
+    0 0 28px rgba(146, 188, 239, 0.25);
 }
 
 .home-weekly-grid {
