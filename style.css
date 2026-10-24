@@ -577,6 +577,9 @@ body.dark-mode #mainNav a.active {
 
   opacity: 0.9;
 
+  user-select: none;
+-webkit-user-select: none;
+
   /* 하늘색 빛 효과 */
   text-shadow:
     0 0 6px rgba(146, 188, 239, 0.65),
