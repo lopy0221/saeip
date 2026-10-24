@@ -414,7 +414,7 @@ body.dark-mode #mainNav a.active {
 /* 새잎 Saeip 로고 */
 .topbar .brand {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
 
   width: auto;
