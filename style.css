@@ -458,12 +458,6 @@ body.dark-mode #mainNav a.active {
 
   overflow: hidden !important;
 }
-
-/* 혹시 남아있는 가상 배경 완전히 제거 */
-#home::before,
-#home::after {
-  content: none !important;
-  display: none !important;
 }
 
 #home .section-inner {
@@ -739,22 +733,6 @@ body.dark-mode #home {
   background-color: #081426 !important;
 }
 
-/* 메인 사진 위에 어두운 필터 */
-body.dark-mode #home::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  background:
-    linear-gradient(
-      rgba(5, 18, 38, 0.48),
-      rgba(5, 18, 38, 0.58)
-    );
-
-  pointer-events: none;
-}
-
 /* 사진 위 요소들은 필터보다 위에 표시 */
 body.dark-mode .home-weekly,
 body.dark-mode .home-saeip-logo {
@@ -908,37 +886,64 @@ body.dark-mode .page-section {
   background-color: #0a1628;
 }
 
-/* 일반모드에서는 페이드 효과 없음 */
-#home::after {
-  display: none;
+/* =========================================
+   다크모드 - 메인 이미지 어둡게 + 아래 페이드
+========================================= */
+
+#home {
+  position: relative;
+  isolation: isolate;
 }
 
-/* 다크모드에서만 사진 아래쪽 어두운 페이드 */
+/* 일반모드 */
+#home::before,
+#home::after {
+  content: none;
+}
+
+/* 다크모드 - 사진 전체 어둡게 */
+body.dark-mode #home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  z-index: 1;
+
+  background: rgba(5, 15, 32, 0.42);
+
+  pointer-events: none;
+}
+
+/* 다크모드 - 아래쪽으로 갈수록 더 어둡게 */
 body.dark-mode #home::after {
   content: "";
-  display: block;
-
   position: absolute;
+
   left: 0;
   right: 0;
   bottom: 0;
 
-  height: 70%;
+  display: block;
+  height: 75%;
+
   z-index: 2;
-  pointer-events: none;
 
   background: linear-gradient(
     to bottom,
     rgba(5, 15, 32, 0) 0%,
-    rgba(5, 15, 32, 0.10) 20%,
-    rgba(5, 15, 32, 0.38) 48%,
-    rgba(5, 15, 32, 0.72) 72%,
-    rgba(5, 15, 32, 0.95) 100%
+    rgba(5, 15, 32, 0.08) 20%,
+    rgba(5, 15, 32, 0.32) 48%,
+    rgba(5, 15, 32, 0.70) 75%,
+    rgba(5, 15, 32, 0.96) 100%
   );
+
+  pointer-events: none;
 }
 
-/* SAEIP와 일정표는 페이드 위에 표시 */
+/* 글씨와 일정표는 어두운 필터 위에 */
 body.dark-mode .home-saeip-logo,
 body.dark-mode .home-weekly {
+  position: absolute;
   z-index: 10;
 }
