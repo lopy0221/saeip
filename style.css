@@ -968,7 +968,19 @@ body:not(.dark-mode) #home {
   box-shadow: none !important;
 }
 
-/* 상단바와 메인화면 사이 틈 제거 */
+/* 메인 위치는 원래대로 유지 */
 .fullpage {
-  padding-top: 72px !important;
+  padding-top: 76px !important;
+}
+
+/* 위쪽 4px 틈을 바깥 배경색과 똑같이 */
+body:not(.dark-mode) .fullpage {
+  background: #F1F7FF !important;
+}
+
+/* 상단바 경계선 제거 */
+body:not(.dark-mode) .topbar {
+  background: #F1F7FF !important;
+  border: none !important;
+  box-shadow: none !important;
 }
