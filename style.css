@@ -1283,3 +1283,41 @@ body.dark-mode .profile-info-row strong {
 .profile-new {
   width: min(1150px, 92vw);
 }
+
+/* 프로필 최종 크기/간격 조정 */
+
+/* 전체 영역 */
+.profile-new {
+  width: min(1200px, 92vw);
+}
+
+/* 사진을 더 크게 */
+.profile-new-layout {
+  grid-template-columns: 470px 1fr;
+  gap: 55px;
+  align-items: center;
+}
+
+.profile-new-photo {
+  width: 470px;
+  height: 470px;
+}
+
+/* 오른쪽 정보 영역을 살짝 좁혀서
+   항목명과 내용 사이 간격 줄이기 */
+.profile-new-info {
+  width: 600px;
+  max-width: 100%;
+  justify-self: start;
+}
+
+/* 이름 / 새잎 사이 간격 줄이기 */
+.profile-info-row {
+  grid-template-columns: 130px 1fr;
+}
+
+/* 오른쪽 값은 그대로 오른쪽 정렬 */
+.profile-info-row strong {
+  text-align: right;
+  white-space: nowrap;
+}
