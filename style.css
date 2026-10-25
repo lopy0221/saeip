@@ -1266,3 +1266,20 @@ body.dark-mode .profile-info-row strong {
   width: auto;
   margin-left: 6px;
 }
+
+/* 프로필 오른쪽 내용을 한 줄로 표시 */
+.profile-info-row strong {
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 긴 내용이 들어갈 공간 확보 */
+.profile-new-layout {
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 55px;
+}
+
+.profile-new {
+  width: min(1150px, 92vw);
+}
