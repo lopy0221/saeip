@@ -986,12 +986,15 @@ body:not(.dark-mode) .fullpage {
 
 #profile {
   background: #f4f8ff;
+  align-items: flex-start !important;
+  overflow-y: auto !important;
 }
 
 /* 프로필 전체 */
 .profile-new {
-  width: min(1050px, 90vw);
-  margin: 0 auto;
+  width: min(1200px, 92vw);
+  margin: -50px auto 100px;
+  transform: none !important;
 }
 
 /* 제목 */
@@ -1001,121 +1004,123 @@ body:not(.dark-mode) .fullpage {
 
 .profile-new-kicker {
   display: block;
-
   margin-bottom: 4px;
-
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 2px;
-
   color: #91a9ca;
 }
 
 .profile-new-heading h2 {
   margin: 0;
-
   font-family: "Jua", sans-serif;
   font-size: 42px;
   font-weight: 400;
   letter-spacing: -1px;
-
   color: #6f9ee3;
 }
 
 /* 사진 + 정보 */
 .profile-new-layout {
   display: grid;
-  grid-template-columns: 420px 1fr;
-  gap: 70px;
-
+  grid-template-columns: 470px 1fr;
+  gap: 55px;
   align-items: center;
 }
 
-/* =========================
-   왼쪽 사진
-========================= */
-
+/* 왼쪽 프로필 사진 */
 .profile-new-photo {
-  width: 420px;
-  height: 420px;
-
+  width: 470px;
+  height: 470px;
   overflow: hidden;
-
   border-radius: 28px;
-
   background: #e5f0ff;
   border: 1px solid #d8e7fa;
-
-  box-shadow:
-    0 15px 40px rgba(83, 124, 180, 0.10);
+  box-shadow: 0 15px 40px rgba(83, 124, 180, 0.10);
 }
 
 .profile-new-photo img {
   display: block;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
   object-position: center;
-
   user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
 }
 
-/* =========================
-   오른쪽 정보
-========================= */
-
+/* 오른쪽 프로필 정보 */
 .profile-new-info {
-  width: 100%;
+  width: 600px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-self: start;
+  transform: translateX(-30px);
 }
 
+/* 각 프로필 항목 */
 .profile-info-row {
-  min-height: 55px;
-
+  min-height: 58px;
   display: grid;
-  grid-template-columns: 145px 1fr;
-
+  grid-template-columns: 130px 1fr;
   align-items: center;
-
   padding: 0 12px;
-
+  box-sizing: border-box;
   border-bottom: 1px solid #d8e5f5;
+}
+
+.profile-info-row:first-child {
+  border-top: 1px solid #d8e5f5;
 }
 
 /* 왼쪽 항목명 */
 .profile-info-row span {
   font-size: 13px;
   font-weight: 700;
-
   color: #89a3c7;
+  text-align: left;
 }
 
 /* 오른쪽 내용 */
 .profile-info-row strong {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-
   color: #435c7d;
-
   text-align: right;
+  white-space: nowrap;
+  line-height: 1.4;
 }
 
-/* 좋아하는 음식 / 게임 */
 .profile-info-wide {
   min-height: 65px;
 }
 
-/* 첫 줄 위에도 선 */
-.profile-info-row:first-child {
-  border-top: 1px solid #d8e5f5;
+/* 방송 시작일 + 일수 배지 */
+#broadcastDays {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+
+  padding: 3px 9px;
+  margin-left: 6px;
+
+  border: 1.5px solid #6fa8ff;
+  border-radius: 999px;
+
+  background: rgba(111, 168, 255, 0.08);
+  color: #6fa8ff;
+
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-
 /* ==================================================
-   DARK MODE
+   PROFILE DARK MODE
 ================================================== */
 
 body.dark-mode #profile {
@@ -1147,15 +1152,15 @@ body.dark-mode .profile-info-row strong {
   color: #edf5ff;
 }
 
-
 /* ==================================================
-   MOBILE
+   PROFILE MOBILE
 ================================================== */
 
 @media (max-width: 700px) {
 
   .profile-new {
     width: 92vw;
+    margin-top: 0;
   }
 
   .profile-new-heading {
@@ -1176,6 +1181,11 @@ body.dark-mode .profile-info-row strong {
     height: 260px;
   }
 
+  .profile-new-info {
+    width: 100%;
+    transform: none;
+  }
+
   .profile-info-row {
     grid-template-columns: 110px 1fr;
     min-height: 45px;
@@ -1188,97 +1198,6 @@ body.dark-mode .profile-info-row strong {
   .profile-info-row strong {
     font-size: 13px;
   }
-}
-
-#broadcastDays {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 3px 9px;
-  margin-left: 6px;
-
-  border: 1.5px solid #6fa8ff;
-  border-radius: 999px;
-
-  background: rgba(111, 168, 255, 0.08);
-  color: #6fa8ff;
-
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-/* 프로필 사진 + 정보 정렬 보정 */
-.profile-new-layout {
-  align-items: center;
-}
-
-/* 오른쪽 프로필 정보 */
-.profile-new-info {
-  width: 600px;
-  max-width: 100%;
-
-  display: flex;
-  flex-direction: column;
-
-  justify-self: start;
-  transform: translateX(-30px);
-}
-
-/* 각 프로필 항목 */
-.profile-info-row {
-  min-height: 58px;
-  display: grid;
-  grid-template-columns: 145px minmax(0, 1fr);
-  align-items: center;
-  padding: 0 12px;
-  box-sizing: border-box;
-}
-
-/* 왼쪽 항목명 */
-.profile-info-row span {
-  text-align: left;
-}
-
-/* 오른쪽 프로필 내용 */
-.profile-info-row strong {
-  text-align: right;
-  white-space: nowrap;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-/* 방송 일수 배지는 기존 오른쪽 정렬 영향 제거 */
-.profile-info-row #broadcastDays {
-  display: inline-flex;
-  width: auto;
-  margin-left: 6px;
-}
-
-/* 프로필 최종 크기/간격 조정 */
-
-/* 전체 영역 */
-.profile-new {
-  width: min(1200px, 92vw);
-}
-
-/* 사진을 더 크게 */
-.profile-new-layout {
-  grid-template-columns: 470px 1fr;
-  gap: 55px;
-  align-items: center;
-}
-
-.profile-new-photo {
-  width: 470px;
-  height: 470px;
-}
-
-/* 이름 / 새잎 사이 간격 줄이기 */
-.profile-info-row {
-  grid-template-columns: 130px 1fr;
 }
 
 /* ==================================================
