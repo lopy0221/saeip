@@ -1479,3 +1479,22 @@ body.dark-mode .profile-info-row strong {
 
   white-space: nowrap;
 }
+
+/* 팬 캐릭터 정보 조금 더 크게 */
+.fan-character-info {
+  width: 540px;
+}
+
+.fan-info-row {
+  min-height: 72px;
+  grid-template-columns: 130px 1fr;
+}
+
+.fan-info-row span {
+  font-size: 17px;
+}
+
+.fan-info-row strong {
+  font-size: 20px;
+  padding-left: 15px;
+}
