@@ -1531,3 +1531,23 @@ body.dark-mode .profile-info-row strong {
   text-align: right;
   padding-left: 0;
 }
+
+/* =========================
+   새잎 기록 & 업적
+========================= */
+
+.saeip-record-section {
+  width: 100%;
+  margin-top: 90px;
+}
+
+.saeip-record-heading h2 {
+  margin: 0;
+
+  font-family: "Jua", sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1px;
+
+  color: #6f9ee3;
+}
