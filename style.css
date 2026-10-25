@@ -1325,3 +1325,18 @@ body.dark-mode .profile-info-row strong {
 .profile-new-info {
   transform: translateX(-30px);
 }
+
+/* 팬 캐릭터 */
+.fan-character-section {
+  width: 100%;
+  margin-top: 70px;
+}
+
+.fan-character-heading h2 {
+  margin: 0;
+  font-family: "Jua", sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: #6f9ee3;
+}
