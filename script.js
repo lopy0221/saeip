@@ -187,7 +187,7 @@ function renderWeeklySchedule() {
         } else if (event.type === "off") {
           typeText = "휴방";
         } else if (event.type === "etc") {
-          typeText = "기타";
+          typeText = "기념일";
         }
 
         return `
