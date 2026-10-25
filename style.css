@@ -1111,6 +1111,8 @@ body:not(.dark-mode) .topbar {
   font-weight: 700;
 
   color: #435c7d;
+
+  text-align: right;
 }
 
 /* 좋아하는 음식 / 게임 */
