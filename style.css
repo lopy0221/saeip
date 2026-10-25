@@ -1433,3 +1433,49 @@ body.dark-mode .profile-info-row strong {
 .fan-info-row:first-child {
   border-top: 1px solid #d8e5f5;
 }
+
+/* 팬 캐릭터 정보 크기 + 간격 조정 */
+.fan-character-info {
+  width: 500px;
+  max-width: 100%;
+}
+
+/* 각 정보 줄 */
+.fan-info-row {
+  min-height: 72px;
+  display: grid;
+
+  /* 항목명과 내용 사이 간격 줄이기 */
+  grid-template-columns: 120px 1fr;
+
+  align-items: center;
+  padding: 0 16px;
+
+  border-top: none;
+  border-bottom: 1px solid #d8e5f5;
+}
+
+.fan-info-row:first-child {
+  border-top: 1px solid #d8e5f5;
+}
+
+/* 이름 / 종류 / 팬 닉네임 */
+.fan-info-row span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #89a3c7;
+  text-align: left;
+}
+
+/* 잎덩이 / 하늘색 팬더 / **=へ=** */
+.fan-info-row strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #435c7d;
+
+  /* 오른쪽 끝이 아니라 항목명 가까이에 표시 */
+  text-align: left;
+  padding-left: 20px;
+
+  white-space: nowrap;
+}
