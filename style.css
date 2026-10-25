@@ -1229,9 +1229,14 @@ body.dark-mode .profile-info-row strong {
 
 /* 오른쪽 프로필 정보 */
 .profile-new-info {
-  width: 100%;
+  width: 600px;
+  max-width: 100%;
+
   display: flex;
   flex-direction: column;
+
+  justify-self: start;
+  transform: translateX(-30px);
 }
 
 /* 각 프로필 항목 */
@@ -1249,10 +1254,12 @@ body.dark-mode .profile-info-row strong {
   text-align: left;
 }
 
-/* 오른쪽 내용 */
+/* 오른쪽 프로필 내용 */
 .profile-info-row strong {
   text-align: right;
-  line-height: 1.6;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 /* 방송 일수 배지는 기존 오른쪽 정렬 영향 제거 */
@@ -1260,23 +1267,6 @@ body.dark-mode .profile-info-row strong {
   display: inline-flex;
   width: auto;
   margin-left: 6px;
-}
-
-/* 프로필 오른쪽 내용을 한 줄로 표시 */
-.profile-info-row strong {
-  white-space: nowrap;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-/* 긴 내용이 들어갈 공간 확보 */
-.profile-new-layout {
-  grid-template-columns: 420px minmax(0, 1fr);
-  gap: 55px;
-}
-
-.profile-new {
-  width: min(1150px, 92vw);
 }
 
 /* 프로필 최종 크기/간격 조정 */
@@ -1298,27 +1288,9 @@ body.dark-mode .profile-info-row strong {
   height: 470px;
 }
 
-/* 오른쪽 정보 영역을 살짝 좁혀서
-   항목명과 내용 사이 간격 줄이기 */
-.profile-new-info {
-  width: 600px;
-  max-width: 100%;
-  justify-self: start;
-}
-
 /* 이름 / 새잎 사이 간격 줄이기 */
 .profile-info-row {
   grid-template-columns: 130px 1fr;
-}
-
-/* 오른쪽 값은 그대로 오른쪽 정렬 */
-.profile-info-row strong {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.profile-new-info {
-  transform: translateX(-30px);
 }
 
 /* ==================================================
