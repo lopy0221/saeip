@@ -1377,3 +1377,31 @@ body.dark-mode .signature-balloon-heading h2 {
     gap: 10px;
   }
 }
+
+.signature-balloon-item {
+  text-align: center;
+}
+
+.signature-balloon-item strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #4f8ee8;
+}
+
+.signature-balloon-item span {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #38506f;
+}
+
+body.dark-mode .signature-balloon-item strong {
+  color: #8fc1ff;
+}
+
+body.dark-mode .signature-balloon-item span {
+  color: #dbe7f7;
+}
