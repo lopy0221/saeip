@@ -1498,3 +1498,9 @@ body.dark-mode .profile-info-row strong {
   font-size: 20px;
   padding-left: 15px;
 }
+
+/* 팬 캐릭터 값 다시 오른쪽 정렬 */
+.fan-info-row strong {
+  text-align: right;
+  padding-left: 0;
+}
