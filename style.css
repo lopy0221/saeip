@@ -1325,3 +1325,30 @@ body.dark-mode .saeip-record-more {
     font-size: 12px;
   }
 }
+
+/* ==================================================
+   시그니처 별풍선
+================================================== */
+
+.signature-balloon-section {
+  width: 100%;
+  margin-top: 90px;
+}
+
+.signature-balloon-heading {
+  width: 100%;
+  margin-bottom: 45px;
+}
+
+.signature-balloon-heading h2 {
+  margin: 0;
+  font-family: "Jua", sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #6f9ee3;
+  line-height: 1.2;
+}
+
+body.dark-mode .signature-balloon-heading h2 {
+  color: #8fc1ff;
+}
