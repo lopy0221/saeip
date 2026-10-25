@@ -30,14 +30,6 @@
   font-size: 12px;
 }
 
-#schedule .calendar-day .event-label {
-  font-size: 10px;
-  line-height: 1.45;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-}
-
 #schedule .calendar-title b {
   font-size: 26px;
 }
