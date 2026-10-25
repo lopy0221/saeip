@@ -1358,3 +1358,25 @@ body.dark-mode .profile-info-row strong {
   width: 100%;
   margin-top: 70px;
 }
+
+/* 팬 캐릭터 이미지 */
+.fan-character-photo {
+  margin-top: 35px;
+  width: 360px;
+  height: 360px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fan-character-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
