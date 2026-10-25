@@ -1605,3 +1605,18 @@ body.dark-mode #rules .rules-warning-box strong {
   width: 900px !important;
   max-width: 90vw !important;
 }
+
+#rules .rule-penalty {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 2px;
+
+  color: #ff3b4f;
+  background: #fff0f2;
+  border: 1px solid #ff9daa;
+  border-radius: 999px;
+
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.2;
+}
