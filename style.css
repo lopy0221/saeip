@@ -1352,3 +1352,28 @@ body.dark-mode .saeip-record-more {
 body.dark-mode .signature-balloon-heading h2 {
   color: #8fc1ff;
 }
+
+/* 시그니처 별풍선 이미지 */
+.signature-balloon-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+}
+
+.signature-balloon-list img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .signature-balloon-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
