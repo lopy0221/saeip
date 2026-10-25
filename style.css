@@ -1497,3 +1497,27 @@ body.dark-mode .rules-new-card p {
     min-height: 90px;
   }
 }
+
+.rules-new-card p small {
+  display: block;
+  margin-top: 7px;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+
+  color: #7186a3;
+}
+
+.rules-new-card p strong {
+  color: #e35d6a;
+  font-weight: 900;
+}
+
+body.dark-mode .rules-new-card p small {
+  color: #9fb2ca;
+}
+
+body.dark-mode .rules-new-card p strong {
+  color: #ff8c99;
+}
