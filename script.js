@@ -539,7 +539,7 @@ function updateBroadcastDays() {
   today.setHours(0, 0, 0, 0);
 
   const diffTime = today - startDate;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
   const broadcastDays = document.getElementById("broadcastDays");
 
