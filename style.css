@@ -1533,3 +1533,49 @@ body.dark-mode .rules-new-card p strong {
   font-weight: 900;
   line-height: 1.2;
 }
+
+/* 방송 규칙 하단 안내 박스 */
+#rules .rules-warning-box {
+  width: min(700px, 90%);
+  margin: 18px auto 50px;
+  padding: 22px 30px;
+
+  box-sizing: border-box;
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid #f3b7bd;
+  border-radius: 24px;
+}
+
+#rules .rules-warning-box p {
+  margin: 0;
+  color: #435c7d;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+#rules .rules-warning-box p + p {
+  margin-top: 10px;
+}
+
+#rules .rules-warning-box strong {
+  color: #ff3b4f;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+/* 다크모드 */
+body.dark-mode #rules .rules-warning-box {
+  background: #101e32;
+  border-color: #7a3945;
+}
+
+body.dark-mode #rules .rules-warning-box p {
+  color: #dbe7f7;
+}
+
+body.dark-mode #rules .rules-warning-box strong {
+  color: #ff7583;
+}
