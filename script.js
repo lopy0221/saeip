@@ -528,3 +528,24 @@ darkModeToggle?.addEventListener("click", () => {
     !document.body.classList.contains("dark-mode")
   );
 });
+
+// 방송 시작일부터 오늘까지의 날짜 자동 계산
+function updateBroadcastDays() {
+  const startDate = new Date(2024, 8, 5); // 2024년 9월 5일
+
+  const today = new Date();
+
+  startDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diffTime = today - startDate;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  const broadcastDays = document.getElementById("broadcastDays");
+
+  if (broadcastDays) {
+    broadcastDays.textContent = `+${diffDays}일`;
+  }
+}
+
+updateBroadcastDays();
