@@ -992,3 +992,122 @@ body:not(.dark-mode) .topbar {
   border: none !important;
   box-shadow: none !important;
 }
+
+/* =========================================
+   새 프로필
+========================================= */
+
+#profile {
+  background: #f4f8ff;
+}
+
+.profile-new {
+  width: min(1050px, 90vw);
+  margin: 0 auto;
+}
+
+.profile-new-title {
+  margin: 0 0 45px;
+
+  font-family: "Jua", sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+
+  color: #6f9ee3;
+  letter-spacing: -1px;
+}
+
+/* 사진 + 정보 */
+.profile-new-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+/* 왼쪽 사진 */
+.profile-new-photo {
+  width: 420px;
+  height: 420px;
+
+  border-radius: 28px;
+  overflow: hidden;
+
+  background: #e5f0ff;
+  border: 1px solid #d8e7fa;
+
+  box-shadow: 0 15px 40px rgba(83, 124, 180, 0.10);
+}
+
+.profile-new-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 오른쪽 정보 */
+.profile-new-info {
+  width: 100%;
+}
+
+.profile-info-row {
+  min-height: 55px;
+
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+
+  padding: 0 15px;
+
+  border-bottom: 1px solid #dbe7f6;
+}
+
+.profile-info-row span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #89a3c7;
+}
+
+.profile-info-row strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #435c7d;
+}
+
+/* 아래쪽 긴 항목 */
+.profile-info-wide {
+  margin-top: 10px;
+  min-height: 62px;
+}
+
+/* 다크모드 */
+body.dark-mode #profile {
+  background: #0a1628;
+}
+
+body.dark-mode .profile-new-title {
+  color: #8fc1ff;
+}
+
+body.dark-mode .profile-new-photo {
+  background: #15253b;
+  border-color: #29405f;
+}
+
+body.dark-mode .profile-info-row {
+  border-color: #263c59;
+}
+
+body.dark-mode .profile-info-row span {
+  color: #8faed6;
+}
+
+body.dark-mode .profile-info-row strong {
+  color: #edf5ff;
+}
