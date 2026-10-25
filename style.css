@@ -1524,6 +1524,7 @@ body.dark-mode .rules-new-card p strong {
 
 /* 방송 규칙 하단 경고 문구 */
 #rules .rules-warning {
+  grid-column: 1 / -1;
   width: 100%;
   margin-top: 24px;
   text-align: center;
