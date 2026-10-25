@@ -1579,3 +1579,10 @@ body.dark-mode #rules .rules-warning-box p {
 body.dark-mode #rules .rules-warning-box strong {
   color: #ff7583;
 }
+
+#rules .rules-warning-box {
+  width: 900px !important;
+  max-width: 90vw !important;
+  margin: 28px auto 50px !important;
+  padding: 28px 45px !important;
+}
