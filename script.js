@@ -336,7 +336,7 @@ function showCalendarDetail(key, events) {
             </h3>
 
             <p>
-              ${escapeHTML(event.description || "방송 일정")}
+              ${escapeHTML(event.description || "")}
             </p>
           </div>
         `).join("")}
