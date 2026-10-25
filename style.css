@@ -1220,22 +1220,6 @@ body.dark-mode .profile-info-row strong {
 
 
 /* ==================================================
-   프로필 페이지 배치
-================================================== */
-
-#profile {
-  align-items: flex-start !important;
-  overflow-y: auto !important;
-}
-
-.profile-new {
-  transform: none !important;
-  margin-top: -50px !important;
-  margin-bottom: 100px !important;
-}
-
-
-/* ==================================================
    팬 캐릭터 사진
 ================================================== */
 
