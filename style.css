@@ -1340,3 +1340,21 @@ body.dark-mode .profile-info-row strong {
   letter-spacing: -1px;
   color: #6f9ee3;
 }
+
+/* 프로필 기존 위치 유지 + 아래로 확장 */
+#profile {
+  align-items: flex-start !important;
+  overflow-y: auto !important;
+}
+
+.profile-new {
+  transform: none !important;
+  margin-top: 80px !important;
+  margin-bottom: 100px !important;
+}
+
+/* 팬 캐릭터는 기존 프로필 아래에 배치 */
+.fan-character-section {
+  width: 100%;
+  margin-top: 70px;
+}
