@@ -1362,8 +1362,8 @@ body.dark-mode .profile-info-row strong {
 /* 팬 캐릭터 이미지 */
 .fan-character-photo {
   margin-top: 35px;
-  width: 700px;
-  height: 700px;
+  width: 520px;
+  height: 520px;
 
   display: flex;
   align-items: center;
