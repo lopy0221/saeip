@@ -38,25 +38,6 @@
   font-size: 11px;
 }
 
-.detail-events {
-  display: grid;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-.detail-event-item + .detail-event-item {
-  padding-top: 10px;
-  border-top: 1px solid #d9e6f8;
-}
-
-.detail-event-item h3 {
-  margin: 0 0 4px;
-}
-
-.detail-event-item p {
-  margin: 0;
-}
-
 /* 방송 일정 화면 잘림 방지 */
 #schedule {
   height: calc(100vh - 70px);
@@ -100,6 +81,12 @@
   height: 7.8vh;
   max-height: 80px;
   padding: 7px 9px;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 #schedule .calendar-detail {
@@ -135,15 +122,6 @@
 
 #schedule .detail-event-item p {
   margin: 0;
-}
-
-/* 달력 칸 안의 여러 일정이 잘리지 않도록 조정 */
-#schedule .calendar-day {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
 }
 
 #schedule .calendar-day .day-number {
@@ -513,7 +491,7 @@ body.dark-mode #mainNav a.active {
   grid-template-columns: repeat(7, 1fr) !important;
   width: 100% !important;
 
-  background: rgba(146, 188, 239, 0.27) !important;
+  background: rgba(146, 188, 239, 0.55) !important;
   border: 1px solid rgba(255, 255, 255, 0.55);
 
   backdrop-filter: blur(8px);
