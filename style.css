@@ -955,12 +955,6 @@ body.dark-mode .home-weekly {
   z-index: 10;
 }
 
-/* 일반모드 - 상단바를 바깥 배경색과 동일하게 */
-body:not(.dark-mode) .topbar {
-  background: #F1F7FF !important;
-  border-bottom: none !important;
-}
-
 /* 일반모드 - 상단바와 메인화면 사이 경계 완전히 제거 */
 body:not(.dark-mode) .topbar {
   background: #F1F7FF !important;
@@ -985,12 +979,6 @@ body:not(.dark-mode) .fullpage {
   background: #F1F7FF !important;
 }
 
-/* 상단바 경계선 제거 */
-body:not(.dark-mode) .topbar {
-  background: #F1F7FF !important;
-  border: none !important;
-  box-shadow: none !important;
-}
 
 /* ==================================================
    NEW PROFILE
