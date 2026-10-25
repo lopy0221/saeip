@@ -1202,3 +1202,110 @@ body.dark-mode .profile-info-row strong {
 
   color: #6f9ee3;
 }
+
+/* ==================================================
+   새잎 기록 & 업적 - 내용
+================================================== */
+
+.saeip-record-layout {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 55px;
+  align-items: start;
+}
+
+/* 왼쪽 치잎카와 이미지 */
+.saeip-record-photo {
+  width: 520px;
+  height: 520px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.saeip-record-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 오른쪽 기록 목록 */
+.saeip-record-list {
+  width: 100%;
+  padding-top: 2px;
+}
+
+.saeip-record-list p {
+  margin: 0;
+  padding: 6px 10px;
+
+  border-bottom: 1px solid #d8e5f5;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+
+  color: #435c7d;
+}
+
+.saeip-record-list p:first-child {
+  border-top: 1px solid #d8e5f5;
+}
+
+/* 우승 강조 */
+.saeip-record-list p strong {
+  color: #6f9ee3;
+  font-weight: 800;
+}
+
+/* 계속 수정 예정 */
+.saeip-record-more {
+  margin-top: 18px;
+
+  text-align: center;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  color: #91a9ca;
+}
+
+/* 다크모드 */
+body.dark-mode .saeip-record-list p {
+  color: #edf5ff;
+  border-color: #263c59;
+}
+
+body.dark-mode .saeip-record-list p strong {
+  color: #8fc1ff;
+}
+
+body.dark-mode .saeip-record-more {
+  color: #7899c3;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .saeip-record-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .saeip-record-photo {
+    width: 100%;
+    height: 300px;
+  }
+
+  .saeip-record-list p {
+    padding: 7px 5px;
+    font-size: 12px;
+  }
+}
