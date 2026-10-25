@@ -1521,3 +1521,14 @@ body.dark-mode .rules-new-card p small {
 body.dark-mode .rules-new-card p strong {
   color: #ff8c99;
 }
+
+/* 방송 규칙 하단 경고 문구 */
+#rules .rules-warning {
+  width: 100%;
+  margin-top: 24px;
+  text-align: center;
+  color: #ff3b4f !important;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+}
