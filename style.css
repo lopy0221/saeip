@@ -1356,10 +1356,10 @@ body.dark-mode .signature-balloon-heading h2 {
 /* 시그니처 별풍선 이미지 */
 .signature-balloon-list {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px 30px;
   width: 100%;
-  align-items: center;
+  align-items: start;
 }
 
 .signature-balloon-list img {
