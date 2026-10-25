@@ -1341,7 +1341,7 @@ body.dark-mode .profile-info-row strong {
   color: #6f9ee3;
 }
 
-/* 프로필 기존 위치 유지 + 아래로 확장 */
+/* 프로필 위쪽 배치 + 아래 콘텐츠 스크롤 */
 #profile {
   align-items: flex-start !important;
   overflow-y: auto !important;
@@ -1349,7 +1349,7 @@ body.dark-mode .profile-info-row strong {
 
 .profile-new {
   transform: none !important;
-  margin-top: 20px !important;
+  margin-top: -50px !important;
   margin-bottom: 100px !important;
 }
 
