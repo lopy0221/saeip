@@ -1209,15 +1209,15 @@ body.dark-mode .profile-info-row strong {
 
 .saeip-record-layout {
   display: grid;
-  grid-template-columns: 520px 1fr;
+  grid-template-columns: 400px 1fr;
   gap: 55px;
   align-items: start;
+  width: 100%;
 }
 
-/* 왼쪽 치잎카와 이미지 */
 .saeip-record-photo {
-  width: 520px;
-  height: 520px;
+  width: 400px;
+  height: 400px;
 
   display: flex;
   align-items: center;
