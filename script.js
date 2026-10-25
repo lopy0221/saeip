@@ -193,7 +193,7 @@ function renderWeeklySchedule() {
         return `
           <span class="weekly-event">
             <strong>${escapeHTML(typeText)}</strong>
-            <span>${escapeHTML(event.time || "-")}</span>
+            ${event.type === "off" ? "" : `<span>${escapeHTML(event.time || "-")}</span>`}
           </span>
         `;
       })
