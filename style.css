@@ -1599,7 +1599,9 @@ body.dark-mode #rules .rules-warning-box strong {
   min-width: 0 !important;
 }
 
-.rules-warning-box {
-  margin-left: auto !important;
-  margin-right: auto !important;
+#rules .rules-warning-box {
+  grid-column: 1 / -1 !important;
+  justify-self: center !important;
+  width: 900px !important;
+  max-width: 90vw !important;
 }
