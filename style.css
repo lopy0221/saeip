@@ -1238,8 +1238,11 @@ body.dark-mode .profile-info-row strong {
 
 /* 오른쪽 기록 목록 */
 .saeip-record-list {
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   padding-top: 2px;
+
+  justify-self: center;
 }
 
 .saeip-record-list p {
@@ -1253,6 +1256,7 @@ body.dark-mode .profile-info-row strong {
   line-height: 1.45;
 
   color: #435c7d;
+  text-align: center;
 }
 
 .saeip-record-list p:first-child {
