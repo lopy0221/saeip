@@ -1299,7 +1299,9 @@ body.dark-mode .saeip-record-list p {
 }
 
 body.dark-mode .saeip-record-list p strong {
-  color: #8fc1ff;
+  color: #1f5fae;
+  background: #dcebff;
+  border-color: #8fbcf5;
 }
 
 body.dark-mode .saeip-record-more {
