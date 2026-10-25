@@ -1536,24 +1536,24 @@ body.dark-mode .rules-new-card p strong {
 
 /* 방송 규칙 하단 안내 박스 */
 #rules .rules-warning-box {
-  width: min(700px, 90%);
-  margin: 18px auto 50px;
-  padding: 22px 30px;
+  width: min(900px, 92%);
+  margin: 28px auto 50px;
+  padding: 28px 45px;
 
   box-sizing: border-box;
   text-align: center;
 
   background: rgba(255, 255, 255, 0.75);
   border: 2px solid #f3b7bd;
-  border-radius: 24px;
+  border-radius: 28px;
 }
 
 #rules .rules-warning-box p {
   margin: 0;
   color: #435c7d;
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
-  line-height: 1.8;
+  line-height: 1.65;
 }
 
 #rules .rules-warning-box p + p {
@@ -1562,7 +1562,7 @@ body.dark-mode .rules-new-card p strong {
 
 #rules .rules-warning-box strong {
   color: #ff3b4f;
-  font-size: 17px;
+  font-size: 21px;
   font-weight: 900;
 }
 
