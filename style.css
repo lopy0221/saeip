@@ -1199,3 +1199,8 @@ body.dark-mode .profile-info-row strong {
     font-size: 13px;
   }
 }
+
+/* 프로필 전체를 위로 이동 */
+.profile-new {
+  transform: translateY(-70px);
+}
