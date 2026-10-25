@@ -1202,11 +1202,6 @@ body.dark-mode .profile-info-row strong {
   }
 }
 
-/* 프로필 전체를 위로 이동 */
-.profile-new {
-  transform: translateY(-70px);
-}
-
 #broadcastDays {
   display: inline-flex;
   align-items: center;
@@ -1326,7 +1321,10 @@ body.dark-mode .profile-info-row strong {
   transform: translateX(-30px);
 }
 
-/* 팬 캐릭터 */
+/* ==================================================
+   팬 캐릭터
+================================================== */
+
 .fan-character-section {
   width: 100%;
   margin-top: 70px;
@@ -1341,7 +1339,11 @@ body.dark-mode .profile-info-row strong {
   color: #6f9ee3;
 }
 
-/* 프로필 위쪽 배치 + 아래 콘텐츠 스크롤 */
+
+/* ==================================================
+   프로필 페이지 배치
+================================================== */
+
 #profile {
   align-items: flex-start !important;
   overflow-y: auto !important;
@@ -1353,15 +1355,14 @@ body.dark-mode .profile-info-row strong {
   margin-bottom: 100px !important;
 }
 
-/* 팬 캐릭터는 기존 프로필 아래에 배치 */
-.fan-character-section {
-  width: 100%;
-  margin-top: 70px;
-}
 
-/* 팬 캐릭터 이미지 */
+/* ==================================================
+   팬 캐릭터 사진
+================================================== */
+
 .fan-character-photo {
   margin-top: 35px;
+
   width: 520px;
   height: 520px;
 
@@ -1372,8 +1373,10 @@ body.dark-mode .profile-info-row strong {
 
 .fan-character-photo img {
   display: block;
+
   width: 100%;
   height: 100%;
+
   object-fit: contain;
 
   user-select: none;
@@ -1381,164 +1384,92 @@ body.dark-mode .profile-info-row strong {
   -webkit-user-drag: none;
 }
 
-/* 팬 캐릭터 사진 + 정보 배치 */
+
+/* ==================================================
+   팬 캐릭터 사진 + 정보 배치
+================================================== */
+
 .fan-character-layout {
   display: grid;
-  grid-template-columns: 520px 600px;
+
+  grid-template-columns: 520px 430px;
   gap: 25px;
-  align-items: center;
-}
-
-/* 잎덩이 정보 */
-.fan-character-info {
-  width: 600px;
-}
-
-.fan-info-row {
-  min-height: 58px;
-
-  display: grid;
-  grid-template-columns: 130px 1fr;
-  align-items: center;
-
-  padding: 0 12px;
-
-  border-top: 1px solid #d8e5f5;
-  border-bottom: 1px solid #d8e5f5;
-}
-
-/* 이름 */
-.fan-info-row span {
-  font-size: 13px;
-  font-weight: 700;
-  color: #89a3c7;
-  text-align: left;
-}
-
-/* 잎덩이 */
-.fan-info-row strong {
-  font-size: 14px;
-  font-weight: 700;
-  color: #435c7d;
-  text-align: right;
-}
-
-/* 팬 캐릭터 정보 줄 정리 */
-.fan-info-row {
-  min-height: 58px;
-  border-top: none;
-  border-bottom: 1px solid #d8e5f5;
-}
-
-.fan-info-row:first-child {
-  border-top: 1px solid #d8e5f5;
-}
-
-/* 팬 캐릭터 정보 크기 + 간격 조정 */
-.fan-character-info {
-  width: 500px;
-  max-width: 100%;
-}
-
-/* 각 정보 줄 */
-.fan-info-row {
-  min-height: 72px;
-  display: grid;
-
-  /* 항목명과 내용 사이 간격 줄이기 */
-  grid-template-columns: 120px 1fr;
 
   align-items: center;
-  padding: 0 16px;
-
-  border-top: none;
-  border-bottom: 1px solid #d8e5f5;
 }
 
-.fan-info-row:first-child {
-  border-top: 1px solid #d8e5f5;
-}
 
-/* 이름 / 종류 / 팬 닉네임 */
-.fan-info-row span {
-  font-size: 16px;
-  font-weight: 700;
-  color: #89a3c7;
-  text-align: left;
-}
+/* ==================================================
+   팬 캐릭터 정보
+================================================== */
 
-/* 잎덩이 / 하늘색 팬더 / **=へ=** */
-.fan-info-row strong {
-  font-size: 18px;
-  font-weight: 700;
-  color: #435c7d;
-
-  /* 오른쪽 끝이 아니라 항목명 가까이에 표시 */
-  text-align: left;
-  padding-left: 20px;
-
-  white-space: nowrap;
-}
-
-/* 팬 캐릭터 정보 조금 더 크게 */
-.fan-character-info {
-  width: 540px;
-}
-
-.fan-info-row {
-  min-height: 72px;
-  grid-template-columns: 130px 1fr;
-}
-
-.fan-info-row span {
-  font-size: 17px;
-}
-
-.fan-info-row strong {
-  font-size: 20px;
-  padding-left: 15px;
-}
-
-/* 팬 캐릭터 값 다시 오른쪽 정렬 */
-.fan-info-row strong {
-  text-align: right;
-  padding-left: 0;
-}
-
-/* 팬 캐릭터 정보 최종 크기/간격 조정 */
 .fan-character-info {
   width: 430px;
   max-width: 100%;
 }
 
-/* 한 줄 높이 */
 .fan-info-row {
   min-height: 78px;
+
+  display: grid;
   grid-template-columns: 125px 1fr;
+  align-items: center;
+
   padding: 0 14px;
+
+  border-bottom: 1px solid #d8e5f5;
 }
 
+.fan-info-row:first-child {
+  border-top: 1px solid #d8e5f5;
+}
+
+
 /* 이름 / 종류 / 팬 닉네임 */
+
 .fan-info-row span {
   font-size: 18px;
   font-weight: 700;
+
+  color: #89a3c7;
+
+  text-align: left;
 }
 
+
 /* 잎덩이 / 하늘색 팬더 / =へ= */
+
 .fan-info-row strong {
   font-size: 21px;
   font-weight: 700;
+
+  color: #435c7d;
+
   text-align: right;
-  padding-left: 0;
+
+  white-space: nowrap;
 }
 
-/* =========================
+
+/* ==================================================
    새잎 기록 & 업적
-========================= */
+================================================== */
 
 .saeip-record-section {
   width: 100%;
+
   margin-top: 90px;
+
+  position: static !important;
+  transform: none !important;
+}
+
+.saeip-record-heading {
+  width: 100%;
+
+  margin: 0 0 40px 0;
+
+  text-align: left;
 }
 
 .saeip-record-heading h2 {
@@ -1550,18 +1481,4 @@ body.dark-mode .profile-info-row strong {
   letter-spacing: -1px;
 
   color: #6f9ee3;
-}
-
-/* 새잎 기록&업적 최종 위치 */
-.saeip-record-section {
-  width: 100%;
-  margin-top: 90px;
-  position: static !important;
-  transform: none !important;
-}
-
-.saeip-record-heading {
-  width: 100%;
-  margin: 0 0 40px 0;
-  text-align: left;
 }
