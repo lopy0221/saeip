@@ -1504,3 +1504,30 @@ body.dark-mode .profile-info-row strong {
   text-align: right;
   padding-left: 0;
 }
+
+/* 팬 캐릭터 정보 최종 크기/간격 조정 */
+.fan-character-info {
+  width: 430px;
+  max-width: 100%;
+}
+
+/* 한 줄 높이 */
+.fan-info-row {
+  min-height: 78px;
+  grid-template-columns: 125px 1fr;
+  padding: 0 14px;
+}
+
+/* 이름 / 종류 / 팬 닉네임 */
+.fan-info-row span {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 잎덩이 / 하늘색 팬더 / =へ= */
+.fan-info-row strong {
+  font-size: 21px;
+  font-weight: 700;
+  text-align: right;
+  padding-left: 0;
+}
