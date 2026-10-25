@@ -1321,3 +1321,7 @@ body.dark-mode .profile-info-row strong {
   text-align: right;
   white-space: nowrap;
 }
+
+.profile-new-info {
+  transform: translateX(-30px);
+}
