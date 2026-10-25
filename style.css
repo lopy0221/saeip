@@ -1265,8 +1265,18 @@ body.dark-mode .profile-info-row strong {
 
 /* 우승 강조 */
 .saeip-record-list p strong {
-  color: #6f9ee3;
+  display: inline-block;
+  padding: 2px 7px;
+  margin-left: 2px;
+
+  color: #4f8ee8;
+  background: #e4efff;
+  border: 1px solid #b9d4f7;
+  border-radius: 999px;
+
   font-weight: 800;
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 /* 계속 수정 예정 */
