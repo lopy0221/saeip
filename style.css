@@ -1620,3 +1620,18 @@ body.dark-mode #rules .rules-warning-box strong {
   font-weight: 900;
   line-height: 1.2;
 }
+
+/* 방송 규칙 메인 이미지 */
+#rules .rules-main-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 25px 0 40px;
+}
+
+#rules .rules-main-image img {
+  width: min(900px, 90%);
+  height: auto;
+  display: block;
+  border-radius: 20px;
+}
