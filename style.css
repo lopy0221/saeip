@@ -1598,3 +1598,8 @@ body.dark-mode #rules .rules-warning-box strong {
   width: 100% !important;
   min-width: 0 !important;
 }
+
+.rules-warning-box {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
