@@ -1380,3 +1380,45 @@ body.dark-mode .profile-info-row strong {
   -webkit-user-select: none;
   -webkit-user-drag: none;
 }
+
+/* 팬 캐릭터 사진 + 정보 배치 */
+.fan-character-layout {
+  display: grid;
+  grid-template-columns: 520px 600px;
+  gap: 25px;
+  align-items: center;
+}
+
+/* 잎덩이 정보 */
+.fan-character-info {
+  width: 600px;
+}
+
+.fan-info-row {
+  min-height: 58px;
+
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+
+  padding: 0 12px;
+
+  border-top: 1px solid #d8e5f5;
+  border-bottom: 1px solid #d8e5f5;
+}
+
+/* 이름 */
+.fan-info-row span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #89a3c7;
+  text-align: left;
+}
+
+/* 잎덩이 */
+.fan-info-row strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: #435c7d;
+  text-align: right;
+}
