@@ -329,10 +329,10 @@ function showCalendarDetail(key, events) {
             <h3>
               ${escapeHTML(event.title)}
               ${
-                event.time
-                  ? `· ${escapeHTML(event.time)}`
-                  : ""
-              }
+  event.type !== "off" && event.time
+    ? `· ${escapeHTML(event.time)}`
+    : ""
+}
             </h3>
 
             <p>
