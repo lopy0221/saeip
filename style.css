@@ -1422,3 +1422,14 @@ body.dark-mode .profile-info-row strong {
   color: #435c7d;
   text-align: right;
 }
+
+/* 팬 캐릭터 정보 줄 정리 */
+.fan-info-row {
+  min-height: 58px;
+  border-top: none;
+  border-bottom: 1px solid #d8e5f5;
+}
+
+.fan-info-row:first-child {
+  border-top: 1px solid #d8e5f5;
+}
