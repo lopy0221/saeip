@@ -28,6 +28,8 @@
 
 #schedule .calendar-day .day-number {
   font-size: 12px;
+  flex-shrink: 0;
+  margin-bottom: 5px;
 }
 
 #schedule .calendar-title b {
@@ -124,20 +126,12 @@
   margin: 0;
 }
 
-#schedule .calendar-day .day-number {
-  flex-shrink: 0;
-  margin-bottom: 5px;
-}
-
 #schedule .calendar-day .event-label {
   display: block;
   width: 100%;
   margin-top: 0;
   font-size: 9px;
   line-height: 1.35;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* 일정이 여러 개일 때 간격 */
@@ -195,17 +189,7 @@
 ========================= */
 
 body.dark-mode {
-  background: #111827;
   color: #dbe7f7;
-}
-
-body.dark-mode .topbar {
-  background: rgba(17, 24, 39, .96);
-  border-color: #28364a;
-}
-
-body.dark-mode .page-section {
-  background: #111827;
 }
 
 body.dark-mode .section-soft {
@@ -289,6 +273,7 @@ body.dark-mode .dark-mode-toggle {
 .fullpage {
   height: 100vh;
   overflow: hidden;
+  padding-top: 76px !important;
 }
 
 .page-section {
@@ -626,14 +611,6 @@ body.dark-mode #home {
   background-color: #081426 !important;
 }
 
-/* 사진 위 요소들은 필터보다 위에 표시 */
-body.dark-mode .home-weekly,
-body.dark-mode .home-saeip-logo {
-  position: absolute;
-  z-index: 5;
-}
-
-
 /* ==================================================
    SAEIP 로고
 ================================================== */
@@ -784,7 +761,6 @@ body.dark-mode .page-section {
 ========================================= */
 
 #home {
-  position: relative;
   isolation: isolate;
 }
 
@@ -853,11 +829,6 @@ body:not(.dark-mode) #home {
   border: none !important;
   border-top: 0 !important;
   box-shadow: none !important;
-}
-
-/* 메인 위치는 원래대로 유지 */
-.fullpage {
-  padding-top: 76px !important;
 }
 
 /* 위쪽 4px 틈을 바깥 배경색과 똑같이 */
