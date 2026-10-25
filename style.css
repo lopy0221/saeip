@@ -850,7 +850,7 @@ body:not(.dark-mode) .fullpage {
 /* 프로필 전체 */
 .profile-new {
   width: min(1200px, 92vw);
-  margin: -50px auto 100px;
+  margin: 35px auto 100px;
   transform: none !important;
 }
 
