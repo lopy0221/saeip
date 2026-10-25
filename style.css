@@ -1405,3 +1405,95 @@ body.dark-mode .signature-balloon-item strong {
 body.dark-mode .signature-balloon-item span {
   color: #dbe7f7;
 }
+
+/* ==================================================
+   새잎 방송규칙
+================================================== */
+
+#rules {
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.rules-new {
+  width: min(1000px, 90vw);
+  margin: 55px auto 80px;
+}
+
+.rules-new-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.rules-new-heading h2 {
+  margin: 0;
+  font-family: "Jua", sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  color: #6f9ee3;
+}
+
+.rules-new-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 45px;
+}
+
+.rules-new-card {
+  min-height: 105px;
+  padding: 20px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #d5e4f7;
+  border-radius: 28px;
+
+  box-sizing: border-box;
+}
+
+.rules-new-card p {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #435c7d;
+}
+
+/* 다크모드 */
+body.dark-mode .rules-new-heading h2 {
+  color: #8fc1ff;
+}
+
+body.dark-mode .rules-new-card {
+  background: #101e32;
+  border-color: #29415f;
+}
+
+body.dark-mode .rules-new-card p {
+  color: #dbe7f7;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .rules-new {
+    width: 90vw;
+    margin-top: 30px;
+  }
+
+  .rules-new-heading h2 {
+    font-size: 30px;
+  }
+
+  .rules-new-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .rules-new-card {
+    min-height: 90px;
+  }
+}
