@@ -1551,3 +1551,17 @@ body.dark-mode .profile-info-row strong {
 
   color: #6f9ee3;
 }
+
+/* 새잎 기록&업적 최종 위치 */
+.saeip-record-section {
+  width: 100%;
+  margin-top: 90px;
+  position: static !important;
+  transform: none !important;
+}
+
+.saeip-record-heading {
+  width: 100%;
+  margin: 0 0 40px 0;
+  text-align: left;
+}
