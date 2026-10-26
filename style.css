@@ -1636,7 +1636,14 @@ body.dark-mode #rules .rules-warning-box strong {
   border-radius: 20px;
 }
 
-/* 방송 일정표 제목 하늘색 */
+/* 방송 일정표 제목 */
+#schedule .section-heading {
+  width: 100%;
+  text-align: center;
+}
+
 #schedule .section-heading h2 {
   color: #6fa3e8 !important;
+  text-align: center;
+  width: 100%;
 }
