@@ -278,11 +278,25 @@ function renderCalendar() {
     }
 
     // 일정 존재
-    if (events.length) {
+if (events.length) {
   button.classList.add("has-event");
 
-  if (events.some(event => event.type === "special")) {
-    button.classList.add("special-event");
+  // 같은 날짜에 일정이 여러 개면 첫 번째 일정의 종류를 기준으로 점 색상 표시
+  const eventType = events[0].type;
+
+  if (
+    eventType === "morning" ||
+    eventType === "afternoon" ||
+    eventType === "evening" ||
+    eventType === "live"
+  ) {
+    button.classList.add("event-live");
+  } else if (eventType === "collab") {
+    button.classList.add("event-collab");
+  } else if (eventType === "off") {
+    button.classList.add("event-off");
+  } else if (eventType === "etc") {
+    button.classList.add("event-anniversary");
   }
 }
 
