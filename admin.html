@@ -765,13 +765,7 @@
         </form>
       </section>
 
-      <section class="panel">
-        <h2>등록된 방송 일정</h2>
-
-        <div class="schedule-list" id="scheduleList">
-          <div class="empty">일정을 불러오는 중...</div>
-        </div>
-      </section>
+<div id="scheduleList" class="hidden"></div>
 
     </div>
   </main>
@@ -1101,54 +1095,33 @@ function openScheduleModal(dateKey, dayEvents) {
   const modalList =
     document.querySelector("#scheduleModalList");
 
-  modalTitle.textContent =
-    `${dateKey} 일정`;
+  modalTitle.textContent = `${dateKey} 일정`;
 
-  // 일정 없는 날짜
-  if (!dayEvents.length) {
-    modalList.innerHTML = `
-      <div class="empty">
-        이 날짜에는 등록된 일정이 없어요.
-      </div>
-    `;
+  let eventList = "";
 
-    modal.classList.remove("hidden");
-    return;
-  }
+  if (dayEvents.length) {
+    eventList = dayEvents.map(item => {
+      const time = item.time
+        ? escapeHTML(String(item.time).slice(0, 5))
+        : "시간 없음";
 
-  // 일정 있는 날짜
-  modalList.innerHTML =
-    dayEvents.map(item => {
-
-      const time =
-        item.time
-          ? escapeHTML(
-              String(item.time).slice(0, 5)
-            )
-          : "시간 없음";
-
-      const title =
-        escapeHTML(item.title || "");
+      const title = escapeHTML(item.title || "");
 
       const type =
-        escapeHTML(
-          getScheduleTypeName(item.type)
-        );
+        escapeHTML(getScheduleTypeName(item.type));
 
       return `
         <div class="schedule-modal-item">
 
           <div class="schedule-modal-item-info">
             <strong>${title}</strong>
-            <small>
-              ${time} · ${type}
-            </small>
+            <small>${time} · ${type}</small>
           </div>
 
           <button
             class="schedule-modal-edit"
             type="button"
-            onclick="editScheduleFromCalendar(${item.id})"
+            onclick="showCalendarEditForm(${item.id}, '${dateKey}')"
           >
             수정
           </button>
@@ -1156,10 +1129,374 @@ function openScheduleModal(dateKey, dayEvents) {
         </div>
       `;
     }).join("");
+  } else {
+    eventList = `
+      <div class="empty" style="padding:20px;">
+        등록된 일정이 없어요.
+      </div>
+    `;
+  }
+
+  modalList.innerHTML = `
+    <div id="calendarEventList">
+      ${eventList}
+    </div>
+
+    <button
+      type="button"
+      class="save-button"
+      style="margin-top:14px;"
+      onclick="showCalendarAddForm('${dateKey}')"
+    >
+      + 새 일정 추가
+    </button>
+
+    <div
+      id="calendarEditArea"
+      class="hidden"
+      style="margin-top:18px;"
+    ></div>
+  `;
 
   modal.classList.remove("hidden");
 }
 
+    window.showCalendarEditForm =
+  function(id, dateKey) {
+
+    const item =
+      schedules.find(
+        schedule => schedule.id === id
+      );
+
+    if (!item) return;
+
+    renderCalendarForm(
+      dateKey,
+      item
+    );
+  };
+
+
+window.showCalendarAddForm =
+  function(dateKey) {
+
+    renderCalendarForm(
+      dateKey,
+      null
+    );
+  };
+
+
+function renderCalendarForm(dateKey, item) {
+  const area =
+    document.querySelector("#calendarEditArea");
+
+  const list =
+    document.querySelector("#calendarEventList");
+
+  if (!area) return;
+
+  if (list) {
+    list.classList.add("hidden");
+  }
+
+  const isEdit = Boolean(item);
+
+  area.classList.remove("hidden");
+
+  area.innerHTML = `
+    <div class="field">
+      <label>날짜</label>
+
+      <input
+        id="modalDate"
+        type="date"
+        value="${escapeHTML(
+          item?.date || dateKey
+        )}"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label>시간</label>
+
+      <input
+        id="modalTime"
+        type="time"
+        value="${
+          item?.time
+            ? escapeHTML(
+                String(item.time).slice(0, 5)
+              )
+            : "12:00"
+        }"
+      >
+    </div>
+
+    <div class="field">
+      <label>일정 제목</label>
+
+      <input
+        id="modalScheduleTitle"
+        type="text"
+        maxlength="100"
+        value="${escapeHTML(
+          item?.title || ""
+        )}"
+        placeholder="예: 소통방송"
+      >
+    </div>
+
+    <div class="field">
+      <label>일정 종류</label>
+
+      <select id="modalType">
+        <option
+          value="morning"
+          ${item?.type === "morning" ? "selected" : ""}
+        >
+          아침 방송
+        </option>
+
+        <option
+          value="afternoon"
+          ${item?.type === "afternoon" ? "selected" : ""}
+        >
+          낮 방송
+        </option>
+
+        <option
+          value="evening"
+          ${item?.type === "evening" ? "selected" : ""}
+        >
+          저녁 방송
+        </option>
+
+        <option
+          value="collab"
+          ${item?.type === "collab" ? "selected" : ""}
+        >
+          합방
+        </option>
+
+        <option
+          value="off"
+          ${item?.type === "off" ? "selected" : ""}
+        >
+          휴방
+        </option>
+
+        <option
+          value="etc"
+          ${item?.type === "etc" ? "selected" : ""}
+        >
+          기념일
+        </option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>설명</label>
+
+      <textarea
+        id="modalDescription"
+        maxlength="500"
+        placeholder="일정에 대한 설명을 입력해 주세요."
+      >${escapeHTML(
+        item?.description || ""
+      )}</textarea>
+    </div>
+
+    <button
+      type="button"
+      class="save-button"
+      onclick="saveCalendarSchedule(
+        ${isEdit ? item.id : "null"}
+      )"
+    >
+      ${isEdit ? "수정 저장" : "일정 등록"}
+    </button>
+
+    ${
+      isEdit
+        ? `
+          <button
+            type="button"
+            class="delete-button"
+            style="
+              width:100%;
+              margin-top:8px;
+              padding:12px;
+            "
+            onclick="deleteCalendarSchedule(${item.id})"
+          >
+            일정 삭제
+          </button>
+        `
+        : ""
+    }
+
+    <button
+      type="button"
+      class="cancel-edit"
+      onclick="backToCalendarScheduleList('${dateKey}')"
+    >
+      취소
+    </button>
+
+    <div
+      class="status"
+      id="modalScheduleStatus"
+    ></div>
+  `;
+}
+
+window.saveCalendarSchedule =
+  async function(id) {
+
+    const status =
+      document.querySelector(
+        "#modalScheduleStatus"
+      );
+
+    const title =
+      document.querySelector(
+        "#modalScheduleTitle"
+      ).value.trim();
+
+    if (!title) {
+      status.textContent =
+        "일정 제목을 입력해 주세요.";
+
+      return;
+    }
+
+    const scheduleData = {
+      date:
+        document.querySelector(
+          "#modalDate"
+        ).value,
+
+      time:
+        document.querySelector(
+          "#modalTime"
+        ).value || null,
+
+      title,
+
+      type:
+        document.querySelector(
+          "#modalType"
+        ).value,
+
+      description:
+        document.querySelector(
+          "#modalDescription"
+        ).value.trim()
+    };
+
+    status.textContent =
+      id ? "수정 중..." : "등록 중...";
+
+    let result;
+
+    if (id) {
+      result =
+        await supabaseClient
+          .from("stream_schedule")
+          .update(scheduleData)
+          .eq("id", id);
+
+    } else {
+      result =
+        await supabaseClient
+          .from("stream_schedule")
+          .insert(scheduleData);
+    }
+
+    if (result.error) {
+      console.error(result.error);
+
+      status.textContent =
+        "저장하지 못했어요.";
+
+      return;
+    }
+
+    await loadSchedules();
+
+    const selectedDate =
+      scheduleData.date;
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === selectedDate
+      );
+
+    openScheduleModal(
+      selectedDate,
+      dayEvents
+    );
+  };
+
+
+window.deleteCalendarSchedule =
+  async function(id) {
+
+    const item =
+      schedules.find(
+        schedule => schedule.id === id
+      );
+
+    if (!item) return;
+
+    if (!confirm("이 일정을 삭제할까요?")) {
+      return;
+    }
+
+    const dateKey = item.date;
+
+    const { error } =
+      await supabaseClient
+        .from("stream_schedule")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      alert("일정을 삭제하지 못했어요.");
+      return;
+    }
+
+    await loadSchedules();
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === dateKey
+      );
+
+    openScheduleModal(
+      dateKey,
+      dayEvents
+    );
+  };
+
+
+window.backToCalendarScheduleList =
+  function(dateKey) {
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === dateKey
+      );
+
+    openScheduleModal(
+      dateKey,
+      dayEvents
+    );
+  };
 
 function closeScheduleModal() {
   document
