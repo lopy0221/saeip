@@ -119,7 +119,7 @@
     }
 
     .admin-page {
-      width: min(1100px, calc(100% - 32px));
+      width: min(1500px, calc(100% - 50px));
       margin: 0 auto;
       padding: 35px 0 70px;
     }
@@ -349,7 +349,20 @@
 ========================= */
 
 .admin-calendar-panel {
+  width: 100%;
+  min-height: calc(100vh - 170px);
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-calendar-days {
+  flex: 1;
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.admin-calendar-day {
+  min-height: 100px;
 }
 
 .admin-calendar-header {
