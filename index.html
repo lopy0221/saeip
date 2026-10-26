@@ -439,106 +439,87 @@ or
 
     <!-- 04. 방송 일정 -->
     <section class="page-section" id="schedule">
-      <div class="section-inner">
+  <div class="section-inner">
 
-        <div class="section-heading">
-  <div>
-    <h2>방송 일정표</h2>
-  </div>
-</div>
+    <div class="section-heading">
+      <div>
+        <h2>방송 일정표</h2>
+      </div>
+    </div>
 
+    <div class="calendar-shell">
 
-        <div class="calendar-shell">
+      <div class="calendar-header">
 
-          <div class="calendar-header">
-
-            <button
-              class="calendar-nav"
-              id="prevMonth"
-              type="button"
-              aria-label="이전 달"
-            >
-              ‹
-            </button>
-
-
-            <div class="calendar-title">
-              <span id="calendarYear">
-                2026
-              </span>
-
-              <b id="calendarMonth">
-                10월
-              </b>
-            </div>
-
-
-            <button
-              class="calendar-nav"
-              id="nextMonth"
-              type="button"
-              aria-label="다음 달"
-            >
-              ›
-            </button>
-
-          </div>
-
-
-          <div class="calendar-weekdays">
-            <span>일</span>
-            <span>월</span>
-            <span>화</span>
-            <span>수</span>
-            <span>목</span>
-            <span>금</span>
-            <span>토</span>
-          </div>
-
-
-          <div
-            class="calendar-days"
-            id="calendarDays"
-          ></div>
-
-
-          <div class="calendar-legend">
-  <span><i class="legend-dot live"></i> 방송</span>
-  <span><i class="legend-dot collab"></i> 합방</span>
-  <span><i class="legend-dot off"></i> 휴방</span>
-  <span><i class="legend-dot planned"></i> 기념일</span>
-</div>
-
-            <small>
-              날짜를 누르면 일정 내용을 볼 수 있어요.
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="calendar-detail"
-          id="calendarDetail"
+        <button
+          class="calendar-nav"
+          id="prevMonth"
+          type="button"
+          aria-label="이전 달"
         >
+          ‹
+        </button>
 
-          <span class="detail-date">
-            SCHEDULE
-          </span>
-
-          <h3>
-            날짜를 선택해 주세요 🩵
-          </h3>
-
-          <p>
-            방송 일정이 등록된 날짜를 누르면 이곳에 자세한 내용이 표시돼요.
-          </p>
-
+        <div class="calendar-title">
+          <span id="calendarYear">2026</span>
+          <b id="calendarMonth">10월</b>
         </div>
+
+        <button
+          class="calendar-nav"
+          id="nextMonth"
+          type="button"
+          aria-label="다음 달"
+        >
+          ›
+        </button>
 
       </div>
-    </section>
+
+      <div class="calendar-weekdays">
+        <span>일</span>
+        <span>월</span>
+        <span>화</span>
+        <span>수</span>
+        <span>목</span>
+        <span>금</span>
+        <span>토</span>
+      </div>
+
+      <div class="calendar-days" id="calendarDays"></div>
+
+      <div class="calendar-legend">
+        <span><i class="legend-dot live"></i> 방송</span>
+        <span><i class="legend-dot collab"></i> 합방</span>
+        <span><i class="legend-dot off"></i> 휴방</span>
+        <span><i class="legend-dot planned"></i> 기념일</span>
+
+        <small>
+          날짜를 누르면 일정 내용을 볼 수 있어요.
+        </small>
+      </div>
+
+    </div>
+
+    <div
+      class="calendar-detail"
+      id="calendarDetail"
+    >
+      <span class="detail-date">
+        SCHEDULE
+      </span>
+
+      <h3>
+        날짜를 선택해 주세요 🩵
+      </h3>
+
+      <p>
+        방송 일정이 등록된 날짜를 누르면 이곳에 자세한 내용이 표시돼요.
+      </p>
+    </div>
+
+  </div>
+</section>
 
 
     <!-- 05. 노래책 -->
