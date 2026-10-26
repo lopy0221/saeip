@@ -446,7 +446,7 @@ button.addEventListener("click", () => {
         ×
       </button>
 
-      <h3>${escapeHTML(key)} 일정</h3>
+      <h3>${Number(key.split("-")[1])}월 ${Number(key.split("-")[2])}일 방송 일정</h3>
 
       <div class="schedule-view-list">
         ${eventHTML}
