@@ -1992,3 +1992,19 @@ body.dark-mode .schedule-view-item small {
 #schedule .calendar-day.has-event .event-label {
   margin-top: 12px;
 }
+
+/* 휴방 일정 특별 표시 */
+#schedule .calendar-event-item.calendar-off-item {
+  justify-content: center;
+  width: 100%;
+}
+
+#schedule .calendar-event-item.calendar-off-item strong {
+  flex: none;
+  overflow: visible;
+  color: #ef5f73;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  text-overflow: clip;
+}
