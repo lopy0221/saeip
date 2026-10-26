@@ -339,12 +339,23 @@ const eventHTML = groupedEntries
       })
       .join(" · ");
 
-    return `
-      <span class="calendar-event-item">
-        <strong>${escapeHTML(title)}</strong>
-        <small>${eventInfo}</small>
-      </span>
-    `;
+    const isOff =
+  titleEvents.every(event => event.type === "off");
+
+if (isOff) {
+  return `
+    <span class="calendar-event-item calendar-off-item">
+      <strong>${escapeHTML(title)}</strong>
+    </span>
+  `;
+}
+
+return `
+  <span class="calendar-event-item">
+    <strong>${escapeHTML(title)}</strong>
+    <small>${eventInfo}</small>
+  </span>
+`;
   })
   .join("");
 
