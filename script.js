@@ -315,16 +315,6 @@ if (events.length) {
     days.appendChild(button);
   }
 
-  // 달력은 항상 6주(42칸) 높이로 유지
-const totalCells = firstDay + lastDate;
-const remainingCells = 42 - totalCells;
-
-for (let i = 0; i < remainingCells; i++) {
-  const blank = document.createElement("div");
-  blank.className = "calendar-day empty";
-  days.appendChild(blank);
-}
-
   // 2026년 10월보다 이전으로 이동 금지
   document.querySelector("#prevMonth").disabled =
     calendarYear === 2026 &&
