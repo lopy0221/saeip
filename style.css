@@ -1648,20 +1648,6 @@ body.dark-mode #rules .rules-warning-box strong {
   width: 100%;
 }
 
-/* 방송 일정표 제목 최종 가운데 정렬 */
-#schedule .section-heading {
-  width: 100% !important;
-  display: block !important;
-  text-align: center !important;
-}
-
-#schedule .section-heading h2 {
-  width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-  color: #6fa3e8 !important;
-}
 
 /* 방송 일정표 범례 */
 #schedule .calendar-legend {
