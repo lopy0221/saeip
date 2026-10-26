@@ -1735,14 +1735,14 @@ body.dark-mode #rules .rules-warning-box strong {
   background: #a78bfa;
 }
 
-/* 달력 날짜 영역 높이 고정 + 줄 수에 맞게 자동 분배 */
+/* 달력 날짜 영역 크기를 6주짜리 달 기준으로 고정 */
 #schedule .calendar-days {
-  height: 330px;
+  height: 408px;
   grid-auto-rows: 1fr;
 }
 
 #schedule .calendar-day {
-  height: auto;
-  max-height: none;
-  min-height: 0;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
 }
