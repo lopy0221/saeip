@@ -312,13 +312,7 @@ events.forEach(event => {
 const groupedEntries =
   Object.entries(groupedEvents);
 
-const visibleEntries =
-  groupedEntries.slice(0, 2);
-
-const hiddenCount =
-  groupedEntries.length - visibleEntries.length;
-
-const eventHTML = visibleEntries
+const eventHTML = groupedEntries
   .map(([title, titleEvents]) => {
 
     const eventInfo = titleEvents
@@ -354,34 +348,21 @@ const eventHTML = visibleEntries
   })
   .join("");
 
-const moreHTML =
-  hiddenCount > 0
-    ? `<span class="calendar-more">+${hiddenCount}개 더보기</span>`
-    : "";
-
 button.innerHTML = `
   <span class="day-number">${date}</span>
   ${
     events.length
       ? `<span class="event-label">
           ${eventHTML}
-${moreHTML}
         </span>`
       : ""
   }
 `;
 
-    button.addEventListener("click", event => {
-  const more =
-    event.target.closest(".calendar-more");
-
-  if (more) {
-    event.stopPropagation();
+button.addEventListener("click", () => {
+  if (events.length) {
     openSchedulePopup(key, events);
-    return;
   }
-
-  showCalendarDetail(key, events);
 });
 
     days.appendChild(button);
