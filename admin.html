@@ -1049,6 +1049,7 @@ function openScheduleModal(dateKey, dayEvents) {
     </div>
 
     <button
+    id="calendarAddButton"
       type="button"
       class="save-button"
       style="margin-top:14px;"
@@ -1107,23 +1108,18 @@ function renderCalendarForm(dateKey, item) {
     list.classList.add("hidden");
   }
 
+  const addButton =
+  document.querySelector("#calendarAddButton");
+
+if (addButton) {
+  addButton.classList.add("hidden");
+}
+
   const isEdit = Boolean(item);
 
   area.classList.remove("hidden");
 
   area.innerHTML = `
-    <div class="field">
-      <label>날짜</label>
-
-      <input
-        id="modalDate"
-        type="date"
-        value="${escapeHTML(
-          item?.date || dateKey
-        )}"
-        required
-      >
-    </div>
 
     <div class="field">
       <label>시간</label>
@@ -1281,9 +1277,10 @@ window.saveCalendarSchedule =
 
     const scheduleData = {
       date:
-        document.querySelector(
-          "#modalDate"
-        ).value,
+  document
+    .querySelector("#scheduleModalTitle")
+    .textContent
+    .replace(" 일정", ""),
 
       time:
         document.querySelector(
