@@ -309,7 +309,16 @@ events.forEach(event => {
   groupedEvents[title].push(event);
 });
 
-const eventHTML = Object.entries(groupedEvents)
+const groupedEntries =
+  Object.entries(groupedEvents);
+
+const visibleEntries =
+  groupedEntries.slice(0, 2);
+
+const hiddenCount =
+  groupedEntries.length - visibleEntries.length;
+
+const eventHTML = visibleEntries
   .map(([title, titleEvents]) => {
 
     const eventInfo = titleEvents
@@ -330,8 +339,7 @@ const eventHTML = Object.entries(groupedEvents)
           typeText = "기념일";
         }
 
-        const time =
-          event.time || "";
+        const time = event.time || "";
 
         return `${escapeHTML(time)} ${escapeHTML(typeText)}`.trim();
       })
@@ -346,18 +354,33 @@ const eventHTML = Object.entries(groupedEvents)
   })
   .join("");
 
+const moreHTML =
+  hiddenCount > 0
+    ? `<span class="calendar-more">+${hiddenCount}개 더보기</span>`
+    : "";
+
 button.innerHTML = `
   <span class="day-number">${date}</span>
   ${
     events.length
       ? `<span class="event-label">
           ${eventHTML}
+${moreHTML}
         </span>`
       : ""
   }
 `;
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", event => {
+  const more =
+    event.target.closest(".calendar-more");
+
+  if (more) {
+    event.stopPropagation();
+    openSchedulePopup(key, events);
+    return;
+  }
+
   showCalendarDetail(key, events);
 });
 
@@ -370,6 +393,101 @@ button.innerHTML = `
     calendarMonth === 9;
 }
 
+  function openSchedulePopup(key, events) {
+  const oldPopup =
+    document.querySelector(".schedule-view-popup");
+
+  if (oldPopup) {
+    oldPopup.remove();
+  }
+
+  const groupedEvents = {};
+
+  events.forEach(event => {
+    const title = event.title || "방송";
+
+    if (!groupedEvents[title]) {
+      groupedEvents[title] = [];
+    }
+
+    groupedEvents[title].push(event);
+  });
+
+  const eventHTML =
+    Object.entries(groupedEvents)
+      .map(([title, titleEvents]) => {
+
+        const info = titleEvents
+          .map(event => {
+            let typeText = "방송";
+
+            if (event.type === "morning") {
+              typeText = "아침 방송";
+            } else if (event.type === "afternoon") {
+              typeText = "낮 방송";
+            } else if (event.type === "evening") {
+              typeText = "저녁 방송";
+            } else if (event.type === "collab") {
+              typeText = "합방";
+            } else if (event.type === "off") {
+              typeText = "휴방";
+            } else if (event.type === "etc") {
+              typeText = "기념일";
+            }
+
+            const time = event.time || "";
+
+            return `${escapeHTML(time)} ${escapeHTML(typeText)}`.trim();
+          })
+          .join(" · ");
+
+        return `
+          <div class="schedule-view-item">
+            <strong>${escapeHTML(title)}</strong>
+            <small>${info}</small>
+          </div>
+        `;
+      })
+      .join("");
+
+  const popup = document.createElement("div");
+
+  popup.className = "schedule-view-popup";
+
+  popup.innerHTML = `
+    <div class="schedule-view-box">
+
+      <button
+        type="button"
+        class="schedule-view-close"
+        aria-label="닫기"
+      >
+        ×
+      </button>
+
+      <h3>${escapeHTML(key)} 일정</h3>
+
+      <div class="schedule-view-list">
+        ${eventHTML}
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  popup
+    .querySelector(".schedule-view-close")
+    .addEventListener("click", () => {
+      popup.remove();
+    });
+
+  popup.addEventListener("click", event => {
+    if (event.target === popup) {
+      popup.remove();
+    }
+  });
+}
 
 function showCalendarDetail(key, events) {
   selectedCalendarKey = key;
