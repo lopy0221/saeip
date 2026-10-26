@@ -578,7 +578,28 @@
     right: 6px;
   }
 }
-  </style>
+
+.time-select-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.time-select-row select {
+  width: 100%;
+  border: 1px solid #dbe6f3;
+  background: #fbfdff;
+  border-radius: 11px;
+  padding: 11px 12px;
+  outline: none;
+  color: #40536f;
+}
+
+.time-select-row select:focus {
+  border-color: #91b7ee;
+}
+    
+      </style>
 </head>
 
 <body>
