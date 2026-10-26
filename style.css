@@ -1734,3 +1734,15 @@ body.dark-mode #rules .rules-warning-box strong {
 #schedule .calendar-day.event-anniversary::after {
   background: #a78bfa;
 }
+
+/* 달력 날짜 영역 높이 고정 + 줄 수에 맞게 자동 분배 */
+#schedule .calendar-days {
+  height: 330px;
+  grid-auto-rows: 1fr;
+}
+
+#schedule .calendar-day {
+  height: auto;
+  max-height: none;
+  min-height: 0;
+}
