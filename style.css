@@ -1712,3 +1712,25 @@ body.dark-mode #rules .rules-warning-box strong {
   font-weight: 700;
   color: #7f91aa;
 }
+
+/* 일정 종류별 날짜 우측 상단 점 색상 */
+
+/* 아침방송 / 낮방송 / 저녁방송 */
+#schedule .calendar-day.event-live::after {
+  background: #70a1f3;
+}
+
+/* 합방 */
+#schedule .calendar-day.event-collab::after {
+  background: #55c7b7;
+}
+
+/* 휴방 */
+#schedule .calendar-day.event-off::after {
+  background: #ef7f8f;
+}
+
+/* 기념일 */
+#schedule .calendar-day.event-anniversary::after {
+  background: #a78bfa;
+}
