@@ -1821,11 +1821,6 @@ body.dark-mode #rules .rules-warning-box strong {
   font-size: 9px;
 }
 
-/* 방송 일정표 큰 제목 숨기기 */
-#schedule .section-head {
-  display: none !important;
-}
-
 /* 제목이 사라진 공간만큼 달력 크게 */
 #schedule .calendar-days {
   height: 560px;
