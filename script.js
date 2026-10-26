@@ -297,12 +297,61 @@ if (events.length) {
   }
 }
 
-    button.innerHTML = `
+const groupedEvents = {};
+
+events.forEach(event => {
+  const title = event.title || "방송";
+
+  if (!groupedEvents[title]) {
+    groupedEvents[title] = [];
+  }
+
+  groupedEvents[title].push(event);
+});
+
+const eventHTML = Object.entries(groupedEvents)
+  .map(([title, titleEvents]) => {
+
+    const eventInfo = titleEvents
+      .map(event => {
+        let typeText = "방송";
+
+        if (event.type === "morning") {
+          typeText = "아침 방송";
+        } else if (event.type === "afternoon") {
+          typeText = "낮 방송";
+        } else if (event.type === "evening") {
+          typeText = "저녁 방송";
+        } else if (event.type === "collab") {
+          typeText = "합방";
+        } else if (event.type === "off") {
+          typeText = "휴방";
+        } else if (event.type === "etc") {
+          typeText = "기념일";
+        }
+
+        const time =
+          event.time || "";
+
+        return `${escapeHTML(time)} ${escapeHTML(typeText)}`.trim();
+      })
+      .join(" · ");
+
+    return `
+      <span class="calendar-event-item">
+        <strong>${escapeHTML(title)}</strong>
+        <small>${eventInfo}</small>
+      </span>
+    `;
+  })
+  .join("");
+
+button.innerHTML = `
   <span class="day-number">${date}</span>
   ${
     events.length
       ? `<span class="event-label">
-          ${events.map(event => escapeHTML(event.title)).join("<br>")}
+          ${eventHTML}
         </span>`
       : ""
   }
