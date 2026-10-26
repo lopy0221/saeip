@@ -1635,3 +1635,8 @@ body.dark-mode #rules .rules-warning-box strong {
   display: block;
   border-radius: 20px;
 }
+
+/* 방송 일정표 제목 하늘색 */
+#schedule .section-heading h2 {
+  color: #6fa3e8 !important;
+}
