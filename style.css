@@ -1799,3 +1799,24 @@ body.dark-mode #rules .rules-warning-box strong {
 #schedule .calendar-detail {
   display: none !important;
 }
+
+/* 방송 일정표 - 관리자 화면처럼 크게 */
+#schedule .calendar-days {
+  height: 500px;
+}
+
+#schedule .calendar-day {
+  padding: 9px 10px;
+}
+
+#schedule .calendar-day .day-number {
+  font-size: 12px;
+}
+
+#schedule .calendar-event-item strong {
+  font-size: 11px;
+}
+
+#schedule .calendar-event-item small {
+  font-size: 9px;
+}
