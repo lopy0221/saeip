@@ -1008,34 +1008,50 @@ renderAdminCalendar();
 eventContent.className =
   "admin-calendar-event-content";
 
+const groupedEvents = {};
+
 dayEvents.forEach(event => {
-  const eventBox =
-    document.createElement("div");
+  const title = event.title || "";
 
-  eventBox.className =
-    "admin-calendar-event";
+  if (!groupedEvents[title]) {
+    groupedEvents[title] = [];
+  }
 
-  const eventTitle =
-    document.createElement("strong");
-
-  eventTitle.textContent =
-    event.title || "";
-
-  const eventInfo =
-    document.createElement("small");
-
-  const eventTime =
-    event.time
-      ? String(event.time).slice(0, 5)
-      : "";
-
-  eventInfo.textContent =
-    `${eventTime} ${getScheduleTypeName(event.type)}`.trim();
-
-  eventBox.appendChild(eventTitle);
-  eventBox.appendChild(eventInfo);
-  eventContent.appendChild(eventBox);
+  groupedEvents[title].push(event);
 });
+
+Object.entries(groupedEvents).forEach(
+  ([title, events]) => {
+
+    const eventBox =
+      document.createElement("div");
+
+    eventBox.className =
+      "admin-calendar-event";
+
+    const eventTitle =
+      document.createElement("strong");
+
+    eventTitle.textContent = title;
+
+    const eventInfo =
+      document.createElement("small");
+
+    eventInfo.textContent =
+      events.map(event => {
+        const eventTime =
+          event.time
+            ? String(event.time).slice(0, 5)
+            : "";
+
+        return `${eventTime} ${getScheduleTypeName(event.type)}`.trim();
+      }).join(" · ");
+
+    eventBox.appendChild(eventTitle);
+    eventBox.appendChild(eventInfo);
+    eventContent.appendChild(eventBox);
+  }
+);
 
 button.appendChild(eventContent);
 
