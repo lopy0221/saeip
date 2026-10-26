@@ -1746,3 +1746,51 @@ body.dark-mode #rules .rules-warning-box strong {
   min-height: 0 !important;
   max-height: none !important;
 }
+
+/* =========================
+   달력 일정 표시 - 관리자 스타일
+========================= */
+
+#schedule .calendar-day .event-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  width: 100%;
+  margin-top: 3px;
+
+  white-space: normal;
+  overflow: hidden;
+}
+
+#schedule .calendar-event-item {
+  display: block;
+  width: 100%;
+  line-height: 1.2;
+}
+
+#schedule .calendar-event-item strong {
+  display: block;
+
+  font-size: 9px;
+  font-weight: 700;
+  color: #5578a8;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#schedule .calendar-event-item small {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 8px;
+  font-weight: 500;
+  color: #7f9fc8;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
