@@ -1122,20 +1122,39 @@ if (addButton) {
   area.innerHTML = `
 
     <div class="field">
-      <label>시간</label>
+  <label>시간</label>
 
-      <input
-        id="modalTime"
-        type="time"
-        value="${
-          item?.time
-            ? escapeHTML(
-                String(item.time).slice(0, 5)
-              )
-            : "12:00"
-        }"
-      >
-    </div>
+  <div class="time-select-row">
+
+    <select id="modalPeriod">
+      <option value="AM">오전</option>
+      <option value="PM">오후</option>
+    </select>
+
+    <select id="modalHour">
+      ${Array.from(
+        { length: 12 },
+        (_, i) => i + 1
+      ).map(hour => `
+        <option value="${hour}">
+          ${String(hour).padStart(2, "0")}시
+        </option>
+      `).join("")}
+    </select>
+
+    <select id="modalMinute">
+      ${Array.from(
+        { length: 60 },
+        (_, i) => i
+      ).map(minute => `
+        <option value="${minute}">
+          ${String(minute).padStart(2, "0")}분
+        </option>
+      `).join("")}
+    </select>
+
+  </div>
+</div>
 
     <div class="field">
       <label>일정 제목</label>
@@ -1253,7 +1272,31 @@ if (addButton) {
       id="modalScheduleStatus"
     ></div>
   `;
+  const currentTime =
+  item?.time
+    ? String(item.time).slice(0, 5)
+    : "12:00";
+
+const [hour24, minute] =
+  currentTime.split(":").map(Number);
+
+const period =
+  hour24 >= 12 ? "PM" : "AM";
+
+const hour12 =
+  hour24 % 12 || 12;
+
+document.querySelector("#modalPeriod").value =
+  period;
+
+document.querySelector("#modalHour").value =
+  String(hour12);
+
+document.querySelector("#modalMinute").value =
+  String(minute);
 }
+
+    
 
 window.saveCalendarSchedule =
   async function(id) {
@@ -1282,10 +1325,28 @@ window.saveCalendarSchedule =
     .textContent
     .replace(" 일정", ""),
 
-      time:
-        document.querySelector(
-          "#modalTime"
-        ).value || null,
+      time: (() => {
+  const period =
+    document.querySelector("#modalPeriod").value;
+
+  let hour =
+    Number(
+      document.querySelector("#modalHour").value
+    );
+
+  const minute =
+    document.querySelector("#modalMinute").value;
+
+  if (period === "AM" && hour === 12) {
+    hour = 0;
+  }
+
+  if (period === "PM" && hour !== 12) {
+    hour += 12;
+  }
+
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+})(),
 
       title,
 
