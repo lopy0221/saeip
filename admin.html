@@ -827,6 +827,9 @@
     let editingId = null;
     let schedules = [];
 
+    let adminCalendarYear = 2026;
+let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
+
     function showLogin() {
       loginPage.classList.remove("hidden");
       adminPage.classList.add("hidden");
@@ -953,9 +956,286 @@
 
       schedules = data || [];
 
-      renderSchedules();
+renderSchedules();
+renderAdminCalendar();
     }
 
+    function renderAdminCalendar() {
+  const daysBox =
+    document.querySelector("#adminCalendarDays");
+
+  const yearBox =
+    document.querySelector("#adminCalendarYear");
+
+  const monthBox =
+    document.querySelector("#adminCalendarMonth");
+
+  if (!daysBox || !yearBox || !monthBox) return;
+
+  yearBox.textContent = adminCalendarYear;
+  monthBox.textContent = `${adminCalendarMonth + 1}월`;
+
+  daysBox.innerHTML = "";
+
+  const firstDay =
+    new Date(
+      adminCalendarYear,
+      adminCalendarMonth,
+      1
+    ).getDay();
+
+  const lastDate =
+    new Date(
+      adminCalendarYear,
+      adminCalendarMonth + 1,
+      0
+    ).getDate();
+
+  // 월 시작 전 빈칸
+  for (let i = 0; i < firstDay; i++) {
+    const blank =
+      document.createElement("div");
+
+    blank.className =
+      "admin-calendar-day empty";
+
+    daysBox.appendChild(blank);
+  }
+
+  // 날짜 생성
+  for (let day = 1; day <= lastDate; day++) {
+
+    const dateKey =
+      `${adminCalendarYear}-${String(
+        adminCalendarMonth + 1
+      ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    const dayEvents =
+      schedules.filter(
+        item => item.date === dateKey
+      );
+
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+    button.className = "admin-calendar-day";
+
+    const number =
+      document.createElement("span");
+
+    number.textContent = day;
+
+    button.appendChild(number);
+
+    if (dayEvents.length) {
+      button.classList.add("has-event");
+
+      const dot =
+        document.createElement("i");
+
+      dot.className = "admin-calendar-dot";
+
+      // 우선순위:
+      // 기념일 > 합방 > 휴방 > 방송
+      if (
+        dayEvents.some(
+          event => event.type === "etc"
+        )
+      ) {
+        dot.classList.add("anniversary");
+
+      } else if (
+        dayEvents.some(
+          event => event.type === "collab"
+        )
+      ) {
+        dot.classList.add("collab");
+
+      } else if (
+        dayEvents.some(
+          event => event.type === "off"
+        )
+      ) {
+        dot.classList.add("off");
+
+      } else {
+        dot.classList.add("live");
+      }
+
+      button.appendChild(dot);
+    }
+
+    button.addEventListener(
+      "click",
+      () => openScheduleModal(
+        dateKey,
+        dayEvents
+      )
+    );
+
+    daysBox.appendChild(button);
+  }
+}
+
+
+function getScheduleTypeName(type) {
+  if (type === "morning") return "아침 방송";
+  if (type === "afternoon") return "낮 방송";
+  if (type === "evening") return "저녁 방송";
+  if (type === "collab") return "합방";
+  if (type === "off") return "휴방";
+  if (type === "etc") return "기념일";
+
+  return "방송";
+}
+
+
+function openScheduleModal(dateKey, dayEvents) {
+  const modal =
+    document.querySelector("#scheduleModal");
+
+  const modalTitle =
+    document.querySelector("#scheduleModalTitle");
+
+  const modalList =
+    document.querySelector("#scheduleModalList");
+
+  modalTitle.textContent =
+    `${dateKey} 일정`;
+
+  // 일정 없는 날짜
+  if (!dayEvents.length) {
+    modalList.innerHTML = `
+      <div class="empty">
+        이 날짜에는 등록된 일정이 없어요.
+      </div>
+    `;
+
+    modal.classList.remove("hidden");
+    return;
+  }
+
+  // 일정 있는 날짜
+  modalList.innerHTML =
+    dayEvents.map(item => {
+
+      const time =
+        item.time
+          ? escapeHTML(
+              String(item.time).slice(0, 5)
+            )
+          : "시간 없음";
+
+      const title =
+        escapeHTML(item.title || "");
+
+      const type =
+        escapeHTML(
+          getScheduleTypeName(item.type)
+        );
+
+      return `
+        <div class="schedule-modal-item">
+
+          <div class="schedule-modal-item-info">
+            <strong>${title}</strong>
+            <small>
+              ${time} · ${type}
+            </small>
+          </div>
+
+          <button
+            class="schedule-modal-edit"
+            type="button"
+            onclick="editScheduleFromCalendar(${item.id})"
+          >
+            수정
+          </button>
+
+        </div>
+      `;
+    }).join("");
+
+  modal.classList.remove("hidden");
+}
+
+
+function closeScheduleModal() {
+  document
+    .querySelector("#scheduleModal")
+    .classList.add("hidden");
+}
+
+
+window.editScheduleFromCalendar =
+  function(id) {
+
+    closeScheduleModal();
+
+    // 기존 수정 기능 그대로 사용
+    window.editSchedule(id);
+  };
+
+
+document
+  .querySelector("#scheduleModalClose")
+  .addEventListener(
+    "click",
+    closeScheduleModal
+  );
+
+
+document
+  .querySelector("#scheduleModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.id === "scheduleModal"
+      ) {
+        closeScheduleModal();
+      }
+    }
+  );
+
+
+document
+  .querySelector("#adminPrevMonth")
+  .addEventListener(
+    "click",
+    () => {
+
+      adminCalendarMonth--;
+
+      if (adminCalendarMonth < 0) {
+        adminCalendarMonth = 11;
+        adminCalendarYear--;
+      }
+
+      renderAdminCalendar();
+    }
+  );
+
+
+document
+  .querySelector("#adminNextMonth")
+  .addEventListener(
+    "click",
+    () => {
+
+      adminCalendarMonth++;
+
+      if (adminCalendarMonth > 11) {
+        adminCalendarMonth = 0;
+        adminCalendarYear++;
+      }
+
+      renderAdminCalendar();
+    }
+  );
+    
     function renderSchedules() {
       if (!schedules.length) {
         scheduleList.innerHTML =
