@@ -1697,3 +1697,18 @@ body.dark-mode #rules .rules-warning-box strong {
   background: #ef7f8f;
 }
 
+
+#schedule .calendar-legend {
+  position: relative;
+}
+
+#schedule .regular-off-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+
+  font-size: 10px;
+  font-weight: 700;
+  color: #7f91aa;
+}
