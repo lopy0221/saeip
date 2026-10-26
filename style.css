@@ -1636,16 +1636,24 @@ body.dark-mode #rules .rules-warning-box strong {
   border-radius: 20px;
 }
 
-/* 방송 일정표 제목 */
+/* 방송 일정표 제목 가운데 정렬 */
 #schedule .section-heading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#schedule .section-heading > div {
   width: 100%;
   text-align: center;
 }
 
 #schedule .section-heading h2 {
-  color: #6fa3e8 !important;
-  text-align: center;
   width: 100%;
+  margin: 0;
+  text-align: center;
+  color: #6fa3e8 !important;
 }
 
 
