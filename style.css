@@ -1662,3 +1662,43 @@ body.dark-mode #rules .rules-warning-box strong {
   text-align: center !important;
   color: #6fa3e8 !important;
 }
+
+/* 방송 일정표 범례 */
+#schedule .calendar-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+#schedule .calendar-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#schedule .legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* 방송 */
+#schedule .legend-dot.live {
+  background: #70a1f3;
+}
+
+/* 기념 */
+#schedule .legend-dot.planned {
+  background: #a78bfa;
+}
+
+/* 합방 */
+#schedule .legend-dot.collab {
+  background: #55c7b7;
+}
+
+/* 휴방 */
+#schedule .legend-dot.off {
+  background: #ef7f8f;
+}
