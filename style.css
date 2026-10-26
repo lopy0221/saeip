@@ -1830,3 +1830,101 @@ body.dark-mode #rules .rules-warning-box strong {
   padding-top: 22px;
   padding-bottom: 16px;
 }
+
+/* 방송 일정 더보기 */
+#schedule .calendar-more {
+  display: block;
+  margin-top: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #6f9fe5;
+  cursor: pointer;
+}
+
+/* 방송 일정 전체보기 팝업 */
+.schedule-view-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(30, 48, 75, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.schedule-view-box {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e2ebf6;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(55, 88, 130, 0.18);
+}
+
+.schedule-view-box h3 {
+  margin: 0 40px 20px 0;
+  color: #405875;
+  font-size: 19px;
+}
+
+.schedule-view-close {
+  position: absolute;
+  top: 15px;
+  right: 17px;
+  border: 0;
+  background: transparent;
+  color: #8ba0ba;
+  font-size: 27px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.schedule-view-list {
+  display: grid;
+  gap: 9px;
+}
+
+.schedule-view-item {
+  padding: 13px 15px;
+  background: #f7faff;
+  border: 1px solid #e7eef8;
+  border-radius: 12px;
+}
+
+.schedule-view-item strong {
+  display: block;
+  color: #405875;
+  font-size: 14px;
+}
+
+.schedule-view-item small {
+  display: block;
+  margin-top: 4px;
+  color: #8194ad;
+  font-size: 12px;
+}
+
+/* 다크모드 */
+body.dark-mode .schedule-view-box {
+  background: #202a38;
+  border-color: #34445a;
+}
+
+body.dark-mode .schedule-view-box h3,
+body.dark-mode .schedule-view-item strong {
+  color: #e8f1ff;
+}
+
+body.dark-mode .schedule-view-item {
+  background: #273446;
+  border-color: #35465d;
+}
+
+body.dark-mode .schedule-view-item small {
+  color: #aabbd1;
+}
