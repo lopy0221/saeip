@@ -1975,3 +1975,20 @@ body.dark-mode .schedule-view-item small {
   color: #6f9fe5;
   cursor: pointer;
 }
+
+/* 방송 일정 - 날짜 박스 안 세로 가운데 정렬 */
+#schedule .calendar-day.has-event {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#schedule .calendar-day.has-event .day-number {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+}
+
+#schedule .calendar-day.has-event .event-label {
+  margin-top: 12px;
+}
