@@ -1802,7 +1802,7 @@ body.dark-mode #rules .rules-warning-box strong {
 
 /* 방송 일정표 - 관리자 화면처럼 크게 */
 #schedule .calendar-days {
-  height: 500px;
+  height: 460px;
 }
 
 #schedule .calendar-day {
