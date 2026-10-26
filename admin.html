@@ -611,7 +611,36 @@
 .time-select-row select:focus {
   border-color: #91b7ee;
 }
-    
+    .admin-calendar-event-content {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.admin-calendar-event {
+  min-width: 0;
+}
+
+.admin-calendar-event strong {
+  display: block;
+  overflow: hidden;
+  color: #405875;
+  font-size: 13px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-calendar-event small {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #8194ad;
+  font-size: 11px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
       </style>
 </head>
 
@@ -964,6 +993,43 @@ renderAdminCalendar();
 
     if (dayEvents.length) {
       button.classList.add("has-event");
+
+      const eventContent =
+  document.createElement("div");
+
+eventContent.className =
+  "admin-calendar-event-content";
+
+dayEvents.forEach(event => {
+  const eventBox =
+    document.createElement("div");
+
+  eventBox.className =
+    "admin-calendar-event";
+
+  const eventTitle =
+    document.createElement("strong");
+
+  eventTitle.textContent =
+    event.title || "";
+
+  const eventInfo =
+    document.createElement("small");
+
+  const eventTime =
+    event.time
+      ? String(event.time).slice(0, 5)
+      : "";
+
+  eventInfo.textContent =
+    `${eventTime} ${getScheduleTypeName(event.type)}`.trim();
+
+  eventBox.appendChild(eventTitle);
+  eventBox.appendChild(eventInfo);
+  eventContent.appendChild(eventBox);
+});
+
+button.appendChild(eventContent);
 
       const dot =
         document.createElement("i");
