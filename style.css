@@ -1689,20 +1689,3 @@ body.dark-mode #rules .rules-warning-box strong {
   background: #ef7f8f;
 }
 
-/* 방송 일정표 전체 위치 강제 복구 */
-#schedule .section-inner {
-  width: min(1400px, 94vw) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  align-items: stretch !important;
-  transform: none !important;
-}
-
-#schedule .section-heading,
-#schedule .calendar-shell,
-#schedule .calendar-detail {
-  width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  transform: none !important;
-}
