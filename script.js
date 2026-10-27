@@ -543,7 +543,64 @@ return `
     }
   });
 }
+// 다시보기 VOD 팝업 --------------------------------------------
 
+function openVodModal(replayURL) {
+  const vodModal = document.querySelector("#vodModal");
+  const vodPlayer = document.querySelector("#vodPlayer");
+
+  if (!vodModal || !vodPlayer) return;
+
+  const match = replayURL.match(/\/player\/(\d+)/);
+
+  if (!match) {
+    alert("다시보기 주소를 확인할 수 없어요.");
+    return;
+  }
+
+  const titleNo = match[1];
+
+  vodPlayer.src =
+    `https://vod.sooplive.com/player/${titleNo}/embed`;
+
+  vodModal.classList.add("is-open");
+  vodModal.setAttribute("aria-hidden", "false");
+}
+
+function closeVodModal() {
+  const vodModal = document.querySelector("#vodModal");
+  const vodPlayer = document.querySelector("#vodPlayer");
+
+  if (!vodModal || !vodPlayer) return;
+
+  vodModal.classList.remove("is-open");
+  vodModal.setAttribute("aria-hidden", "true");
+
+  // 닫았을 때 영상도 정지
+  vodPlayer.src = "";
+}
+
+document.addEventListener("click", event => {
+  const replayButton =
+    event.target.closest("[data-vod-url]");
+
+  if (replayButton) {
+    event.preventDefault();
+
+    openVodModal(
+      replayButton.dataset.vodUrl
+    );
+
+    return;
+  }
+
+  if (
+    event.target.id === "vodModalClose" ||
+    event.target.id === "vodModal"
+  ) {
+    closeVodModal();
+  }
+});
 function showCalendarDetail(key, events) {
   selectedCalendarKey = key;
 
