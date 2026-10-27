@@ -598,12 +598,27 @@ const replayHTML = replays
   `)
   .join("");
 
+        const description = titleEvents
+  .map(event => event.description || "")
+  .filter(Boolean)
+  .join(" · ");
+
 return `
   <div class="schedule-view-item">
-    <strong>${escapeHTML(title)}</strong>
-    <small>${info}</small>
+    <div class="schedule-view-main">
+      <strong>${escapeHTML(title)}</strong>
+      <small>${info}</small>
 
-    ${replayHTML}
+      ${replayHTML}
+    </div>
+
+    ${
+      description
+        ? `<div class="schedule-view-description">
+            ${escapeHTML(description)}
+          </div>`
+        : ""
+    }
   </div>
 `;
       })
