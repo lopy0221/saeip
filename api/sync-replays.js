@@ -1,5 +1,6 @@
 const SUPABASE_URL = "https://txwlwxldagplfhlgopyl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
 
 export default async function handler(req, res) {
   try {
@@ -163,6 +164,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       mode: "preview",
+      secret_key_loaded: Boolean(SUPABASE_SECRET_KEY),
       streamer: SOOP_ID,
       schedule_count: schedules.length,
       replay_count: replays.length,
