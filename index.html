@@ -844,5 +844,32 @@ or
 </button>
 
   <script src="script.js"></script>
+  <!-- 다시보기 VOD 팝업 -->
+<div
+  class="vod-modal"
+  id="vodModal"
+  aria-hidden="true"
+>
+  <div class="vod-modal-card">
+    <button
+      type="button"
+      class="vod-modal-close"
+      id="vodModalClose"
+      aria-label="다시보기 닫기"
+    >
+      ✕
+    </button>
+
+    <div class="vod-player-wrap">
+      <iframe
+        id="vodPlayer"
+        src=""
+        title="SOOP 다시보기"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>
 </body>
 </html>
