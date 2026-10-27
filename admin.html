@@ -945,6 +945,7 @@ renderAdminCalendar();
     await supabaseClient
       .from("schedule_replays")
       .select("*")
+      .eq("disabled", false)
       .order("part_number", {
         ascending: true
       });
