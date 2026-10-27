@@ -1678,3 +1678,104 @@ window.closeReplayAddForm =
       item
     );
   };
+
+    window.showReplayEditForm =
+  function(replayId) {
+
+    const replay =
+      scheduleReplays.find(
+        item => item.id === replayId
+      );
+
+    if (!replay) {
+      alert("다시보기 정보를 찾지 못했어요.");
+      return;
+    }
+
+    const button =
+      document.querySelector(
+        `[onclick="showReplayEditForm(${replayId})"]`
+      );
+
+    if (!button) return;
+
+    const card =
+      button.closest("div");
+
+    const oldForm =
+      document.querySelector("#replayEditForm");
+
+    if (oldForm) {
+      oldForm.remove();
+    }
+
+    const form =
+      document.createElement("div");
+
+    form.id = "replayEditForm";
+    form.style.marginBottom = "7px";
+
+    form.innerHTML = `
+      <div class="field">
+        <label>다시보기 제목</label>
+
+        <input
+          id="replayEditTitle"
+          type="text"
+          maxlength="200"
+          value="${escapeHTML(replay.replay_title || "")}"
+        >
+      </div>
+
+      <div class="field">
+        <label>다시보기 URL</label>
+
+        <input
+          id="replayEditURL"
+          type="url"
+          value="${escapeHTML(replay.replay_url || "")}"
+        >
+      </div>
+
+      <button
+        type="button"
+        class="save-button"
+      >
+        수정 저장
+      </button>
+
+      <button
+        type="button"
+        class="cancel-edit"
+        onclick="closeReplayEditForm()"
+      >
+        취소
+      </button>
+    `;
+
+    card.insertAdjacentElement(
+      "afterend",
+      form
+    );
+
+    card.classList.add("hidden");
+  };
+
+
+window.closeReplayEditForm =
+  function() {
+
+    const form =
+      document.querySelector("#replayEditForm");
+
+    if (!form) return;
+
+    const card =
+      form.previousElementSibling;
+
+    form.remove();
+
+    if (card) {
+      card.classList.remove("hidden");
+    }
+  };
