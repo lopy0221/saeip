@@ -100,106 +100,211 @@ const scheduleResponse = await fetch(
       return String(regDate).slice(0, 10);
     }
 
-    // 제목 비교용 정리
-    function normalizeTitle(text) {
-      return String(text || "")
-        .toLowerCase()
-        .replace(/\s+/g, "")
-        .replace(/[!@#$%^&*()_+\-=[\]{};:'",.<>/?\\|~`♡♥ㅋㅎㅠㅜㅁ^]/g, "");
-    }
+// 3. 실제 방송 시작 시간으로 일정별 다시보기 후보 만들기
 
-    // 제목 유사도 계산
-    function getTitleScore(scheduleTitle, replayTitle) {
-      const schedule = normalizeTitle(scheduleTitle);
-      const replay = normalizeTitle(replayTitle);
+function getBroadcastType(broadStart) {
+  if (!broadStart) return null;
 
-      if (!schedule || !replay) {
-        return 0;
+  const timePart = String(broadStart).split(" ")[1];
+
+  if (!timePart) return null;
+
+  const hour = Number(timePart.split(":")[0]);
+
+  if (hour >= 0 && hour < 6) {
+    return "dawn";
+  }
+
+  if (hour >= 6 && hour < 12) {
+    return "morning";
+  }
+
+  if (hour >= 12 && hour < 18) {
+    return "afternoon";
+  }
+
+  return "evening";
+}
+
+const matches = schedules.map((schedule) => {
+  // 휴방 / 기념일 / 합방은 자동 다시보기 매칭에서 제외
+  if (
+    schedule.type === "off" ||
+    schedule.type === "etc" ||
+    schedule.type === "collab"
+  ) {
+    return {
+      schedule_id: schedule.id,
+      date: schedule.date,
+      time: schedule.time,
+      title: schedule.title,
+      type: schedule.type,
+      candidates: []
+    };
+  }
+
+  const candidates = replays
+    .filter((replay) => {
+      if (!replay.broad_start || !schedule.date) {
+        return false;
       }
 
-      // 한쪽 제목에 다른 제목이 그대로 포함되어 있으면 강한 후보
-      if (replay.includes(schedule) || schedule.includes(replay)) {
-        return 100;
+      const replayDate =
+        replay.broad_start.slice(0, 10);
+
+      if (replayDate !== schedule.date) {
+        return false;
       }
 
-      // 공통 글자 비율
-      const scheduleChars = [...new Set(schedule)];
-      const replayChars = new Set(replay);
+      const replayType =
+        getBroadcastType(replay.broad_start);
 
-      const commonCount = scheduleChars.filter((char) =>
-        replayChars.has(char)
-      ).length;
+      // 방송 예정은 같은 날짜의 방송을 우선 후보로 허용
+      if (schedule.type === "planned") {
+        return true;
+      }
 
-      return Math.round(
-        (commonCount / scheduleChars.length) * 100
+      // 이미 시간대가 정해진 기존 일정은
+      // 실제 방송 시작 시간대와 같은 경우에만 연결
+      return replayType === schedule.type;
+    })
+    .map((replay) => ({
+      replay_id: replay.id,
+      replay_title: replay.title,
+      replay_url: replay.url,
+      reg_date: replay.reg_date,
+      broad_start: replay.broad_start,
+      broadcast_type:
+        getBroadcastType(replay.broad_start)
+    }));
+
+  return {
+    schedule_id: schedule.id,
+    date: schedule.date,
+    time: schedule.time,
+    title: schedule.title,
+    type: schedule.type,
+    candidates
+  };
+});
+    // 같은 다시보기가 여러 방송 예정 일정에 잡힌 경우
+// 등록된 일정 시간과 가장 가까운 일정 하나만 선택
+const plannedReplayOwners = new Map();
+
+for (const match of matches) {
+  if (match.type !== "planned") continue;
+
+  for (const candidate of match.candidates) {
+    if (!candidate.broad_start || !match.time) continue;
+
+    const replayTime =
+      candidate.broad_start.split(" ")[1]?.slice(0, 5);
+
+    if (!replayTime) continue;
+
+    const [scheduleHour, scheduleMinute] =
+      String(match.time).slice(0, 5).split(":").map(Number);
+
+    const [replayHour, replayMinute] =
+      replayTime.split(":").map(Number);
+
+    const scheduleMinutes =
+      scheduleHour * 60 + scheduleMinute;
+
+    const replayMinutes =
+      replayHour * 60 + replayMinute;
+
+    const difference =
+      Math.abs(scheduleMinutes - replayMinutes);
+
+    // 예정 시간에서 3시간 이상 차이나는 방송은
+// 자동 연결하지 않음
+if (difference > 180) {
+  continue;
+}
+
+    const current =
+      plannedReplayOwners.get(candidate.replay_url);
+
+    if (!current || difference < current.difference) {
+      plannedReplayOwners.set(
+        candidate.replay_url,
+        {
+          schedule_id: match.schedule_id,
+          difference
+        }
       );
     }
-
-    // 3. 일정별 다시보기 후보 만들기
-    const matches = schedules.map((schedule) => {
-      // 휴방은 다시보기 매칭 대상에서 제외
-      if (schedule.type === "off") {
-        return {
-          schedule_id: schedule.id,
-          date: schedule.date,
-          time: schedule.time,
-          title: schedule.title,
-          type: schedule.type,
-          candidates: []
-        };
-      }
-
-      const candidates = replays
-        .filter((replay) => {
-  if (!replay.broad_start || !schedule.date) {
-    return false;
   }
+}
 
-  const replayDate = replay.broad_start.slice(0, 10);
+for (const match of matches) {
+  if (match.type !== "planned") continue;
 
-  return replayDate === schedule.date;
-})
-        .map((replay) => ({
-  replay_id: replay.id,
-  replay_title: replay.title,
-  replay_url: replay.url,
-  reg_date: replay.reg_date,
-  broad_start: replay.broad_start,
-  title_score: getTitleScore(
-    schedule.title,
-    replay.title
-  )
-}))
-.filter((replay) => {
-  if (replay.title_score < 40) {
-    return false;
-  }
+  match.candidates =
+    match.candidates.filter(candidate => {
+      const owner =
+        plannedReplayOwners.get(candidate.replay_url);
 
-  const scheduleWords = String(schedule.title || "")
-    .toLowerCase()
-    .split(/[\s&/+]+/)
-    .map((word) => normalizeTitle(word))
-    .filter((word) => word.length >= 2);
-
-  const replayTitle = normalizeTitle(replay.replay_title);
-
-  return scheduleWords.some((word) =>
-    replayTitle.includes(word)
-  );
-})
-.sort((a, b) => b.title_score - a.title_score);
-      return {
-        schedule_id: schedule.id,
-        date: schedule.date,
-        time: schedule.time,
-        title: schedule.title,
-        type: schedule.type,
-        candidates
-      };
+      return (
+        owner &&
+        owner.schedule_id === match.schedule_id
+      );
     });
+}
 
-    // 4. 확실하게 매칭된 다시보기 자동 저장
-const autoReplays = [];
+    // 방송 예정 일정에 다시보기가 연결되면
+// 실제 방송 시작 시간에 맞춰 일정 종류 자동 변경
+for (const match of matches) {
+  if (
+    match.type !== "planned" ||
+    match.candidates.length === 0
+  ) {
+    continue;
+  }
+
+  // 연결된 다시보기 중 가장 처음 시작한 방송 기준
+  const firstCandidate =
+    [...match.candidates].sort((a, b) =>
+      String(a.broad_start).localeCompare(
+        String(b.broad_start)
+      )
+    )[0];
+
+  const actualType =
+    firstCandidate.broadcast_type;
+
+  if (!actualType) continue;
+
+  const updateResponse = await fetch(
+    `${SUPABASE_URL}/rest/v1/stream_schedule?id=eq.${match.schedule_id}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_SECRET_KEY,
+        Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        type: actualType
+      })
+    }
+  );
+
+  if (!updateResponse.ok) {
+    const updateError =
+      await updateResponse.text();
+
+    throw new Error(
+      `일정 종류 변경 실패: ${updateResponse.status} ${updateError}`
+    );
+  }
+
+  // 응답 확인용 matches에도 변경된 종류 반영
+  match.type = actualType;
+}
+    
+    const autoReplays = [];
 
 for (const match of matches) {
   for (const candidate of match.candidates) {
