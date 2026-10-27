@@ -817,13 +817,13 @@ let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
       adminPage.classList.add("hidden");
     }
 
-    function showAdmin() {
-      loginPage.classList.add("hidden");
-      adminPage.classList.remove("hidden");
+    async function showAdmin() {
+  loginPage.classList.add("hidden");
+  adminPage.classList.remove("hidden");
 
-      loadSchedules();
-loadScheduleReplays();
-    }
+  await loadScheduleReplays();
+  await loadSchedules();
+}
 
     async function checkSession() {
       const {
