@@ -822,6 +822,7 @@ let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
       adminPage.classList.remove("hidden");
 
       loadSchedules();
+loadScheduleReplays();
     }
 
     async function checkSession() {
@@ -935,6 +936,30 @@ let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
 
 renderAdminCalendar();
     }
+
+    async function loadScheduleReplays() {
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("schedule_replays")
+      .select("*")
+      .order("part_number", {
+        ascending: true
+      });
+
+  if (error) {
+    console.error(
+      "다시보기를 불러오지 못했습니다.",
+      error
+    );
+
+    return;
+  }
+
+  scheduleReplays = data || [];
+}
 
     function renderAdminCalendar() {
   const daysBox =
