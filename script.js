@@ -484,14 +484,13 @@ button.addEventListener("click", () => {
 
 const replayHTML = replays
   .map((replay, index) => `
-    <a
-      href="${safeURL(replay.replay_url)}"
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
       class="schedule-replay-link"
+      data-vod-url="${safeURL(replay.replay_url)}"
     >
       ▶ 다시보기${replays.length > 1 ? ` ${index + 1}` : ""}
-    </a>
+    </button>
   `)
   .join("");
 
