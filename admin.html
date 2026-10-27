@@ -1327,6 +1327,20 @@ const replayListHTML =
 >
   수정
 </button>
+
+<button
+  type="button"
+  class="schedule-modal-delete"
+  style="
+    display:block;
+    margin-top:4px;
+    margin-left:auto;
+  "
+  onclick="deleteReplay(${replay.id})"
+>
+  삭제
+</button>
+
         </div>
       `).join("")
     : `
