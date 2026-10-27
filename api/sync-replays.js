@@ -19,6 +19,8 @@ export default async function handler(req, res) {
 
     const soopData = await soopResponse.json();
 
+    console.log("SOOP FIRST VOD:", soopData.data?.[0]);
+
     const replays = (soopData.data || []).map((vod) => ({
       id: vod.title_no,
       title: vod.title_name || "",
