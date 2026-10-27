@@ -352,6 +352,50 @@ events.forEach(event => {
 const groupedEntries =
   Object.entries(groupedEvents);
 
+    // 달력 칸에서는 합방 일정을
+// 바로 앞 방송 일정과 같은 줄에 표시
+for (const [title, titleEvents] of Object.entries(groupedEvents)) {
+  const collabs =
+    titleEvents.filter(event => event.type === "collab");
+
+  if (!collabs.length) continue;
+
+  for (const collab of collabs) {
+    const previousEntry =
+      Object.entries(groupedEvents)
+        .flatMap(([groupTitle, groupEvents]) =>
+          groupEvents
+            .filter(event =>
+              event.type !== "collab" &&
+              (event.time || "00:00") <
+                (collab.time || "23:59")
+            )
+            .map(event => ({
+              groupTitle,
+              event
+            }))
+        )
+        .sort((a, b) =>
+          (b.event.time || "")
+            .localeCompare(a.event.time || "")
+        )[0];
+
+    if (!previousEntry) continue;
+
+    groupedEvents[title] =
+      groupedEvents[title].filter(
+        event => event.id !== collab.id
+      );
+
+    groupedEvents[previousEntry.groupTitle]
+      .push(collab);
+  }
+
+  if (groupedEvents[title]?.length === 0) {
+    delete groupedEvents[title];
+  }
+}
+
 const eventHTML = groupedEntries
   .map(([title, titleEvents]) => {
 
