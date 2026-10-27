@@ -207,9 +207,9 @@ for (const match of matches) {
       schedule_id: match.schedule_id,
       replay_url: candidate.replay_url,
       replay_title: candidate.replay_title,
-      started_at: candidate.reg_date
-        ? candidate.reg_date.replace(" ", "T") + "+09:00"
-        : null,
+      started_at: candidate.broad_start
+  ? candidate.broad_start.replace(" ", "T") + "+09:00"
+  : null,
       part_number: 1,
       source: "auto"
     });
