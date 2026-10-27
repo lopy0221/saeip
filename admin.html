@@ -1574,11 +1574,12 @@ document.querySelector("#modalMinute").value =
       </div>
 
       <button
-        type="button"
-        class="save-button"
-      >
-        다시보기 저장
-      </button>
+  type="button"
+  class="save-button"
+  onclick="saveManualReplay(${scheduleId})"
+>
+  다시보기 저장
+</button>
 
       <button
         type="button"
@@ -1614,6 +1615,57 @@ window.closeReplayAddForm =
     if (button) {
       button.classList.remove("hidden");
     }
+  };
+
+    window.saveManualReplay =
+  async function(scheduleId) {
+
+    const titleInput =
+      document.querySelector("#replayTitle");
+
+    const urlInput =
+      document.querySelector("#replayURL");
+
+    const title =
+      titleInput.value.trim();
+
+    const url =
+      urlInput.value.trim();
+
+    if (!url) {
+      alert("다시보기 URL을 입력해 주세요.");
+      return;
+    }
+
+    const { error } =
+      await supabaseClient
+        .from("schedule_replays")
+        .insert({
+          schedule_id: scheduleId,
+          replay_title: title || null,
+          replay_url: url,
+          source: "manual"
+        });
+
+    if (error) {
+      console.error(error);
+      alert("다시보기를 저장하지 못했어요.");
+      return;
+    }
+
+    await loadScheduleReplays();
+
+    const item =
+      schedules.find(
+        schedule => schedule.id === scheduleId
+      );
+
+    if (!item) return;
+
+    renderCalendarForm(
+      item.date,
+      item
+    );
   };
 
 window.saveCalendarSchedule =
