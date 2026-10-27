@@ -1766,7 +1766,67 @@ window.closeReplayAddForm =
 
     card.classList.add("hidden");
   };
+    
+window.saveReplayEdit =
+  async function(replayId) {
 
+    const replay =
+      scheduleReplays.find(
+        item => item.id === replayId
+      );
+
+    if (!replay) {
+      alert("다시보기 정보를 찾지 못했어요.");
+      return;
+    }
+
+    const titleInput =
+      document.querySelector("#replayEditTitle");
+
+    const urlInput =
+      document.querySelector("#replayEditURL");
+
+    const title =
+      titleInput.value.trim();
+
+    const url =
+      urlInput.value.trim();
+
+    if (!url) {
+      alert("다시보기 URL을 입력해 주세요.");
+      return;
+    }
+
+    const { error } =
+      await supabaseClient
+        .from("schedule_replays")
+        .update({
+          replay_title: title || null,
+          replay_url: url,
+          source: "manual"
+        })
+        .eq("id", replayId);
+
+    if (error) {
+      console.error(error);
+      alert("다시보기를 수정하지 못했어요.");
+      return;
+    }
+
+    await loadScheduleReplays();
+
+    const schedule =
+      schedules.find(
+        item => item.id === replay.schedule_id
+      );
+
+    if (!schedule) return;
+
+    renderCalendarForm(
+      schedule.date,
+      schedule
+    );
+  };
 
 window.closeReplayEditForm =
   function() {
