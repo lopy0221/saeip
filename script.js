@@ -693,9 +693,14 @@ document
   });
 
 
-// 처음 사이트를 열었을 때 Supabase에서 일정 + 다시보기 가져오기
-loadStreamSchedule();
-loadScheduleReplays();
+// 처음 사이트를 열었을 때
+// 다시보기를 먼저 불러온 뒤 방송 일정을 표시
+async function loadSchedulePage() {
+  await loadScheduleReplays();
+  await loadStreamSchedule();
+}
+
+loadSchedulePage();
 
 // ==================================================
 // 상단 메뉴 클릭 방식 페이지 전환
