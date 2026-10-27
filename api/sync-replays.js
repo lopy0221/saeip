@@ -15,11 +15,17 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     const replays = (data.data || []).map((vod) => ({
-      id: vod.title_no,
-      title: vod.title_name,
-      url: `https://vod.sooplive.com/player/${vod.title_no}/`
-    }));
+  id: vod.title_no,
+  title: vod.title_name,
+  url: `https://vod.sooplive.com/player/${vod.title_no}/`,
 
+  reg_date: vod.reg_date,
+  start_date: vod.start_date,
+  start_time: vod.start_time,
+  duration: vod.duration,
+
+  raw: vod
+}));
     return res.status(200).json({
       success: true,
       streamer: SOOP_ID,
