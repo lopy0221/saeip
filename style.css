@@ -2008,3 +2008,87 @@ body.dark-mode .schedule-view-item small {
   text-align: center;
   text-overflow: clip;
 }
+
+/* =========================
+   다시보기 VOD 팝업
+========================= */
+
+.vod-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(18, 28, 42, 0.65);
+  backdrop-filter: blur(6px);
+}
+
+.vod-modal.is-open {
+  display: flex;
+}
+
+.vod-modal-card {
+  position: relative;
+
+  width: min(1000px, 92vw);
+
+  padding: 18px;
+
+  background: #ffffff;
+  border: 1px solid rgba(146, 188, 239, 0.45);
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 60px rgba(25, 45, 70, 0.25);
+}
+
+.vod-modal-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 2;
+
+  width: 38px;
+  height: 38px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #6f87a5;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(25, 45, 70, 0.2);
+}
+
+.vod-player-wrap {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  background: #000;
+  border-radius: 13px;
+}
+
+.vod-player-wrap iframe {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
