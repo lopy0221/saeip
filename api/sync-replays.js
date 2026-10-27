@@ -8,8 +8,8 @@ export default async function handler(req, res) {
 
     // 1. SOOP 다시보기 가져오기
     const soopUrl =
-      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
-      `?page=1&per_page=20&orderby=reg_date`;
+  `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
+  `?page=1&per_page=100&orderby=reg_date`;
 
     const soopResponse = await fetch(soopUrl);
 
