@@ -1315,32 +1315,31 @@ const replayListHTML =
           >
             ${escapeHTML(replay.replay_title || replay.replay_url || "")}
           </a>
-          <button
-  type="button"
-  class="schedule-modal-edit"
+  <div
   style="
-    display:block;
+    display:flex;
+    justify-content:flex-end;
+    gap:6px;
     margin-top:-32px;
-    margin-left:auto;
   "
-  onclick="showReplayEditForm(${replay.id})"
 >
-  수정
-</button>
+  <button
+    type="button"
+    class="schedule-modal-edit"
+    onclick="showReplayEditForm(${replay.id})"
+  >
+    수정
+  </button>
 
-<button
-  type="button"
-  class="schedule-modal-edit"
-  style="
-  display:block;
-  margin-top:4px;
-  margin-left:auto;
-  color:#ef5f73;
-"
-  onclick="deleteReplay(${replay.id})"
->
-  삭제
-</button>
+  <button
+    type="button"
+    class="schedule-modal-edit"
+    style="color:#ef5f73;"
+    onclick="deleteReplay(${replay.id})"
+  >
+    삭제
+  </button>
+</div>
 
         </div>
       `).join("")
@@ -1587,7 +1586,6 @@ document.querySelector("#modalMinute").value =
           id="replayTitle"
           type="text"
           maxlength="200"
-          placeholder="예: 다뿌서버 1일차"
         >
       </div>
 
