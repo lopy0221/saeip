@@ -151,30 +151,20 @@ const scheduleResponse = await fetch(
 
       const candidates = replays
         .filter((replay) => {
-  if (!replay.reg_date || !schedule.date) {
+  if (!replay.broad_start || !schedule.date) {
     return false;
   }
 
-  const scheduleDate = new Date(`${schedule.date}T00:00:00+09:00`);
+  const replayDate = replay.broad_start.slice(0, 10);
 
-  const replayDate = new Date(
-    `${replay.reg_date.replace(" ", "T")}+09:00`
-  );
-
-  const nextDayMorning = new Date(scheduleDate);
-  nextDayMorning.setDate(nextDayMorning.getDate() + 1);
-  nextDayMorning.setHours(8, 0, 0, 0);
-
-  return (
-    replayDate >= scheduleDate &&
-    replayDate <= nextDayMorning
-  );
+  return replayDate === schedule.date;
 })
         .map((replay) => ({
   replay_id: replay.id,
   replay_title: replay.title,
   replay_url: replay.url,
   reg_date: replay.reg_date,
+  broad_start: replay.broad_start,
   title_score: getTitleScore(
     schedule.title,
     replay.title
