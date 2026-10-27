@@ -115,9 +115,24 @@ export default async function handler(req, res) {
     replay.title
   )
 }))
-.filter((replay) => replay.title_score >= 40)
-.sort((a, b) => b.title_score - a.title_score);
+.filter((replay) => {
+  if (replay.title_score < 40) {
+    return false;
+  }
 
+  const scheduleWords = String(schedule.title || "")
+    .toLowerCase()
+    .split(/[\s&/+]+/)
+    .map((word) => normalizeTitle(word))
+    .filter((word) => word.length >= 2);
+
+  const replayTitle = normalizeTitle(replay.replay_title);
+
+  return scheduleWords.some((word) =>
+    replayTitle.includes(word)
+  );
+})
+.sort((a, b) => b.title_score - a.title_score);
       return {
         schedule_id: schedule.id,
         date: schedule.date,
