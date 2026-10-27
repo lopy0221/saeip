@@ -1283,7 +1283,6 @@ const replayListHTML =
     ? itemReplays.map((replay, index) => `
         <div
           style="
-          position:relative;
             padding:10px 12px;
             margin-bottom:7px;
             border:1px solid #dbe6f3;
@@ -1315,17 +1314,6 @@ const replayListHTML =
           >
             ${escapeHTML(replay.replay_title || replay.replay_url || "")}
           </a>
-          <button
-  type="button"
-  class="schedule-modal-edit"
-  style="
-  float:right;
-  margin-top:-20px;
-"
-  onclick="showReplayEditForm(${replay.id})"
->
-  수정
-</button>
         </div>
       `).join("")
     : `
@@ -1571,6 +1559,7 @@ document.querySelector("#modalMinute").value =
           id="replayTitle"
           type="text"
           maxlength="200"
+          placeholder="예: 다뿌서버 1일차"
         >
       </div>
 
@@ -1679,86 +1668,249 @@ window.closeReplayAddForm =
     );
   };
 
-    window.showReplayEditForm =
-  function(replayId) {
+window.saveCalendarSchedule =
+  async function(id) {
 
-    const replay =
-      scheduleReplays.find(
-        item => item.id === replayId
+    const status =
+      document.querySelector(
+        "#modalScheduleStatus"
       );
 
-    if (!replay) {
-      alert("다시보기 정보를 찾지 못했어요.");
+    const title =
+      document.querySelector(
+        "#modalScheduleTitle"
+      ).value.trim();
+
+    if (!title) {
+      status.textContent =
+        "일정 제목을 입력해 주세요.";
+
       return;
     }
 
-    const button =
-      document.querySelector(
-        `[onclick="showReplayEditForm(${replayId})"]`
-      );
+    const scheduleData = {
+      date:
+  document
+    .querySelector("#scheduleModalTitle")
+    .textContent
+    .replace(" 일정", ""),
 
-    if (!button) return;
+      time: (() => {
+  const period =
+    document.querySelector("#modalPeriod").value;
 
-    const card =
-      button.closest("div");
-
-    const oldForm =
-      document.querySelector("#replayEditForm");
-
-    if (oldForm) {
-      oldForm.remove();
-    }
-
-    const form =
-      document.createElement("div");
-
-    form.id = "replayEditForm";
-    form.style.marginBottom = "7px";
-
-    form.innerHTML = `
-      <div class="field">
-        <label>다시보기 제목</label>
-
-        <input
-          id="replayEditTitle"
-          type="text"
-          maxlength="200"
-          value="${escapeHTML(replay.replay_title || "")}"
-        >
-      </div>
-
-      <div class="field">
-        <label>다시보기 URL</label>
-
-        <input
-          id="replayEditURL"
-          type="url"
-          value="${escapeHTML(replay.replay_url || "")}"
-        >
-      </div>
-
-      <button
-        type="button"
-        class="save-button"
-      >
-        수정 저장
-      </button>
-
-      <button
-        type="button"
-        class="cancel-edit"
-        onclick="closeReplayEditForm()"
-      >
-        취소
-      </button>
-    `;
-
-    card.insertAdjacentElement(
-      "afterend",
-      form
+  let hour =
+    Number(
+      document.querySelector("#modalHour").value
     );
 
-    card.classList.add("hidden");
+  const minute =
+    document.querySelector("#modalMinute").value;
+
+  if (period === "AM" && hour === 12) {
+    hour = 0;
+  }
+
+  if (period === "PM" && hour !== 12) {
+    hour += 12;
+  }
+
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+})(),
+
+      title,
+
+      type:
+        document.querySelector(
+          "#modalType"
+        ).value,
+
+      description:
+        document.querySelector(
+          "#modalDescription"
+        ).value.trim()
+    };
+
+    status.textContent =
+      id ? "수정 중..." : "등록 중...";
+
+    let result;
+
+    if (id) {
+      result =
+        await supabaseClient
+          .from("stream_schedule")
+          .update(scheduleData)
+          .eq("id", id);
+
+    } else {
+      result =
+        await supabaseClient
+          .from("stream_schedule")
+          .insert(scheduleData);
+    }
+
+    if (result.error) {
+      console.error(result.error);
+
+      status.textContent =
+        "저장하지 못했어요.";
+
+      return;
+    }
+
+    await loadSchedules();
+
+    const selectedDate =
+      scheduleData.date;
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === selectedDate
+      );
+
+    openScheduleModal(
+      selectedDate,
+      dayEvents
+    );
   };
 
 
+window.deleteCalendarSchedule =
+  async function(id) {
+
+    const item =
+      schedules.find(
+        schedule => schedule.id === id
+      );
+
+    if (!item) return;
+
+    if (!confirm("이 일정을 삭제할까요?")) {
+      return;
+    }
+
+    const dateKey = item.date;
+
+    const { error } =
+      await supabaseClient
+        .from("stream_schedule")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      alert("일정을 삭제하지 못했어요.");
+      return;
+    }
+
+    await loadSchedules();
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === dateKey
+      );
+
+    openScheduleModal(
+      dateKey,
+      dayEvents
+    );
+  };
+
+
+window.backToCalendarScheduleList =
+  function(dateKey) {
+
+    const dayEvents =
+      schedules.filter(
+        event => event.date === dateKey
+      );
+
+    openScheduleModal(
+      dateKey,
+      dayEvents
+    );
+  };
+
+function closeScheduleModal() {
+  document
+    .querySelector("#scheduleModal")
+    .classList.add("hidden");
+}
+
+
+
+document
+  .querySelector("#scheduleModalClose")
+  .addEventListener(
+    "click",
+    closeScheduleModal
+  );
+
+
+document
+  .querySelector("#scheduleModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.id === "scheduleModal"
+      ) {
+        closeScheduleModal();
+      }
+    }
+  );
+
+
+document
+  .querySelector("#adminPrevMonth")
+  .addEventListener(
+    "click",
+    () => {
+
+      adminCalendarMonth--;
+
+      if (adminCalendarMonth < 0) {
+        adminCalendarMonth = 11;
+        adminCalendarYear--;
+      }
+
+      renderAdminCalendar();
+    }
+  );
+
+
+document
+  .querySelector("#adminNextMonth")
+  .addEventListener(
+    "click",
+    () => {
+
+      adminCalendarMonth++;
+
+      if (adminCalendarMonth > 11) {
+        adminCalendarMonth = 0;
+        adminCalendarYear++;
+      }
+
+      renderAdminCalendar();
+    }
+  );
+
+
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    checkSession();
+  </script>
+
+</body>
+</html>
