@@ -1762,20 +1762,3 @@ window.closeReplayAddForm =
   };
 
 
-window.closeReplayEditForm =
-  function() {
-
-    const form =
-      document.querySelector("#replayEditForm");
-
-    if (!form) return;
-
-    const card =
-      form.previousElementSibling;
-
-    form.remove();
-
-    if (card) {
-      card.classList.remove("hidden");
-    }
-  };
