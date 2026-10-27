@@ -445,6 +445,56 @@ button.addEventListener("click", () => {
     groupedEvents[title].push(event);
   });
 
+    // 같은 날 합방 일정은 바로 앞 방송 일정에 같이 표시
+const collabEvents =
+  events.filter(event => event.type === "collab");
+
+const normalEvents =
+  events.filter(event => event.type !== "collab");
+
+if (
+  collabEvents.length > 0 &&
+  normalEvents.length > 0
+) {
+  for (const collab of collabEvents) {
+    // 기존 합방 단독 그룹 제거
+    const collabTitle = collab.title || "방송";
+
+    if (groupedEvents[collabTitle]) {
+      groupedEvents[collabTitle] =
+        groupedEvents[collabTitle].filter(
+          event => event.id !== collab.id
+        );
+
+      if (groupedEvents[collabTitle].length === 0) {
+        delete groupedEvents[collabTitle];
+      }
+    }
+
+    // 합방 시간보다 앞에 있는 방송 중 가장 가까운 일정 찾기
+    const previousEvent =
+      normalEvents
+        .filter(event =>
+          (event.time || "00:00") <
+          (collab.time || "23:59")
+        )
+        .sort((a, b) =>
+          (b.time || "").localeCompare(a.time || "")
+        )[0];
+
+    if (!previousEvent) continue;
+
+    const previousTitle =
+      previousEvent.title || "방송";
+
+    if (!groupedEvents[previousTitle]) {
+      groupedEvents[previousTitle] = [previousEvent];
+    }
+
+    groupedEvents[previousTitle].push(collab);
+  }
+}
+
   const eventHTML =
     Object.entries(groupedEvents)
       .map(([title, titleEvents]) => {
