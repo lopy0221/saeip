@@ -1271,6 +1271,62 @@ if (addButton) {
 
   const isEdit = Boolean(item);
 
+  const itemReplays =
+  item
+    ? scheduleReplays.filter(
+        replay => replay.schedule_id === item.id
+      )
+    : [];
+
+const replayListHTML =
+  itemReplays.length
+    ? itemReplays.map((replay, index) => `
+        <div
+          style="
+            padding:10px 12px;
+            margin-bottom:7px;
+            border:1px solid #dbe6f3;
+            border-radius:11px;
+            background:#fbfdff;
+          "
+        >
+          <strong
+            style="
+              display:block;
+              margin-bottom:4px;
+              color:#526985;
+              font-size:12px;
+            "
+          >
+            다시보기 ${index + 1}
+            · ${replay.source === "auto" ? "자동" : "수동"}
+          </strong>
+
+          <a
+            href="${escapeHTML(replay.replay_url || "")}"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="
+              color:#719bd4;
+              font-size:11px;
+              word-break:break-all;
+            "
+          >
+            ${escapeHTML(replay.replay_title || replay.replay_url || "")}
+          </a>
+        </div>
+      `).join("")
+    : `
+        <div
+          style="
+            color:#9aaabd;
+            font-size:12px;
+          "
+        >
+          연결된 다시보기가 없어요.
+        </div>
+      `;
+
   area.classList.remove("hidden");
 
   area.innerHTML = `
@@ -1383,6 +1439,17 @@ if (addButton) {
         item?.description || ""
       )}</textarea>
     </div>
+
+    ${
+  isEdit
+    ? `
+      <div class="field">
+        <label>연결된 다시보기</label>
+        ${replayListHTML}
+      </div>
+    `
+    : ""
+}
 
     <button
       type="button"
