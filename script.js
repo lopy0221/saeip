@@ -57,7 +57,7 @@ const scheduleReplays = {};
 async function loadScheduleReplays() {
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/schedule_replays?select=*&order=part_number.asc`,
+      `${SUPABASE_URL}/rest/v1/schedule_replays?select=*&disabled=eq.false&order=part_number.asc`,
       {
         headers: {
           apikey: SUPABASE_KEY,
