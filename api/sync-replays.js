@@ -19,17 +19,33 @@ export default async function handler(req, res) {
 
     const soopData = await soopResponse.json();
 
-    console.log("SOOP FIRST VOD:", soopData.data?.[0]);
+console.log("SOOP FIRST VOD:", soopData.data?.[0]);
 
-    const replays = (soopData.data || []).map((vod) => ({
-      id: vod.title_no,
-      title: vod.title_name || "",
-      url: `https://vod.sooplive.com/player/${vod.title_no}/`,
-      reg_date: vod.reg_date || null
-    }));
+const detailResponse = await fetch(
+  "https://api.m.sooplive.com/station/video/a/view",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Referer": "https://vod.sooplive.com/player/210554075"
+    },
+    body: "nTitleNo=210554075&nApiLevel=11&nPlaylistIdx=0"
+  }
+);
 
-    // 2. Supabase 방송 일정 가져오기
-    const scheduleResponse = await fetch(
+const detailData = await detailResponse.json();
+
+console.log("SOOP VOD DETAIL:", detailData);
+
+const replays = (soopData.data || []).map((vod) => ({
+  id: vod.title_no,
+  title: vod.title_name || "",
+  url: `https://vod.sooplive.com/player/${vod.title_no}/`,
+  reg_date: vod.reg_date || null
+}));
+
+// 2. Supabase 방송 일정 가져오기
+const scheduleResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/stream_schedule?select=*&order=date.asc`,
       {
         headers: {
