@@ -102,9 +102,25 @@ export default async function handler(req, res) {
 
       const candidates = replays
         .filter((replay) => {
-          // 우선 같은 날짜의 VOD만 후보로 사용
-          return getReplayDate(replay.reg_date) === schedule.date;
-        })
+  if (!replay.reg_date || !schedule.date) {
+    return false;
+  }
+
+  const scheduleDate = new Date(`${schedule.date}T00:00:00+09:00`);
+
+  const replayDate = new Date(
+    `${replay.reg_date.replace(" ", "T")}+09:00`
+  );
+
+  const nextDayMorning = new Date(scheduleDate);
+  nextDayMorning.setDate(nextDayMorning.getDate() + 1);
+  nextDayMorning.setHours(8, 0, 0, 0);
+
+  return (
+    replayDate >= scheduleDate &&
+    replayDate <= nextDayMorning
+  );
+})
         .map((replay) => ({
   replay_id: replay.id,
   replay_title: replay.title,
