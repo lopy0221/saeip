@@ -382,10 +382,18 @@ for (const [title, titleEvents] of Object.entries(groupedEvents)) {
 
     if (!previousEntry) continue;
 
-    groupedEvents[title] =
-      groupedEvents[title].filter(
-        event => event.id !== collab.id
-      );
+    // 원래 합방 그룹에서 해당 합방 제거
+if (groupedEvents[title]) {
+  groupedEvents[title] =
+    groupedEvents[title].filter(
+      event => String(event.id) !== String(collab.id)
+    );
+
+  // 합방 그룹에 남은 일정이 없으면 그룹 자체 삭제
+  if (groupedEvents[title].length === 0) {
+    delete groupedEvents[title];
+  }
+}
 
     groupedEvents[previousEntry.groupTitle]
       .push(collab);
