@@ -106,16 +106,17 @@ export default async function handler(req, res) {
           return getReplayDate(replay.reg_date) === schedule.date;
         })
         .map((replay) => ({
-          replay_id: replay.id,
-          replay_title: replay.title,
-          replay_url: replay.url,
-          reg_date: replay.reg_date,
-          title_score: getTitleScore(
-            schedule.title,
-            replay.title
-          )
-        }))
-        .sort((a, b) => b.title_score - a.title_score);
+  replay_id: replay.id,
+  replay_title: replay.title,
+  replay_url: replay.url,
+  reg_date: replay.reg_date,
+  title_score: getTitleScore(
+    schedule.title,
+    replay.title
+  )
+}))
+.filter((replay) => replay.title_score >= 40)
+.sort((a, b) => b.title_score - a.title_score);
 
       return {
         schedule_id: schedule.id,
