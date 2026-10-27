@@ -1527,7 +1527,94 @@ document.querySelector("#modalMinute").value =
   String(minute);
 }
 
-    
+    window.showReplayAddForm =
+  function(scheduleId) {
+
+    const button =
+      document.querySelector(
+        `[onclick="showReplayAddForm(${scheduleId})"]`
+      );
+
+    if (!button) return;
+
+    const oldForm =
+      document.querySelector("#replayAddForm");
+
+    if (oldForm) {
+      oldForm.remove();
+    }
+
+    const form =
+      document.createElement("div");
+
+    form.id = "replayAddForm";
+
+    form.style.marginTop = "10px";
+
+    form.innerHTML = `
+      <div class="field">
+        <label>다시보기 제목</label>
+
+        <input
+          id="replayTitle"
+          type="text"
+          maxlength="200"
+          placeholder="예: 다뿌서버 1일차"
+        >
+      </div>
+
+      <div class="field">
+        <label>다시보기 URL</label>
+
+        <input
+          id="replayURL"
+          type="url"
+          placeholder="https://vod.sooplive.com/player/..."
+        >
+      </div>
+
+      <button
+        type="button"
+        class="save-button"
+      >
+        다시보기 저장
+      </button>
+
+      <button
+        type="button"
+        class="cancel-edit"
+        onclick="closeReplayAddForm()"
+      >
+        취소
+      </button>
+    `;
+
+    button.insertAdjacentElement(
+      "afterend",
+      form
+    );
+
+    button.classList.add("hidden");
+  };
+
+
+window.closeReplayAddForm =
+  function() {
+
+    const form =
+      document.querySelector("#replayAddForm");
+
+    if (!form) return;
+
+    const button =
+      form.previousElementSibling;
+
+    form.remove();
+
+    if (button) {
+      button.classList.remove("hidden");
+    }
+  };
 
 window.saveCalendarSchedule =
   async function(id) {
