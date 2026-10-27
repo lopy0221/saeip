@@ -18,13 +18,8 @@ export default async function handler(req, res) {
   id: vod.title_no,
   title: vod.title_name,
   url: `https://vod.sooplive.com/player/${vod.title_no}/`,
-
   reg_date: vod.reg_date,
-  start_date: vod.start_date,
-  start_time: vod.start_time,
-  duration: vod.duration,
-
-  raw: vod
+  duration: vod.total_file_duration
 }));
     return res.status(200).json({
       success: true,
