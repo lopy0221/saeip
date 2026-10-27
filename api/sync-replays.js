@@ -21,28 +21,58 @@ export default async function handler(req, res) {
 
 console.log("SOOP FIRST VOD:", soopData.data?.[0]);
 
-const detailResponse = await fetch(
-  "https://api.m.sooplive.com/station/video/a/view",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Referer": "https://vod.sooplive.com/player/210554075"
-    },
-    body: "nTitleNo=210554075&nApiLevel=11&nPlaylistIdx=0"
-  }
+const replays = await Promise.all(
+  (soopData.data || []).map(async (vod) => {
+    let broadStart = null;
+
+    try {
+      const detailResponse = await fetch(
+        "https://api.m.sooplive.com/station/video/a/view",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Referer": `https://vod.sooplive.com/player/${vod.title_no}`
+          },
+          body:
+            `nTitleNo=${vod.title_no}` +
+            `&nApiLevel=11` +
+            `&nPlaylistIdx=0`
+        }
+      );
+
+      if (detailResponse.ok) {
+        const detailData = await detailResponse.json();
+
+        broadStart =
+          detailData?.data?.broad_start || null;
+      }
+    } catch (error) {
+      console.error(
+        `VOD ${vod.title_no} 상세정보 오류:`,
+        error
+      );
+    }
+
+    return {
+      id: vod.title_no,
+      title: vod.title_name || "",
+      url: `https://vod.sooplive.com/player/${vod.title_no}/`,
+      reg_date: vod.reg_date || null,
+      broad_start: broadStart
+    };
+  })
 );
 
-const detailData = await detailResponse.json();
-
-console.log("SOOP VOD DETAIL:", detailData);
-
-const replays = (soopData.data || []).map((vod) => ({
-  id: vod.title_no,
-  title: vod.title_name || "",
-  url: `https://vod.sooplive.com/player/${vod.title_no}/`,
-  reg_date: vod.reg_date || null
-}));
+console.log(
+  "SOOP BROAD START TEST:",
+  replays.map((replay) => ({
+    id: replay.id,
+    title: replay.title,
+    reg_date: replay.reg_date,
+    broad_start: replay.broad_start
+  }))
+);
 
 // 2. Supabase 방송 일정 가져오기
 const scheduleResponse = await fetch(
