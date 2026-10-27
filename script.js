@@ -349,6 +349,9 @@ events.forEach(event => {
   groupedEvents[title].push(event);
 });
 
+    const groupedEntries =
+  Object.entries(groupedEvents);
+
     // 달력 칸에서는 합방 일정을
 // 바로 앞 방송 일정과 같은 줄에 표시
 for (const [title, titleEvents] of Object.entries(groupedEvents)) {
@@ -400,9 +403,6 @@ if (groupedEvents[title]) {
     delete groupedEvents[title];
   }
 }
-
-    const groupedEntries =
-  Object.entries(groupedEvents);
 
 const eventHTML = groupedEntries
   .map(([title, titleEvents]) => {
