@@ -2035,7 +2035,7 @@ body.dark-mode .schedule-view-item small {
 .vod-modal-card {
   position: relative;
 
-  width: min(1000px, 92vw);
+  width: min(1400px, 95vw);
 
   padding: 18px;
 
