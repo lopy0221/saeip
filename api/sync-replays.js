@@ -160,16 +160,58 @@ export default async function handler(req, res) {
       };
     });
 
-    // 4. 미리보기 결과만 반환
-    return res.status(200).json({
-      success: true,
-      mode: "preview",
-      secret_key_loaded: Boolean(SUPABASE_SECRET_KEY),
-      streamer: SOOP_ID,
-      schedule_count: schedules.length,
-      replay_count: replays.length,
-      matches
+    // 4. 확실하게 매칭된 다시보기 자동 저장
+const autoReplays = [];
+
+for (const match of matches) {
+  for (const candidate of match.candidates) {
+    autoReplays.push({
+      schedule_id: match.schedule_id,
+      replay_url: candidate.replay_url,
+      replay_title: candidate.replay_title,
+      started_at: candidate.reg_date
+        ? candidate.reg_date.replace(" ", "T") + "+09:00"
+        : null,
+      part_number: 1,
+      source: "auto"
     });
+  }
+}
+
+if (autoReplays.length > 0) {
+  const saveResponse = await fetch(
+    `${SUPABASE_URL}/rest/v1/schedule_replays?on_conflict=schedule_id,replay_url`,
+    {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_SECRET_KEY,
+        Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "resolution=ignore-duplicates"
+      },
+      body: JSON.stringify(autoReplays)
+    }
+  );
+
+  if (!saveResponse.ok) {
+    const saveError = await saveResponse.text();
+    throw new Error(
+      `다시보기 저장 실패: ${saveResponse.status} ${saveError}`
+    );
+  }
+}
+    
+    // 5. 자동 저장 결과 반환
+    return res.status(200).json({
+  success: true,
+  mode: "auto-save",
+  saved_count: autoReplays.length,
+  secret_key_loaded: Boolean(SUPABASE_SECRET_KEY),
+  streamer: SOOP_ID,
+  schedule_count: schedules.length,
+  replay_count: replays.length,
+  matches
+});
 
   } catch (error) {
     return res.status(500).json({
