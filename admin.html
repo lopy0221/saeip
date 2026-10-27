@@ -1860,6 +1860,53 @@ window.closeReplayEditForm =
     }
   };
 
+    window.deleteReplay =
+  async function(replayId) {
+
+    const replay =
+      scheduleReplays.find(
+        item => item.id === replayId
+      );
+
+    if (!replay) {
+      alert("다시보기 정보를 찾지 못했어요.");
+      return;
+    }
+
+    const confirmed =
+      confirm("이 다시보기를 삭제할까요?");
+
+    if (!confirmed) return;
+
+    const { error } =
+      await supabaseClient
+        .from("schedule_replays")
+        .update({
+          disabled: true
+        })
+        .eq("id", replayId);
+
+    if (error) {
+      console.error(error);
+      alert("다시보기를 삭제하지 못했어요.");
+      return;
+    }
+
+    await loadScheduleReplays();
+
+    const schedule =
+      schedules.find(
+        item => item.id === replay.schedule_id
+      );
+
+    if (!schedule) return;
+
+    renderCalendarForm(
+      schedule.date,
+      schedule
+    );
+  };
+
 window.saveCalendarSchedule =
   async function(id) {
 
