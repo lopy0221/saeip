@@ -144,30 +144,58 @@ const matches = schedules.map((schedule) => {
   }
 
   const candidates = replays
-    .filter((replay) => {
-      if (!replay.broad_start || !schedule.date) {
-        return false;
-      }
+  .filter((replay) => {
+    if (
+      !replay.broad_start ||
+      !schedule.date ||
+      !schedule.time
+    ) {
+      return false;
+    }
 
-      const replayDate =
-        replay.broad_start.slice(0, 10);
+    // 실제 방송 시작 날짜
+    const replayDate =
+      replay.broad_start.slice(0, 10);
 
-      if (replayDate !== schedule.date) {
-        return false;
-      }
+    // 일정과 같은 날짜만 매칭
+    if (replayDate !== schedule.date) {
+      return false;
+    }
 
-      const replayType =
-        getBroadcastType(replay.broad_start);
+    // 일정 시간
+    const [scheduleHour, scheduleMinute] =
+      String(schedule.time)
+        .slice(0, 5)
+        .split(":")
+        .map(Number);
 
-      // 방송 예정은 같은 날짜의 방송을 우선 후보로 허용
-      if (schedule.type === "planned") {
-        return true;
-      }
+    // 실제 방송 시작 시간
+    const replayTime =
+      replay.broad_start
+        .split(" ")[1]
+        ?.slice(0, 5);
 
-      // 이미 시간대가 정해진 기존 일정은
-      // 실제 방송 시작 시간대와 같은 경우에만 연결
-      return replayType === schedule.type;
-    })
+    if (!replayTime) {
+      return false;
+    }
+
+    const [replayHour, replayMinute] =
+      replayTime
+        .split(":")
+        .map(Number);
+
+    const scheduleMinutes =
+      scheduleHour * 60 + scheduleMinute;
+
+    const replayMinutes =
+      replayHour * 60 + replayMinute;
+
+    const difference =
+      Math.abs(scheduleMinutes - replayMinutes);
+
+    // 일정 시간 기준 ±3시간 이내만 자동 매칭
+    return difference <= 180;
+  })
     .map((replay) => ({
       replay_id: replay.id,
       replay_title: replay.title,
