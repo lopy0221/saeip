@@ -1314,6 +1314,18 @@ const replayListHTML =
           >
             ${escapeHTML(replay.replay_title || replay.replay_url || "")}
           </a>
+          <button
+  type="button"
+  class="schedule-modal-edit"
+  style="
+    display:block;
+    margin-top:8px;
+    margin-left:auto;
+  "
+  onclick="showReplayEditForm(${replay.id})"
+>
+  수정
+</button>
         </div>
       `).join("")
     : `
