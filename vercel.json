@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/sync-replays",
-      "schedule": "0 3 * * *"
-    }
-  ]
-}
