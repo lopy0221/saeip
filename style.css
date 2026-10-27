@@ -2125,3 +2125,28 @@ body.dark-mode .schedule-view-item small {
   border-color: #92BCEF;
   transform: translateY(-1px);
 }
+
+/* 방송 일정 팝업 - 설명 오른쪽 표시 */
+.schedule-view-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.schedule-view-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.schedule-view-description {
+  margin-left: auto;
+  max-width: 45%;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #6f86a6;
+  text-align: right;
+  white-space: pre-line;
+}
