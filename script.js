@@ -51,6 +51,46 @@ const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
 // Supabase에서 불러온 일정이 저장되는 곳
 const streamSchedule = {};
 
+const scheduleReplays = {};
+
+// Supabase에서 다시보기 불러오기
+async function loadScheduleReplays() {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/schedule_replays?select=*&order=part_number.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`다시보기 불러오기 실패: ${response.status}`);
+    }
+
+    const replays = await response.json();
+
+    Object.keys(scheduleReplays).forEach(key => {
+      delete scheduleReplays[key];
+    });
+
+    replays.forEach(replay => {
+      if (!scheduleReplays[replay.schedule_id]) {
+        scheduleReplays[replay.schedule_id] = [];
+      }
+
+      scheduleReplays[replay.schedule_id].push(replay);
+    });
+
+    console.log("다시보기 불러오기 완료:", scheduleReplays);
+
+  } catch (error) {
+    console.error("다시보기를 불러오지 못했습니다.", error);
+  }
+}
+
 let calendarYear = 2026;
 let calendarMonth = 9; // 0=1월, 9=10월
 let selectedCalendarKey = "";
@@ -573,8 +613,9 @@ document
   });
 
 
-// 처음 사이트를 열었을 때 Supabase에서 일정 가져오기
+// 처음 사이트를 열었을 때 Supabase에서 일정 + 다시보기 가져오기
 loadStreamSchedule();
+loadScheduleReplays();
 
 // ==================================================
 // 상단 메뉴 클릭 방식 페이지 전환
