@@ -1445,7 +1445,17 @@ const replayListHTML =
     ? `
       <div class="field">
         <label>연결된 다시보기</label>
+
         ${replayListHTML}
+
+        <button
+          type="button"
+          class="cancel-edit"
+          style="margin-top:8px;"
+          onclick="showReplayAddForm(${item.id})"
+        >
+          + 다시보기 추가
+        </button>
       </div>
     `
     : ""
