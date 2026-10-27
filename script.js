@@ -473,12 +473,36 @@ button.addEventListener("click", () => {
           })
           .join(" · ");
 
-        return `
-          <div class="schedule-view-item">
-            <strong>${escapeHTML(title)}</strong>
-            <small>${info}</small>
-          </div>
-        `;
+        const replays = titleEvents
+  .flatMap(event => scheduleReplays[event.id] || [])
+  .filter(
+    (replay, index, array) =>
+      array.findIndex(
+        item => item.replay_url === replay.replay_url
+      ) === index
+  );
+
+const replayHTML = replays
+  .map((replay, index) => `
+    <a
+      href="${safeURL(replay.replay_url)}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="schedule-replay-link"
+    >
+      ▶ 다시보기${replays.length > 1 ? ` ${index + 1}` : ""}
+    </a>
+  `)
+  .join("");
+
+return `
+  <div class="schedule-view-item">
+    <strong>${escapeHTML(title)}</strong>
+    <small>${info}</small>
+
+    ${replayHTML}
+  </div>
+`;
       })
       .join("");
 
