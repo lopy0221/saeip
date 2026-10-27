@@ -353,6 +353,16 @@ if (autoReplays.length > 0) {
   streamer: SOOP_ID,
   schedule_count: schedules.length,
   replay_count: replays.length,
+
+  // 확인용: SOOP에서 가져온 다시보기 전체 정보
+  replay_debug: replays.map(replay => ({
+    id: replay.id,
+    title: replay.title,
+    reg_date: replay.reg_date,
+    broad_start: replay.broad_start,
+    broadcast_type: getBroadcastType(replay.broad_start)
+  })),
+
   matches
 });
 
