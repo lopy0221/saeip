@@ -472,9 +472,9 @@ button.addEventListener("click", () => {
   }
 
   // 2026년 10월보다 이전으로 이동 금지
-  document.querySelector("#prevMonth").disabled =
-    calendarYear === 2026 &&groupedEvents[title] = [];
-    calendarMonth === 9;
+document.querySelector("#prevMonth").disabled =
+  calendarYear === 2026 &&
+  calendarMonth === 9;
 }
 
   function openSchedulePopup(key, events) {
