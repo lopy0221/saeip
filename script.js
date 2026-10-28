@@ -7,9 +7,9 @@ const links = {
   youtube: "",
   sns: ""
 };
-const songs = [
-  // { title: "곡명", artist: "가수 이름", url: "https://..." },
-];
+
+let songs = [];
+
 const $ = selector => document.querySelector(selector);
 const songList = $("#songList");
 function escapeHTML(value) {
@@ -27,7 +27,7 @@ function renderSongs(query = "") {
   }
   songList.innerHTML = filtered.map(song => `<article class="song-row"><span class="song-disc">♫</span><span class="song-meta"><b>${escapeHTML(song.title)}</b><small>${escapeHTML(song.artist)}</small></span>${song.url ? `<a href="${safeURL(song.url)}" target="_blank" rel="noopener noreferrer">듣기 ↗</a>` : ""}</article>`).join("");
 }
-renderSongs();
+loadSongs();
 $("#songSearch").addEventListener("input", e => renderSongs(e.target.value));
 document.querySelectorAll("[data-link]").forEach(anchor => {
   const key = anchor.dataset.link;
@@ -47,6 +47,31 @@ document.querySelectorAll("#mainNav a").forEach(a => a.addEventListener("click",
 // Supabase 설정
 const SUPABASE_URL = "https://txwlwxldagplfhlgopyl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
+
+// Supabase에서 노래 목록 불러오기
+async function loadSongs() {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/songs?select=*&order=title.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`노래 불러오기 실패: ${response.status}`);
+    }
+
+    songs = await response.json();
+
+    renderSongs();
+  } catch (error) {
+    console.error("노래 목록을 불러오지 못했습니다.", error);
+  }
+}
 
 // Supabase에서 불러온 일정이 저장되는 곳
 const streamSchedule = {};
