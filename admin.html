@@ -925,9 +925,57 @@ async function loadSongs() {
     songs = await response.json();
 
     console.log("불러온 노래:", songs);
+
+    renderSongs();
   } catch (error) {
     console.error("노래 불러오기 오류:", error);
   }
+}
+
+    function renderSongs() {
+  const list =
+    document.querySelector("#songAdminList");
+
+  if (!list) return;
+
+  if (!songs.length) {
+    list.innerHTML = `
+      <div class="empty">
+        등록된 노래가 없어요.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = songs.map(song => {
+    const category =
+      song.category === "jpop"
+        ? "JPOP"
+        : "KPOP";
+
+    const genreNames = {
+      ballad: "발라드",
+      dance: "댄스",
+      band: "밴드"
+    };
+
+    const genre =
+      genreNames[song.genre] || song.genre || "";
+
+    return `
+      <div class="schedule-item">
+        <div class="schedule-info">
+          <h3>${escapeHTML(song.title || "")}</h3>
+
+          <p>
+            ${escapeHTML(song.artist || "")}
+            · ${category}
+            · ${escapeHTML(genre)}
+          </p>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
     
     let adminCalendarYear = 2026;
