@@ -976,6 +976,14 @@ async function loadSongs() {
         <div class="item-buttons">
   <button
     type="button"
+    class="small-button"
+    onclick="editSong(${song.id})"
+  >
+    수정
+  </button>
+
+  <button
+    type="button"
     class="delete-button"
     onclick="deleteSong(${song.id})"
   >
