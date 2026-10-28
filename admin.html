@@ -2462,15 +2462,34 @@ document
 
     status.textContent = "등록 중...";
 
-    const { error } =
-      await supabaseClient
-        .from("songs")
-        .insert({
-          title,
-          artist,
-          category,
-          genre
-        });
+    let error;
+
+if (editingSongId !== null) {
+  const result =
+    await supabaseClient
+      .from("songs")
+      .update({
+        title,
+        artist,
+        category,
+        genre
+      })
+      .eq("id", editingSongId);
+
+  error = result.error;
+} else {
+  const result =
+    await supabaseClient
+      .from("songs")
+      .insert({
+        title,
+        artist,
+        category,
+        genre
+      });
+
+  error = result.error;
+}
 
     if (error) {
       console.error(error);
