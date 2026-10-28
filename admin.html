@@ -2307,6 +2307,60 @@ document
       .querySelector("#songManagePage")
       .classList.remove("hidden");
   });
+
+    document
+  .querySelector("#songSaveButton")
+  .addEventListener("click", async () => {
+    const title =
+      document.querySelector("#songTitle").value.trim();
+
+    const artist =
+      document.querySelector("#songArtist").value.trim();
+
+    const category =
+      document.querySelector("#songCategory").value;
+
+    const genre =
+      document.querySelector("#songGenre").value;
+
+    const status =
+      document.querySelector("#songStatus");
+
+    if (!title || !artist) {
+      status.textContent =
+        "곡명과 가수를 입력해 주세요.";
+      return;
+    }
+
+    status.textContent = "등록 중...";
+
+    const { error } =
+      await supabaseClient
+        .from("songs")
+        .insert({
+          title,
+          artist,
+          category,
+          genre
+        });
+
+    if (error) {
+      console.error(error);
+
+      status.textContent =
+        "노래를 등록하지 못했어요.";
+
+      return;
+    }
+
+    document.querySelector("#songTitle").value = "";
+    document.querySelector("#songArtist").value = "";
+
+    status.textContent =
+      "노래를 등록했어요. 🩵";
+
+    await loadSongs();
+  });
     
     checkSession();
   </script>
