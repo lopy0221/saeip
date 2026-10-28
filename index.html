@@ -526,65 +526,104 @@ or
 </section>
 
 
-    <!-- 05. 노래책 -->
-    <section class="page-section" id="songs">
-      <div class="section-inner">
+<!-- 05. 노래책 -->
+<section class="page-section" id="songs">
 
-        <div class="section-heading">
-          <div>
+  <div class="songbook">
 
-            <span class="eyebrow">
-              SONG ARCHIVE
-            </span>
+    <!-- 제목 -->
+    <div class="songbook-heading">
+      <h2>새잎 노래책</h2>
+    </div>
 
-            <h2>
-              새잎의 노래책
-              <span class="heading-emoji">♫</span>
-            </h2>
+    <!-- 노래 분류 -->
+    <div class="songbook-filters">
 
-            <p>
-              곡명이나 가수 이름으로 노래를 찾아보세요.
-            </p>
+      <div class="songbook-filter-row songbook-country-filter">
+        <button
+          type="button"
+          class="song-filter-btn active"
+          data-country="all"
+        >
+          전체
+        </button>
 
-          </div>
+        <button
+          type="button"
+          class="song-filter-btn"
+          data-country="kpop"
+        >
+          KPOP
+        </button>
 
-          <span class="section-chip">
-            MUSIC 05 / 07
-          </span>
-        </div>
-
-
-        <div class="song-area">
-
-          <div class="search-box">
-
-            <span>⌕</span>
-
-            <input
-              id="songSearch"
-              type="search"
-              placeholder="곡명 또는 가수 검색..."
-              aria-label="노래 검색"
-            >
-
-            <kbd>검색</kbd>
-
-          </div>
-
-          <div
-            class="song-list"
-            id="songList"
-          ></div>
-
-        </div>
-
-
-        <p class="tiny-note">
-          노래 목록은 script.js의 songs 배열에 실제 곡 정보를 추가하면 검색할 수 있어요.
-        </p>
-
+        <button
+          type="button"
+          class="song-filter-btn"
+          data-country="jpop"
+        >
+          JPOP
+        </button>
       </div>
-    </section>
+
+      <div class="songbook-filter-row songbook-genre-filter">
+        <strong>장르 :</strong>
+
+        <button
+          type="button"
+          class="song-genre-btn active"
+          data-genre="all"
+        >
+          전체
+        </button>
+
+        <button
+          type="button"
+          class="song-genre-btn"
+          data-genre="ballad"
+        >
+          발라드
+        </button>
+
+        <button
+          type="button"
+          class="song-genre-btn"
+          data-genre="dance"
+        >
+          댄스
+        </button>
+
+        <button
+          type="button"
+          class="song-genre-btn"
+          data-genre="band"
+        >
+          밴드
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 검색 -->
+    <div class="songbook-search">
+      <span>⌕</span>
+
+      <input
+        id="songSearch"
+        type="search"
+        placeholder="곡명 또는 가수 검색..."
+        aria-label="노래 검색"
+      >
+    </div>
+
+    <!-- 노래 목록 -->
+    <div
+      class="songbook-list"
+      id="songList"
+    ></div>
+
+  </div>
+
+</section>
 
 
     <!-- 06. 다시보기 -->
