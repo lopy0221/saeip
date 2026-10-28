@@ -27,7 +27,6 @@ function renderSongs(query = "") {
   }
   songList.innerHTML = filtered.map(song => `<article class="song-row"><span class="song-disc">♫</span><span class="song-meta"><b>${escapeHTML(song.title)}</b><small>${escapeHTML(song.artist)}</small></span>${song.url ? `<a href="${safeURL(song.url)}" target="_blank" rel="noopener noreferrer">듣기 ↗</a>` : ""}</article>`).join("");
 }
-loadSongs();
 $("#songSearch").addEventListener("input", e => renderSongs(e.target.value));
 document.querySelectorAll("[data-link]").forEach(anchor => {
   const key = anchor.dataset.link;
@@ -72,6 +71,8 @@ async function loadSongs() {
     console.error("노래 목록을 불러오지 못했습니다.", error);
   }
 }
+
+loadSongs();
 
 // Supabase에서 불러온 일정이 저장되는 곳
 const streamSchedule = {};
