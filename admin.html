@@ -995,6 +995,38 @@ async function loadSongs() {
   }).join("");
 }
 
+let editingSongId = null;
+
+window.editSong = function(id) {
+  const song =
+    songs.find(item => item.id === id);
+
+  if (!song) {
+    alert("노래 정보를 찾지 못했어요.");
+    return;
+  }
+
+  editingSongId = id;
+
+  document.querySelector("#songTitle").value =
+    song.title || "";
+
+  document.querySelector("#songArtist").value =
+    song.artist || "";
+
+  document.querySelector("#songCategory").value =
+    song.category || "kpop";
+
+  document.querySelector("#songGenre").value =
+    song.genre || "ballad";
+
+  document.querySelector("#songSaveButton").textContent =
+    "노래 수정";
+
+  document.querySelector("#songStatus").textContent =
+    "수정할 내용을 입력해 주세요.";
+};
+    
     window.deleteSong =
   async function(id) {
 
