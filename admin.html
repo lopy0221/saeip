@@ -764,14 +764,79 @@ align-content: start;
 </section>
 
     <!-- 노래책 관리 -->
+<!-- 노래책 관리 -->
 <section
   class="panel hidden"
   id="songManagePage"
 >
   <h2>노래책 관리 🎵</h2>
 
-  <div class="empty">
-    노래책 관리 화면을 준비 중이에요.
+  <div class="layout">
+
+    <!-- 노래 추가 -->
+    <div class="panel">
+      <h2>새 노래 추가</h2>
+
+      <div class="field">
+        <label>곡명</label>
+        <input
+          id="songTitle"
+          type="text"
+          placeholder="곡명을 입력해 주세요."
+        >
+      </div>
+
+      <div class="field">
+        <label>가수</label>
+        <input
+          id="songArtist"
+          type="text"
+          placeholder="가수명을 입력해 주세요."
+        >
+      </div>
+
+      <div class="field">
+        <label>카테고리</label>
+        <select id="songCategory">
+          <option value="kpop">KPOP</option>
+          <option value="jpop">JPOP</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>장르</label>
+        <select id="songGenre">
+          <option value="ballad">발라드</option>
+          <option value="dance">댄스</option>
+          <option value="band">밴드</option>
+        </select>
+      </div>
+
+      <button
+        class="save-button"
+        id="songSaveButton"
+        type="button"
+      >
+        노래 등록
+      </button>
+
+      <div
+        class="status"
+        id="songStatus"
+      ></div>
+    </div>
+
+    <!-- 등록된 노래 -->
+    <div class="panel">
+      <h2>등록된 노래</h2>
+
+      <div id="songAdminList">
+        <div class="empty">
+          등록된 노래가 없어요.
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
