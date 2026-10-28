@@ -973,10 +973,50 @@ async function loadSongs() {
             · ${escapeHTML(genre)}
           </p>
         </div>
+        <div class="item-buttons">
+  <button
+    type="button"
+    class="delete-button"
+    onclick="deleteSong(${song.id})"
+  >
+    삭제
+  </button>
+</div>
       </div>
     `;
   }).join("");
 }
+
+    window.deleteSong =
+  async function(id) {
+
+    const song =
+      songs.find(item => item.id === id);
+
+    if (!song) {
+      alert("노래 정보를 찾지 못했어요.");
+      return;
+    }
+
+    const confirmed =
+      confirm(`"${song.title}" 노래를 삭제할까요?`);
+
+    if (!confirmed) return;
+
+    const { error } =
+      await supabaseClient
+        .from("songs")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      alert("노래를 삭제하지 못했어요.");
+      return;
+    }
+
+    await loadSongs();
+  };
     
     let adminCalendarYear = 2026;
 let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
