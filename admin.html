@@ -2501,12 +2501,22 @@ if (editingSongId !== null) {
     }
 
     document.querySelector("#songTitle").value = "";
-    document.querySelector("#songArtist").value = "";
+document.querySelector("#songArtist").value = "";
+document.querySelector("#songCategory").value = "kpop";
+document.querySelector("#songGenre").value = "ballad";
 
-    status.textContent =
-      "노래를 등록했어요. 🩵";
+if (editingSongId !== null) {
+  status.textContent = "노래를 수정했어요. 🩵";
+} else {
+  status.textContent = "노래를 등록했어요. 🩵";
+}
 
-    await loadSongs();
+editingSongId = null;
+
+document.querySelector("#songSaveButton").textContent =
+  "노래 등록";
+
+await loadSongs();
   });
     
     checkSession();
