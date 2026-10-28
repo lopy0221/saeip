@@ -807,7 +807,33 @@ align-content: start;
       document.querySelector("#loginMessage");
 
     let schedules = [];
-    let scheduleReplays = [];
+let scheduleReplays = [];
+let songs = [];
+
+// ↓ 여기부터 추가
+async function loadSongs() {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/songs?select=*&order=title.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("노래 목록을 불러오지 못했습니다.");
+    }
+
+    songs = await response.json();
+
+    console.log("불러온 노래:", songs);
+  } catch (error) {
+    console.error("노래 불러오기 오류:", error);
+  }
+}
     
     let adminCalendarYear = 2026;
 let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
@@ -823,6 +849,7 @@ let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
 
   await loadScheduleReplays();
   await loadSchedules();
+      await loadSongs();
 }
 
     async function checkSession() {
