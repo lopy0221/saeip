@@ -2150,3 +2150,107 @@ body.dark-mode .schedule-view-item small {
   text-align: right;
   white-space: pre-line;
 }
+
+/* =========================
+   새잎 노래책
+========================= */
+
+#songs .songbook {
+  width: min(1000px, 90%);
+  margin: 0 auto;
+  padding-top: 110px;
+}
+
+.songbook-heading {
+  margin-bottom: 30px;
+}
+
+.songbook-heading h2 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 800;
+  color: #6fa5ef;
+}
+
+/* 필터 전체 */
+.songbook-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.songbook-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.songbook-filter-row strong {
+  margin-right: 4px;
+  font-size: 14px;
+  color: #60718a;
+}
+
+/* 필터 버튼 */
+.song-filter-btn,
+.song-genre-btn {
+  padding: 8px 17px;
+  border: 1px solid #cddff6;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #64758c;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.song-filter-btn:hover,
+.song-genre-btn:hover {
+  border-color: #92BCEF;
+  color: #6b9fe8;
+}
+
+.song-filter-btn.active,
+.song-genre-btn.active {
+  border-color: #92BCEF;
+  background: #92BCEF;
+  color: white;
+}
+
+/* 검색창 */
+.songbook-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 24px;
+  padding: 11px 16px;
+  border: 1px solid #d8e5f5;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.songbook-search span {
+  color: #82aee9;
+  font-size: 20px;
+}
+
+.songbook-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #52647d;
+  font: inherit;
+  font-size: 14px;
+}
+
+/* 노래 목록 영역 */
+.songbook-list {
+  width: 100%;
+  min-height: 300px;
+}
