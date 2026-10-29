@@ -2468,3 +2468,8 @@ body.dark-mode .schedule-view-item small {
   text-align: left;
   justify-self: stretch;
 }
+
+#songs #songArtistSort {
+  width: fit-content;
+  justify-self: start;
+}
