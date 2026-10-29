@@ -2373,6 +2373,7 @@ body.dark-mode .schedule-view-item small {
 /* 노래책 정렬 버튼 기본 디자인 제거 */
 #songs #songTitleSort,
 #songs #songArtistSort {
+  #songs #songProficiencySort {
   appearance: none;
   border: none;
   background: transparent;
