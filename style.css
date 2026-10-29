@@ -2330,3 +2330,16 @@ body.dark-mode .schedule-view-item small {
   margin-left: auto;
   margin-right: 0;
 }
+
+/* 노래책 상단 카테고리 + 검색창 한 줄 정렬 */
+#songs .songbook-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  width: 100%;
+}
+
+#songs .songbook-top-row .songbook-search {
+  margin: 0;
+}
