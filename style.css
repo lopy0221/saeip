@@ -2254,3 +2254,72 @@ body.dark-mode .schedule-view-item small {
   width: 100%;
   min-height: 300px;
 }
+
+/* =========================
+   노래책 테이블
+========================= */
+
+#songs .song-table {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #dce9f8;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+#songs .song-table-header,
+#songs .song-table-row {
+  display: grid;
+  grid-template-columns: 70px 2fr 1.4fr 1fr 130px;
+  align-items: center;
+  column-gap: 16px;
+}
+
+#songs .song-table-header {
+  min-height: 52px;
+  padding: 0 20px;
+  background: #edf6ff;
+  color: #6d91c4;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#songs .song-table-row {
+  min-height: 58px;
+  padding: 0 20px;
+  border-top: 1px solid #edf2f8;
+  color: #61738d;
+  font-size: 12px;
+}
+
+#songs .song-table-row:hover {
+  background: #f8fbff;
+}
+
+#songs .song-number {
+  color: #9aabc1;
+  text-align: center;
+}
+
+#songs .song-title {
+  overflow: hidden;
+  color: #405875;
+  font-size: 13px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#songs .song-artist,
+#songs .song-genre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#songs .song-proficiency {
+  color: #78a8ec;
+  font-size: 14px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
