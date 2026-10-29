@@ -2434,29 +2434,40 @@ document
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
     }
+  function showManagePage(page) {
+  const schedulePage =
+    document.querySelector("#scheduleManagePage");
+
+  const songPage =
+    document.querySelector("#songManagePage");
+
+  if (page === "song") {
+    schedulePage.classList.add("hidden");
+    songPage.classList.remove("hidden");
+  } else {
+    schedulePage.classList.remove("hidden");
+    songPage.classList.add("hidden");
+  }
+
+  localStorage.setItem("adminManagePage", page);
+}
+
 document
   .querySelector("#scheduleManageButton")
   .addEventListener("click", () => {
-    document
-      .querySelector("#scheduleManagePage")
-      .classList.remove("hidden");
-
-    document
-      .querySelector("#songManagePage")
-      .classList.add("hidden");
+    showManagePage("schedule");
   });
 
 document
   .querySelector("#songManageButton")
   .addEventListener("click", () => {
-    document
-      .querySelector("#scheduleManagePage")
-      .classList.add("hidden");
-
-    document
-      .querySelector("#songManagePage")
-      .classList.remove("hidden");
+    showManagePage("song");
   });
+
+const savedManagePage =
+  localStorage.getItem("adminManagePage") || "schedule";
+
+showManagePage(savedManagePage);
 
     document
   .querySelector("#songSaveButton")
