@@ -2350,7 +2350,12 @@ body.dark-mode .schedule-view-item small {
   overflow-y: auto;
 }
 
-/* 노래책 전체 위치 위로 이동 */
+/* 노래책 위치 고정 */
+#songs {
+  align-items: flex-start;
+}
+
 #songs .songbook {
-  transform: translateY(-150px);
+  transform: none;
+  margin-top: 70px;
 }
