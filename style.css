@@ -2357,5 +2357,5 @@ body.dark-mode .schedule-view-item small {
 
 #songs .songbook {
   transform: none;
-  margin-top: 70px;
+  margin-top: -70px;
 }
