@@ -2487,4 +2487,5 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-row .song-genre {
   text-align: left;
   justify-self: stretch;
+  padding-left: 8px;
 }
