@@ -11,6 +11,7 @@ const links = {
 let songs = [];
 let selectedCountry = "all";
 let selectedGenre = "all";
+let titleSortDirection = "none";
 
 const $ = selector => document.querySelector(selector);
 const songList = $("#songList");
@@ -38,6 +39,17 @@ const matchesGenre =
 
 return matchesSearch && matchesCountry && matchesGenre;
 });
+
+if (titleSortDirection === "asc") {
+  filtered.sort((a, b) =>
+    (a.title || "").localeCompare(b.title || "", "ko")
+  );
+} else if (titleSortDirection === "desc") {
+  filtered.sort((a, b) =>
+    (b.title || "").localeCompare(a.title || "", "ko")
+  );
+}
+  
   if (!filtered.length) {
     songList.innerHTML = `<div class="empty-state"><span>♫</span><b>${songs.length ? "검색 결과가 없어요" : "노래 목록을 준비 중이에요"}</b><p>${songs.length ? "다른 곡명이나 가수 이름으로 검색해 보세요." : "script.js의 songs 배열에 실제 곡 정보를 추가해 주세요."}</p></div>`;
     return;
@@ -46,7 +58,7 @@ return matchesSearch && matchesCountry && matchesGenre;
   <div class="song-table">
     <div class="song-table-header">
       <span>번호</span>
-      <span>곡 제목</span>
+      <button type="button" id="songTitleSort">곡 제목 ↕</button>
       <span>가수</span>
       <span>장르</span>
       <span>숙련도</span>
@@ -91,6 +103,19 @@ return matchesSearch && matchesCountry && matchesGenre;
     </div>
   </div>
 `;
+  const titleSortButton =
+  document.querySelector("#songTitleSort");
+
+if (titleSortButton) {
+  titleSortButton.addEventListener("click", () => {
+    titleSortDirection =
+      titleSortDirection === "asc"
+        ? "desc"
+        : "asc";
+
+    renderSongs($("#songSearch").value);
+  });
+}
 }
 document
   .querySelectorAll(".song-filter-btn")
