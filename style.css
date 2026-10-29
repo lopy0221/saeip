@@ -2385,4 +2385,5 @@ body.dark-mode .schedule-view-item small {
   font-weight: inherit;
   cursor: pointer;
   box-shadow: none;
+  text-align: left;
 }
