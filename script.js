@@ -274,6 +274,16 @@ async function loadSongs() {
   } catch (error) {
     console.error("노래 목록을 불러오지 못했습니다.", error);
   }
+  const songTableBody = document.querySelector("#songList .song-table-body");
+const songTableHeader = document.querySelector("#songList .song-table-header");
+
+if (songTableBody && songTableHeader) {
+  const scrollbarWidth =
+    songTableBody.offsetWidth - songTableBody.clientWidth;
+
+  songTableHeader.style.paddingRight =
+    `${20 + scrollbarWidth}px`;
+}
 }
 
 loadSongs();
