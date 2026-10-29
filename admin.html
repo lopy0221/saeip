@@ -1039,6 +1039,9 @@ window.editSong = function(id) {
   document.querySelector("#songGenre").value =
     song.genre || "ballad";
 
+document.querySelector("#songProficiency").value =
+  String(song.proficiency ?? 3);
+  
   document.querySelector("#songSaveButton").textContent =
     "노래 수정";
 
