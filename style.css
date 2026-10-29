@@ -2477,3 +2477,7 @@ body.dark-mode .schedule-view-item small {
 #songs #songProficiencySort {
   transform: translateX(-2px);
 }
+
+#songs .song-genre-header {
+  transform: translateX(-2px);
+}
