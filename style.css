@@ -2349,3 +2349,8 @@ body.dark-mode .schedule-view-item small {
   max-height: 420px;
   overflow-y: auto;
 }
+
+/* 노래책 전체 위치 위로 이동 */
+#songs .songbook {
+  transform: translateY(-90px);
+}
