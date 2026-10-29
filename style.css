@@ -2344,12 +2344,18 @@ body.dark-mode .schedule-view-item small {
   margin: 0;
 }
 
-/* 노래책 스크롤바 숨기기 */
+/* 노래책 목록 스크롤 + 스크롤바 숨기기 */
 #songs .song-table-body {
+  max-height: 420px;
+  overflow-y: auto;
+
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 #songs .song-table-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
   display: none;
 }
 
