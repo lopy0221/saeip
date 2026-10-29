@@ -2473,3 +2473,7 @@ body.dark-mode .schedule-view-item small {
   width: fit-content;
   justify-self: start;
 }
+
+#songs #songProficiencySort {
+  transform: translateX(-6px);
+}
