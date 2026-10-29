@@ -9,6 +9,7 @@ const links = {
 };
 
 let songs = [];
+let selectedCountry = "all";
 
 const $ = selector => document.querySelector(selector);
 const songList = $("#songList");
@@ -20,14 +21,44 @@ function safeURL(value) {
   catch { return "#"; }
 }
 function renderSongs(query = "") {
-  const filtered = songs.filter(song => `${song.title} ${song.artist}`.toLowerCase().includes(query.toLowerCase()));
+  const filtered = songs.filter(song => {
+  const matchesSearch =
+    `${song.title} ${song.artist}`
+      .toLowerCase()
+      .includes(query.toLowerCase());
+
+  const matchesCountry =
+    selectedCountry === "all" ||
+    song.category === selectedCountry;
+
+  return matchesSearch && matchesCountry;
+});
   if (!filtered.length) {
     songList.innerHTML = `<div class="empty-state"><span>♫</span><b>${songs.length ? "검색 결과가 없어요" : "노래 목록을 준비 중이에요"}</b><p>${songs.length ? "다른 곡명이나 가수 이름으로 검색해 보세요." : "script.js의 songs 배열에 실제 곡 정보를 추가해 주세요."}</p></div>`;
     return;
   }
   songList.innerHTML = filtered.map(song => `<article class="song-row"><span class="song-disc">♫</span><span class="song-meta"><b>${escapeHTML(song.title)}</b><small>${escapeHTML(song.artist)}</small></span>${song.url ? `<a href="${safeURL(song.url)}" target="_blank" rel="noopener noreferrer">듣기 ↗</a>` : ""}</article>`).join("");
 }
-$("#songSearch").addEventListener("input", e => renderSongs(e.target.value));
+document
+  .querySelectorAll(".song-filter-btn")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      selectedCountry = button.dataset.country;
+
+      document
+        .querySelectorAll(".song-filter-btn")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      renderSongs(
+        $("#songSearch").value
+      );
+    });
+  });
 document.querySelectorAll("[data-link]").forEach(anchor => {
   const key = anchor.dataset.link;
   if (links[key]) {
