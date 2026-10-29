@@ -84,7 +84,10 @@ if (titleSortDirection === "asc") {
   곡 제목 ${titleSortDirection === "asc" ? "↑" : titleSortDirection === "desc" ? "↓" : "↕"}
 </button>
       <button type="button" id="songArtistSort">
-  가수 ${artistSortDirection === "asc" ? "↑" : artistSortDirection === "desc" ? "↓" : "↕"}
+  가수
+  <span class="sort-arrow">
+    ${artistSortDirection === "asc" ? "↑" : artistSortDirection === "desc" ? "↓" : "↕"}
+  </span>
 </button>
       <span>장르</span>
       <button type="button" id="songProficiencySort">
