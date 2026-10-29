@@ -2323,3 +2323,10 @@ body.dark-mode .schedule-view-item small {
   letter-spacing: 1px;
   white-space: nowrap;
 }
+
+/* 노래책 검색창 오른쪽 정렬 */
+#songs .search-box {
+  width: 450px;
+  margin-left: auto;
+  margin-right: 0;
+}
