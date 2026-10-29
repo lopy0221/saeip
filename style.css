@@ -2343,3 +2343,9 @@ body.dark-mode .schedule-view-item small {
 #songs .songbook-top-row .songbook-search {
   margin: 0;
 }
+
+/* 노래책 목록 스크롤 */
+#songs .song-table-body {
+  max-height: 420px;
+  overflow-y: auto;
+}
