@@ -2326,7 +2326,7 @@ body.dark-mode .schedule-view-item small {
 
 /* 노래책 검색창 오른쪽 정렬 */
 #songs .songbook-search {
-  width: 450px;
+  width: 380px;
   margin-left: auto;
   margin-right: 0;
 }
