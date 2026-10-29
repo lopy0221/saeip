@@ -29,10 +29,6 @@ function renderSongs(query = "") {
       .includes(query.toLowerCase());
 
   const matchesCountry =
-    selectedCountry === "all" ||
-    song.category === selectedCountry;
-
-  const matchesCountry =
   selectedCountry === "all" ||
   song.category === selectedCountry;
 
