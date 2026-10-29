@@ -2419,3 +2419,9 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-header {
   padding-right: 32px;
 }
+
+#songs #songArtistSort {
+  position: relative;
+  width: auto;
+  justify-self: center;
+}
