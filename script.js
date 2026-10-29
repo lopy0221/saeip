@@ -81,7 +81,12 @@ if (titleSortDirection === "asc") {
     <div class="song-table-header">
       <span>번호</span>
       <button type="button" id="songTitleSort">
-  곡 제목 ${titleSortDirection === "asc" ? "↑" : titleSortDirection === "desc" ? "↓" : "↕"}
+  <button type="button" id="songTitleSort">
+  곡 제목
+  <span class="sort-arrow">
+    ${titleSortDirection === "asc" ? "↑" : titleSortDirection === "desc" ? "↓" : "↕"}
+  </span>
+</button>
 </button>
       <button type="button" id="songArtistSort">
   가수
