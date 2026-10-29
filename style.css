@@ -2437,3 +2437,15 @@ body.dark-mode .schedule-view-item small {
 #songs .song-artist {
   text-align: left;
 }
+
+#songs #songTitleSort {
+  position: relative;
+  width: auto;
+  justify-self: center;
+}
+
+#songs #songTitleSort .sort-arrow {
+  position: absolute;
+  left: 100%;
+  margin-left: 4px;
+}
