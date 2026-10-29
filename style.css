@@ -2402,3 +2402,15 @@ body.dark-mode .schedule-view-item small {
   width: 100%;
   text-align: left;
 }
+
+/* 노래책 표 전체 가운데 정렬 */
+#songs .song-table-header > *,
+#songs .song-table-row > * {
+  text-align: center;
+}
+
+#songs #songTitleSort,
+#songs #songArtistSort,
+#songs #songProficiencySort {
+  text-align: center;
+}
