@@ -2369,3 +2369,16 @@ body.dark-mode .schedule-view-item small {
 #songs .songbook-search input {
   height: 100%;
 }
+
+/* 노래책 정렬 버튼 기본 디자인 제거 */
+#songs #songTitleSort {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
