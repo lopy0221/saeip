@@ -806,10 +806,14 @@ align-content: start;
       <div class="field">
         <label>장르</label>
         <select id="songGenre">
-          <option value="ballad">발라드</option>
-          <option value="dance">댄스</option>
-          <option value="band">밴드</option>
-        </select>
+  <option value="ballad">발라드</option>
+  <option value="dance">댄스</option>
+  <option value="band">밴드</option>
+  <option value="hiphop">힙합/랩</option>
+  <option value="rnb">R&B</option>
+  <option value="ost">OST</option>
+  <option value="homework">숙제곡</option>
+</select>
       </div>
 
       <button
@@ -954,10 +958,14 @@ async function loadSongs() {
         : "KPOP";
 
     const genreNames = {
-      ballad: "발라드",
-      dance: "댄스",
-      band: "밴드"
-    };
+  ballad: "발라드",
+  dance: "댄스",
+  band: "밴드",
+  hiphop: "힙합/랩",
+  rnb: "R&B",
+  ost: "OST",
+  homework: "숙제곡"
+};
 
     const genre =
       genreNames[song.genre] || song.genre || "";
