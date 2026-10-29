@@ -136,7 +136,7 @@ if (titleSortDirection === "asc") {
             </span>
 
             <span class="song-proficiency">
-              ${"★".repeat(proficiency)}${"☆".repeat(5 - proficiency)}
+              ${"★".repeat(proficiency)}
             </span>
           </div>
         `;
