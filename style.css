@@ -2348,7 +2348,6 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-body {
   max-height: 420px;
   overflow-y: auto;
-  scrollbar-gutter: stable;
 }
 }
 
@@ -2415,4 +2414,8 @@ body.dark-mode .schedule-view-item small {
 #songs #songArtistSort,
 #songs #songProficiencySort {
   text-align: center;
+}
+
+#songs .song-table-header {
+  padding-right: 32px;
 }
