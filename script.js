@@ -94,7 +94,7 @@ if (titleSortDirection === "asc") {
     ${artistSortDirection === "asc" ? "↑" : artistSortDirection === "desc" ? "↓" : "↕"}
   </span>
 </button>
-      <span>장르</span>
+      <span class="song-genre-header">장르</span>
       <button type="button" id="songProficiencySort">
   <button type="button" id="songProficiencySort">
   숙련도
