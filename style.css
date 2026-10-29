@@ -2397,3 +2397,8 @@ body.dark-mode .schedule-view-item small {
   width: 100%;
   text-align: left;
 }
+
+#songs #songProficiencySort {
+  width: 100%;
+  text-align: left;
+}
