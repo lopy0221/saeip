@@ -2471,6 +2471,7 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-row .song-artist {
   text-align: left;
   justify-self: stretch;
+  padding-left: 18px;
 }
 
 #songs #songArtistSort {
