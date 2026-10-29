@@ -2270,7 +2270,7 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-header,
 #songs .song-table-row {
   display: grid;
-  grid-template-columns: 70px 1.35fr 1fr 1fr 130px;
+  grid-template-columns: 70px 1.5fr 1fr 1fr 130px;
   align-items: center;
   column-gap: 16px;
 }
