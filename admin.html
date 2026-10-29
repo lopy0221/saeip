@@ -987,8 +987,9 @@ async function loadSongs() {
 
           <p>
             ${escapeHTML(song.artist || "")}
-            · ${category}
-            · ${escapeHTML(genre)}
+· ${category}
+· ${escapeHTML(genre)}
+· ${"★".repeat(song.proficiency || 0)}${"☆".repeat(5 - (song.proficiency || 0))}
           </p>
         </div>
         <div class="item-buttons">
