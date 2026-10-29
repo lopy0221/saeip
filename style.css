@@ -2348,6 +2348,8 @@ body.dark-mode .schedule-view-item small {
 #songs .song-table-body {
   max-height: 420px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+}
 }
 
 /* 노래책 위치 고정 */
