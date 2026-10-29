@@ -42,7 +42,55 @@ return matchesSearch && matchesCountry && matchesGenre;
     songList.innerHTML = `<div class="empty-state"><span>♫</span><b>${songs.length ? "검색 결과가 없어요" : "노래 목록을 준비 중이에요"}</b><p>${songs.length ? "다른 곡명이나 가수 이름으로 검색해 보세요." : "script.js의 songs 배열에 실제 곡 정보를 추가해 주세요."}</p></div>`;
     return;
   }
-  songList.innerHTML = filtered.map(song => `<article class="song-row"><span class="song-disc">♫</span><span class="song-meta"><b>${escapeHTML(song.title)}</b><small>${escapeHTML(song.artist)}</small></span>${song.url ? `<a href="${safeURL(song.url)}" target="_blank" rel="noopener noreferrer">듣기 ↗</a>` : ""}</article>`).join("");
+  songList.innerHTML = `
+  <div class="song-table">
+    <div class="song-table-header">
+      <span>번호</span>
+      <span>곡 제목</span>
+      <span>가수</span>
+      <span>장르</span>
+      <span>숙련도</span>
+    </div>
+
+    <div class="song-table-body">
+      ${filtered.map((song, index) => {
+        const genreNames = {
+          ballad: "발라드",
+          dance: "댄스",
+          band: "밴드",
+          hiphop: "힙합/랩",
+          rnb: "R&B",
+          ost: "OST",
+          homework: "숙제곡"
+        };
+
+        const proficiency = Number(song.proficiency || 3);
+
+        return `
+          <div class="song-table-row">
+            <span class="song-number">${index + 1}</span>
+
+            <span class="song-title">
+              ${escapeHTML(song.title)}
+            </span>
+
+            <span class="song-artist">
+              ${escapeHTML(song.artist)}
+            </span>
+
+            <span class="song-genre">
+              ${escapeHTML(genreNames[song.genre] || song.genre || "-")}
+            </span>
+
+            <span class="song-proficiency">
+              ${"★".repeat(proficiency)}${"☆".repeat(5 - proficiency)}
+            </span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  </div>
+`;
 }
 document
   .querySelectorAll(".song-filter-btn")
