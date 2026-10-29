@@ -2482,6 +2482,9 @@ body.dark-mode .schedule-view-item small {
   transform: translateX(-2px);
 }
 
-#songs .song-genre-header {
-  transform: translateX(-4px);
+/* 노래책 장르 왼쪽 정렬 */
+#songs .song-genre-header,
+#songs .song-table-row .song-genre {
+  text-align: left;
+  justify-self: stretch;
 }
