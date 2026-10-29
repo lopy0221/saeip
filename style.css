@@ -2359,3 +2359,13 @@ body.dark-mode .schedule-view-item small {
   transform: none;
   margin-top: -110px;
 }
+
+/* 노래책 검색창 높이 줄이기 */
+#songs .songbook-search {
+  height: 42px;
+  padding: 0 14px;
+}
+
+#songs .songbook-search input {
+  height: 100%;
+}
