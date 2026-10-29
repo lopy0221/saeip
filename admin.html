@@ -2469,6 +2469,9 @@ document
     const genre =
       document.querySelector("#songGenre").value;
 
+    const proficiency =
+  Number(document.querySelector("#songProficiency").value);
+
     const status =
       document.querySelector("#songStatus");
 
@@ -2487,11 +2490,12 @@ if (editingSongId !== null) {
     await supabaseClient
       .from("songs")
       .update({
-        title,
-        artist,
-        category,
-        genre
-      })
+  title,
+  artist,
+  category,
+  genre,
+  proficiency
+})
       .eq("id", editingSongId);
 
   error = result.error;
@@ -2500,11 +2504,12 @@ if (editingSongId !== null) {
     await supabaseClient
       .from("songs")
       .insert({
-        title,
-        artist,
-        category,
-        genre
-      });
+  title,
+  artist,
+  category,
+  genre,
+  proficiency
+});
 
   error = result.error;
 }
