@@ -2425,3 +2425,9 @@ body.dark-mode .schedule-view-item small {
   width: auto;
   justify-self: center;
 }
+
+#songs #songArtistSort .sort-arrow {
+  position: absolute;
+  left: 100%;
+  margin-left: 4px;
+}
