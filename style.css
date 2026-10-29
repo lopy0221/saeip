@@ -2449,3 +2449,15 @@ body.dark-mode .schedule-view-item small {
   left: 100%;
   margin-left: 4px;
 }
+
+#songs #songProficiencySort {
+  position: relative;
+  width: auto;
+  justify-self: center;
+}
+
+#songs #songProficiencySort .sort-arrow {
+  position: absolute;
+  left: 100%;
+  margin-left: 4px;
+}
