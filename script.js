@@ -10,6 +10,7 @@ const links = {
 
 let songs = [];
 let selectedCountry = "all";
+let selectedGenre = "all";
 
 const $ = selector => document.querySelector(selector);
 const songList = $("#songList");
@@ -31,7 +32,15 @@ function renderSongs(query = "") {
     selectedCountry === "all" ||
     song.category === selectedCountry;
 
-  return matchesSearch && matchesCountry;
+  const matchesCountry =
+  selectedCountry === "all" ||
+  song.category === selectedCountry;
+
+const matchesGenre =
+  selectedGenre === "all" ||
+  song.genre === selectedGenre;
+
+return matchesSearch && matchesCountry && matchesGenre;
 });
   if (!filtered.length) {
     songList.innerHTML = `<div class="empty-state"><span>♫</span><b>${songs.length ? "검색 결과가 없어요" : "노래 목록을 준비 중이에요"}</b><p>${songs.length ? "다른 곡명이나 가수 이름으로 검색해 보세요." : "script.js의 songs 배열에 실제 곡 정보를 추가해 주세요."}</p></div>`;
@@ -47,6 +56,26 @@ document
 
       document
         .querySelectorAll(".song-filter-btn")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      renderSongs(
+        $("#songSearch").value
+      );
+    });
+  });
+document
+  .querySelectorAll(".song-genre-btn")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      selectedGenre = button.dataset.genre;
+
+      document
+        .querySelectorAll(".song-genre-btn")
         .forEach(item => {
           item.classList.toggle(
             "active",
