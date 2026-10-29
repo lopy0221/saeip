@@ -2461,3 +2461,10 @@ body.dark-mode .schedule-view-item small {
   left: 100%;
   margin-left: 4px;
 }
+
+/* 가수 열만 왼쪽 정렬 */
+#songs .song-table-header #songArtistSort,
+#songs .song-table-row .song-artist {
+  text-align: left;
+  justify-self: stretch;
+}
