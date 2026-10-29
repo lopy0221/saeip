@@ -96,7 +96,12 @@ if (titleSortDirection === "asc") {
 </button>
       <span>장르</span>
       <button type="button" id="songProficiencySort">
-  숙련도 ${proficiencySortDirection === "asc" ? "↑" : proficiencySortDirection === "desc" ? "↓" : "↕"}
+  <button type="button" id="songProficiencySort">
+  숙련도
+  <span class="sort-arrow">
+    ${proficiencySortDirection === "asc" ? "↑" : proficiencySortDirection === "desc" ? "↓" : "↕"}
+  </span>
+</button>
 </button>
     </div>
 
