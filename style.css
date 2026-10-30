@@ -2917,3 +2917,7 @@ body.dark-mode .schedule-view-item small {
     min-height: 120px;
   }
 }
+
+#karaokeNextButton {
+  display: none !important;
+}
