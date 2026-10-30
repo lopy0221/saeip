@@ -1688,6 +1688,11 @@ function closeKaraokeModal() {
   }
 
   karaokeStatus.textContent = "";
+
+  if (karaokeYoutubeLink) {
+  karaokeYoutubeLink.href = "#";
+  karaokeYoutubeLink.style.display = "none";
+}
 }
 
 karaokeNextButton?.addEventListener(
