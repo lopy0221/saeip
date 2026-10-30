@@ -1567,6 +1567,18 @@ const kyKaraokeUrl =
       const manualTjVideoId =
   getYouTubeVideoId(tjKaraokeUrl);
 
+      if (karaokeTjLink) {
+  karaokeTjLink.href =
+    manualTjVideoId
+      ? tjKaraokeUrl
+      : "#";
+
+  karaokeTjLink.style.display =
+    manualTjVideoId
+      ? "inline-flex"
+      : "none";
+}
+
 const manualKyVideoId =
   getYouTubeVideoId(kyKaraokeUrl);
 
