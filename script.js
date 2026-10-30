@@ -128,6 +128,7 @@ if (titleSortDirection === "asc") {
   class="song-title karaoke-button"
   data-karaoke-title="${escapeHTML(song.title)}"
   data-karaoke-artist="${escapeHTML(song.artist)}"
+  data-lyrics-url="${escapeHTML(song.lyrics_url || "")}"
 >
   ${escapeHTML(song.title)}
 </button>
@@ -1352,67 +1353,104 @@ let karaokeVideos = [];
 let karaokeVideoIndex = 0;
 let karaokeYouTubePlayer = null;
 
-async function openKaraokeModal(title, artist) {
-  if (!karaokeModal || !karaokePlayer) return;
+function openKaraokeModal(
+  title,
+  artist,
+  lyricsUrl
+) {
+  if (!karaokeModal) return;
 
   karaokeModalTitle.textContent = title;
   karaokeModalArtist.textContent = artist;
 
-  karaokeStatus.textContent = "";
+  karaokeModal.dataset.songTitle = title;
+  karaokeModal.dataset.songArtist = artist;
+  karaokeModal.dataset.lyricsUrl = lyricsUrl;
 
-  karaokeLoading.style.display = "flex";
-  karaokeLoading.textContent =
-    "노래방 영상을 찾고 있어요...";
+  karaokeStatus.textContent = "";
+  karaokeLoading.style.display = "none";
+  karaokeNextButton.style.display = "none";
+
+  karaokeModal.classList.add("choice-mode");
+  karaokeModal.classList.remove("video-mode");
 
   karaokeModal.classList.add("is-open");
   karaokeModal.setAttribute("aria-hidden", "false");
-
-  try {
-    const params = new URLSearchParams({
-      title,
-      artist
-    });
-
-    const response =
-      await fetch(`/api/karaoke?${params}`);
-
-    const data =
-      await response.json();
-
-    if (!response.ok || !data.video?.videoId) {
-      throw new Error(
-        data.error || "노래방 영상을 찾지 못했습니다."
-      );
-    }
-
-    karaokeLoading.style.display = "none";
-
-    karaokeVideos =
-  Array.isArray(data.videos) && data.videos.length
-    ? data.videos
-    : [data.video];
-
-karaokeVideoIndex = 0;
-
-playKaraokeVideo();
-
-karaokeNextButton.style.display =
-  karaokeVideos.length > 1
-    ? "block"
-    : "none";
-
-  } catch (error) {
-    console.error(
-      "노래방 영상 검색 오류:",
-      error
-    );
-
-    karaokeLoading.style.display = "none";
-
-    karaokeStatus.textContent =
-      "노래방 영상을 찾지 못했어요.";
-  }
 }
+
+const karaokeVersionButton =
+  document.querySelector("#karaokeVersionButton");
+
+karaokeVersionButton?.addEventListener(
+  "click",
+  async () => {
+    const title =
+      karaokeModal.dataset.songTitle || "";
+
+    const artist =
+      karaokeModal.dataset.songArtist || "";
+
+    karaokeModal.classList.remove("choice-mode");
+    karaokeModal.classList.add("video-mode");
+
+    karaokeStatus.textContent = "";
+
+    karaokeLoading.style.display = "flex";
+    karaokeLoading.textContent =
+      "노래방 영상을 찾고 있어요...";
+
+    try {
+      const params = new URLSearchParams({
+        title,
+        artist
+      });
+
+      const response =
+        await fetch(`/api/karaoke?${params}`);
+
+      const data =
+        await response.json();
+
+      if (
+        !response.ok ||
+        !data.video?.videoId
+      ) {
+        throw new Error(
+          data.error ||
+          "노래방 영상을 찾지 못했습니다."
+        );
+      }
+
+      karaokeLoading.style.display = "none";
+
+      karaokeVideos =
+        Array.isArray(data.videos) &&
+        data.videos.length
+          ? data.videos
+          : [data.video];
+
+      karaokeVideoIndex = 0;
+
+      playKaraokeVideo();
+
+      karaokeNextButton.style.display =
+        karaokeVideos.length > 1
+          ? "block"
+          : "none";
+
+    } catch (error) {
+      console.error(
+        "노래방 영상 검색 오류:",
+        error
+      );
+
+      karaokeLoading.style.display = "none";
+
+      karaokeStatus.textContent =
+        "노래방 영상을 찾지 못했어요.";
+    }
+  }
+);
 
 function playKaraokeVideo() {
   const video =
@@ -1521,9 +1559,10 @@ document.addEventListener("click", event => {
     event.preventDefault();
 
     openKaraokeModal(
-      button.dataset.karaokeTitle || "",
-      button.dataset.karaokeArtist || ""
-    );
+  button.dataset.karaokeTitle || "",
+  button.dataset.karaokeArtist || "",
+  button.dataset.lyricsUrl || ""
+);
 
     return;
   }
