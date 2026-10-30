@@ -129,6 +129,8 @@ if (titleSortDirection === "asc") {
   data-karaoke-title="${escapeHTML(song.title)}"
   data-karaoke-artist="${escapeHTML(song.artist)}"
   data-lyrics-url="${escapeHTML(song.lyrics_url || "")}"
+  data-tj-karaoke-url="${escapeHTML(song.tj_karaoke_url || "")}"
+data-ky-karaoke-url="${escapeHTML(song.ky_karaoke_url || "")}"
 >
   ${escapeHTML(song.title)}
 </button>
