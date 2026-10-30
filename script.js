@@ -1619,6 +1619,10 @@ if (
 
  karaokeVideos = [
   {
+    type: "tj",
+    videoId: manualTjVideoId
+  },
+  {
     type: "ky",
     videoId: manualKyVideoId
   }
@@ -1708,6 +1712,7 @@ const kyVideo =
     : autoKyVideo;
 
 karaokeVideos = [
+  tjVideo,
   kyVideo
 ].filter(Boolean);
 
