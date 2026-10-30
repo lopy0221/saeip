@@ -101,11 +101,19 @@ const item =
   };
 }
 
+const requestedType =
+  String(req.query.type || "")
+    .toLowerCase();
+
 const tjVideo =
-  await searchKaraoke("tj");
+  requestedType === "ky"
+    ? null
+    : await searchKaraoke("tj");
 
 const kyVideo =
-  await searchKaraoke("ky");
+  requestedType === "tj"
+    ? null
+    : await searchKaraoke("ky");
 
 const videos = [
   tjVideo,
