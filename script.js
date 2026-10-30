@@ -1350,6 +1350,7 @@ const karaokeNextButton =
 
 let karaokeVideos = [];
 let karaokeVideoIndex = 0;
+let karaokeYouTubePlayer = null;
 
 async function openKaraokeModal(title, artist) {
   if (!karaokeModal || !karaokePlayer) return;
@@ -1422,26 +1423,83 @@ function playKaraokeVideo() {
 
   if (!video?.videoId) return;
 
-  karaokePlayer.src =
-    `https://www.youtube.com/embed/${video.videoId}?autoplay=1`;
-
-  karaokePlayer.style.display = "block";
-
   karaokeStatus.textContent =
     karaokeVideos.length > 1
       ? `${karaokeVideoIndex + 1} / ${karaokeVideos.length} 검색 결과`
       : "";
+
+  if (karaokeYouTubePlayer) {
+    karaokeYouTubePlayer.loadVideoById(
+      video.videoId
+    );
+
+    return;
+  }
+
+  karaokePlayer.style.display = "block";
+
+  karaokeYouTubePlayer =
+    new YT.Player("karaokePlayer", {
+      videoId: video.videoId,
+
+      playerVars: {
+        autoplay: 1,
+        rel: 0
+      },
+
+      events: {
+        onReady: event => {
+          event.target.playVideo();
+        },
+
+        onError: () => {
+          playNextKaraokeVideoAutomatically();
+        }
+      }
+    });
+}
+
+function playNextKaraokeVideoAutomatically() {
+  if (karaokeVideos.length <= 1) {
+    karaokeStatus.textContent =
+      "재생 가능한 노래방 영상을 찾지 못했어요.";
+
+    return;
+  }
+
+  if (
+    karaokeVideoIndex >=
+    karaokeVideos.length - 1
+  ) {
+    karaokeStatus.textContent =
+      "재생 가능한 노래방 영상을 찾지 못했어요.";
+
+    return;
+  }
+
+  karaokeVideoIndex++;
+
+  karaokeStatus.textContent =
+    "다른 노래방 영상을 찾고 있어요...";
+
+  setTimeout(() => {
+    playKaraokeVideo();
+  }, 500);
 }
 
 function closeKaraokeModal() {
-  if (!karaokeModal || !karaokePlayer) return;
+  if (!karaokeModal) return;
 
   karaokeModal.classList.remove("is-open");
   karaokeModal.setAttribute("aria-hidden", "true");
 
-  /* 영상 재생 정지 */
-  karaokePlayer.src = "";
-  karaokePlayer.style.display = "none";
+  /* 닫았을 때 영상 정지 */
+  if (
+    karaokeYouTubePlayer &&
+    typeof karaokeYouTubePlayer.stopVideo === "function"
+  ) {
+    karaokeYouTubePlayer.stopVideo();
+  }
 
   karaokeStatus.textContent = "";
 }
