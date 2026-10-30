@@ -1588,17 +1588,12 @@ if (
 ) {
   karaokeLoading.style.display = "none";
 
-  karaokeVideos = [
-    {
-      type: "tj",
-      videoId: manualTjVideoId
-    },
-    {
-      type: "ky",
-      videoId: manualKyVideoId
-    }
-  ];
-
+ karaokeVideos = [
+  {
+    type: "ky",
+    videoId: manualKyVideoId
+  }
+];
   karaokeVideoIndex = 0;
 
   playKaraokeVideo();
