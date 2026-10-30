@@ -2642,3 +2642,25 @@ body.dark-mode .schedule-view-item small {
   font-size: 11px;
   font-weight: 700;
 }
+
+/* =========================
+   노래방 영상 버튼
+========================= */
+
+.karaoke-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.karaoke-button:hover {
+  color: #6f9fdf;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
