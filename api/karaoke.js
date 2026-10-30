@@ -54,10 +54,35 @@ export default async function handler(req, res) {
     return null;
   }
 
-  const item =
-    (data.items || []).find(
-      item => item.id?.videoId
-    );
+  const items =
+  (data.items || []).filter(
+    item => item.id?.videoId
+  );
+
+const item =
+  type === "tj"
+    ? items.find(item => {
+        const text =
+          `${item.snippet?.title || ""} ` +
+          `${item.snippet?.channelTitle || ""}`
+            .toLowerCase();
+
+        return (
+          text.includes("tj") ||
+          text.includes("태진")
+        );
+      })
+    : items.find(item => {
+        const text =
+          `${item.snippet?.title || ""} ` +
+          `${item.snippet?.channelTitle || ""}`
+            .toLowerCase();
+
+        return (
+          text.includes("금영") ||
+          text.includes("ky")
+        );
+      });
 
   if (!item) {
     return null;
