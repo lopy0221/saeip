@@ -1816,13 +1816,11 @@ function closeKaraokeModal() {
   karaokeModal.classList.remove("is-open");
   karaokeModal.setAttribute("aria-hidden", "true");
 
-  /* 닫았을 때 영상 정지 */
-  if (
-    karaokeYouTubePlayer &&
-    typeof karaokeYouTubePlayer.stopVideo === "function"
-  ) {
-    karaokeYouTubePlayer.stopVideo();
-  }
+  /* 닫았을 때 플레이어 완전 초기화 */
+if (karaokeYouTubePlayer) {
+  karaokeYouTubePlayer.destroy();
+  karaokeYouTubePlayer = null;
+}
 
   karaokeStatus.textContent = "";
 
