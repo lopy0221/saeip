@@ -1361,7 +1361,9 @@ let karaokeYouTubePlayer = null;
 function openKaraokeModal(
   title,
   artist,
-  lyricsUrl
+  lyricsUrl,
+  tjKaraokeUrl,
+  kyKaraokeUrl
 ) {
   if (!karaokeModal) return;
 
@@ -1371,6 +1373,12 @@ function openKaraokeModal(
   karaokeModal.dataset.songTitle = title;
   karaokeModal.dataset.songArtist = artist;
   karaokeModal.dataset.lyricsUrl = lyricsUrl;
+
+  karaokeModal.dataset.tjKaraokeUrl =
+  tjKaraokeUrl;
+
+karaokeModal.dataset.kyKaraokeUrl =
+  kyKaraokeUrl;
 
   karaokeStatus.textContent = "";
   karaokeLoading.style.display = "none";
@@ -1537,6 +1545,12 @@ karaokeVersionButton?.addEventListener(
     const artist =
       karaokeModal.dataset.songArtist || "";
 
+    const tjKaraokeUrl =
+  karaokeModal.dataset.tjKaraokeUrl || "";
+
+const kyKaraokeUrl =
+  karaokeModal.dataset.kyKaraokeUrl || "";
+
     karaokeModal.classList.remove("choice-mode");
     karaokeModal.classList.add("video-mode");
 
@@ -1547,6 +1561,38 @@ karaokeVersionButton?.addEventListener(
       "노래방 영상을 찾고 있어요...";
 
     try {
+      const manualTjVideoId =
+  getYouTubeVideoId(tjKaraokeUrl);
+
+const manualKyVideoId =
+  getYouTubeVideoId(kyKaraokeUrl);
+
+if (
+  manualTjVideoId &&
+  manualKyVideoId
+) {
+  karaokeLoading.style.display = "none";
+
+  karaokeVideos = [
+    {
+      type: "tj",
+      videoId: manualTjVideoId
+    },
+    {
+      type: "ky",
+      videoId: manualKyVideoId
+    }
+  ];
+
+  karaokeVideoIndex = 0;
+
+  playKaraokeVideo();
+
+  karaokeNextButton.style.display =
+    "block";
+
+  return;
+}
       const params = new URLSearchParams({
         title,
         artist
@@ -1570,11 +1616,42 @@ karaokeVersionButton?.addEventListener(
 
       karaokeLoading.style.display = "none";
 
-      karaokeVideos =
-        Array.isArray(data.videos) &&
-        data.videos.length
-          ? data.videos
-          : [data.video];
+      const autoVideos =
+  Array.isArray(data.videos) &&
+  data.videos.length
+    ? data.videos
+    : [data.video];
+
+const autoTjVideo =
+  autoVideos.find(
+    video => video.type === "tj"
+  );
+
+const autoKyVideo =
+  autoVideos.find(
+    video => video.type === "ky"
+  );
+
+const tjVideo =
+  manualTjVideoId
+    ? {
+        type: "tj",
+        videoId: manualTjVideoId
+      }
+    : autoTjVideo;
+
+const kyVideo =
+  manualKyVideoId
+    ? {
+        type: "ky",
+        videoId: manualKyVideoId
+      }
+    : autoKyVideo;
+
+karaokeVideos = [
+  tjVideo,
+  kyVideo
+].filter(Boolean);
 
       karaokeVideoIndex = 0;
 
@@ -1721,9 +1798,10 @@ document.addEventListener("click", event => {
     openKaraokeModal(
   button.dataset.karaokeTitle || "",
   button.dataset.karaokeArtist || "",
-  button.dataset.lyricsUrl || ""
+  button.dataset.lyricsUrl || "",
+  button.dataset.tjKaraokeUrl || "",
+  button.dataset.kyKaraokeUrl || ""
 );
-
     return;
   }
 
