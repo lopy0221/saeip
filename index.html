@@ -904,7 +904,59 @@ or
 
   </main>
 
+<!-- 노래방 영상 팝업 -->
+<div
+  class="karaoke-modal"
+  id="karaokeModal"
+  aria-hidden="true"
+>
+  <div class="karaoke-modal-card">
 
+    <button
+      type="button"
+      class="karaoke-modal-close"
+      id="karaokeModalClose"
+      aria-label="닫기"
+    >
+      ✕
+    </button>
+
+    <div class="karaoke-modal-head">
+      <span>🎤 KARAOKE</span>
+
+      <h2 id="karaokeModalTitle">
+        노래방
+      </h2>
+
+      <p id="karaokeModalArtist"></p>
+    </div>
+
+    <div class="karaoke-video-wrap">
+
+      <div
+        class="karaoke-loading"
+        id="karaokeLoading"
+      >
+        노래방 영상을 찾고 있어요...
+      </div>
+
+      <iframe
+        id="karaokePlayer"
+        title="노래방 영상"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+
+    </div>
+
+    <div
+      class="karaoke-status"
+      id="karaokeStatus"
+    ></div>
+
+  </div>
+</div>
+  
   <!-- 관리자 로그인 팝업 -->
 <div class="admin-login-modal" id="adminLoginModal">
   <div class="admin-login-card">
