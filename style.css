@@ -2898,6 +2898,9 @@ body.dark-mode .schedule-view-item small {
 .karaoke-modal.choice-mode .karaoke-status,
 .karaoke-modal.choice-mode .karaoke-next-button {
   display: none !important;
+  .karaoke-modal.choice-mode #karaokeTjLink {
+  display: none !important;
+}
 }
 
 /* 영상 재생 화면에서는 선택 버튼 숨김 */
