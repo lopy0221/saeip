@@ -3022,13 +3022,13 @@ body.dark-mode .schedule-view-item small {
 
 /* ← 버튼 공간만큼 상단 글자들을 아래로 이동 */
 .karaoke-modal.video-mode .karaoke-label {
-  transform: translateY(10px);
+  transform: translateY(22px);
 }
 
 .karaoke-modal.video-mode .karaoke-title {
-  transform: translateY(10px);
+  transform: translateY(22px);
 }
 
 .karaoke-modal.video-mode .karaoke-artist {
-  transform: translateY(10px);
+  transform: translateY(22px);
 }
