@@ -1,3 +1,9 @@
+const SUPABASE_URL =
+  "https://txwlwxldagplfhlgopyl.supabase.co";
+
+const SUPABASE_SECRET_KEY =
+  process.env.SUPABASE_SECRET_KEY;
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
@@ -24,6 +30,55 @@ export default async function handler(req, res) {
 
   try {
     async function searchKaraoke(type) {
+
+const cacheKey =
+  `karaoke-${type}|${artist}|${title}`
+    .trim()
+    .toLowerCase();
+
+const cacheResponse = await fetch(
+  `${SUPABASE_URL}/rest/v1/youtube_search_cache` +
+  `?cache_key=eq.${encodeURIComponent(cacheKey)}` +
+  `&select=*` +
+  `&limit=1`,
+  {
+    headers: {
+      apikey: SUPABASE_SECRET_KEY,
+      Authorization:
+        `Bearer ${SUPABASE_SECRET_KEY}`
+    }
+  }
+);
+
+if (cacheResponse.ok) {
+  const cached = await cacheResponse.json();
+
+  if (cached.length > 0) {
+    const item = cached[0];
+
+    const createdAt =
+      new Date(item.created_at).getTime();
+
+    const cacheAge =
+      Date.now() - createdAt;
+
+    const twentyFourHours =
+      24 * 60 * 60 * 1000;
+
+    if (cacheAge < twentyFourHours) {
+      return {
+        type,
+        videoId: item.video_id,
+        title: item.video_title || "",
+        channelTitle:
+          item.channel_title || "",
+        thumbnail: item.thumbnail || "",
+        cached: true
+      };
+    }
+  }
+}
+      
   const keyword =
     type === "tj"
       ? `${artist} ${title} TJ 노래방`
@@ -88,17 +143,44 @@ const item =
     return null;
   }
 
-  return {
-    type,
-    videoId: item.id.videoId,
-    title: item.snippet?.title || "",
-    channelTitle:
-      item.snippet?.channelTitle || "",
-    thumbnail:
-      item.snippet?.thumbnails?.medium?.url ||
-      item.snippet?.thumbnails?.default?.url ||
-      ""
-  };
+  const selectedVideo = {
+  type,
+  videoId: item.id.videoId,
+  title: item.snippet?.title || "",
+  channelTitle:
+    item.snippet?.channelTitle || "",
+  thumbnail:
+    item.snippet?.thumbnails?.medium?.url ||
+    item.snippet?.thumbnails?.default?.url ||
+    ""
+};
+
+await fetch(
+  `${SUPABASE_URL}/rest/v1/youtube_search_cache?on_conflict=cache_key`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_SECRET_KEY,
+      Authorization:
+        `Bearer ${SUPABASE_SECRET_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      cache_key: cacheKey,
+      video_id: selectedVideo.videoId,
+      video_title: selectedVideo.title,
+      channel_title:
+        selectedVideo.channelTitle,
+      thumbnail:
+        selectedVideo.thumbnail || "",
+      created_at:
+        new Date().toISOString()
+    })
+  }
+);
+
+return selectedVideo;
 }
 
 const requestedType =
