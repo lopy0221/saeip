@@ -1378,6 +1378,143 @@ function openKaraokeModal(
   karaokeModal.setAttribute("aria-hidden", "false");
 }
 
+const lyricsVersionButton =
+  document.querySelector("#lyricsVersionButton");
+
+function getYouTubeVideoId(url) {
+  try {
+    const parsed = new URL(url);
+
+    if (parsed.hostname.includes("youtu.be")) {
+      return parsed.pathname
+        .slice(1)
+        .split("/")[0];
+    }
+
+    const watchId =
+      parsed.searchParams.get("v");
+
+    if (watchId) {
+      return watchId;
+    }
+
+    const parts =
+      parsed.pathname
+        .split("/")
+        .filter(Boolean);
+
+    const markerIndex =
+      parts.findIndex(part =>
+        ["embed", "shorts", "live"].includes(part)
+      );
+
+    if (
+      markerIndex !== -1 &&
+      parts[markerIndex + 1]
+    ) {
+      return parts[markerIndex + 1];
+    }
+
+  } catch (error) {
+    console.error(
+      "YouTube URL 확인 오류:",
+      error
+    );
+  }
+
+  return "";
+}
+
+lyricsVersionButton?.addEventListener(
+  "click",
+  async () => {
+    const title =
+      karaokeModal.dataset.songTitle || "";
+
+    const artist =
+      karaokeModal.dataset.songArtist || "";
+
+    const lyricsUrl =
+      karaokeModal.dataset.lyricsUrl || "";
+
+    karaokeModal.classList.remove("choice-mode");
+    karaokeModal.classList.add("video-mode");
+
+    karaokeStatus.textContent = "";
+
+    karaokeLoading.style.display = "flex";
+    karaokeLoading.textContent =
+      "가사 영상을 찾고 있어요...";
+
+    try {
+      let videoId = "";
+
+      if (lyricsUrl) {
+        videoId =
+          getYouTubeVideoId(lyricsUrl);
+
+        if (!videoId) {
+          throw new Error(
+            "등록된 가사 영상 URL을 확인할 수 없습니다."
+          );
+        }
+
+      } else {
+        const params =
+          new URLSearchParams({
+            title,
+            artist
+          });
+
+        const response =
+          await fetch(`/api/lyrics?${params}`);
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.video?.videoId
+        ) {
+          throw new Error(
+            data.error ||
+            "가사 영상을 찾지 못했습니다."
+          );
+        }
+
+        videoId =
+          data.video.videoId;
+      }
+
+      karaokeLoading.style.display = "none";
+
+      karaokeVideos = [
+        {
+          videoId
+        }
+      ];
+
+      karaokeVideoIndex = 0;
+
+      playKaraokeVideo();
+
+      karaokeNextButton.style.display =
+        "none";
+
+    } catch (error) {
+      console.error(
+        "가사 영상 검색 오류:",
+        error
+      );
+
+      karaokeLoading.style.display = "none";
+
+      karaokeStatus.textContent =
+        "가사 영상을 찾지 못했어요.";
+    }
+  }
+);
+
 const karaokeVersionButton =
   document.querySelector("#karaokeVersionButton");
 
