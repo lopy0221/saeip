@@ -2952,3 +2952,11 @@ body.dark-mode .schedule-view-item small {
   transform: translateY(-2px);
   background: #e3f0ff;
 }
+
+#karaokeTjLink {
+  margin-left: calc(50% - 130px);
+}
+
+#karaokeYoutubeLink {
+  margin-left: 6px;
+}
