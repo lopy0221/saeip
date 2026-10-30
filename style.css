@@ -2967,3 +2967,8 @@ body.dark-mode .schedule-view-item small {
 #karaokeYoutubeLink {
   margin: 0;
 }
+
+
+.karaoke-modal.video-mode .song-version-choice {
+  display: none !important;
+}
