@@ -1360,9 +1360,6 @@ async function openKaraokeModal(title, artist) {
 
   karaokeStatus.textContent = "";
 
-  karaokePlayer.src = "";
-  karaokePlayer.style.display = "none";
-
   karaokeLoading.style.display = "flex";
   karaokeLoading.textContent =
     "노래방 영상을 찾고 있어요...";
@@ -1435,8 +1432,6 @@ function playKaraokeVideo() {
 
     return;
   }
-
-  karaokePlayer.style.display = "block";
 
   karaokeYouTubePlayer =
     new YT.Player("karaokePlayer", {
