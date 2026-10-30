@@ -1461,6 +1461,11 @@ lyricsVersionButton?.addEventListener(
     karaokeModal.classList.remove("choice-mode");
     karaokeModal.classList.add("video-mode");
 
+    if (karaokeTjLink) {
+  karaokeTjLink.href = "#";
+  karaokeTjLink.style.display = "none";
+}
+
     karaokeStatus.textContent = "";
 
     karaokeLoading.style.display = "flex";
