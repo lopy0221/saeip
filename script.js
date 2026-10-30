@@ -1349,6 +1349,9 @@ const karaokeModalClose =
 const karaokeNextButton =
   document.querySelector("#karaokeNextButton");
 
+const karaokeYoutubeLink =
+  document.querySelector("#karaokeYoutubeLink");
+
 let karaokeVideos = [];
 let karaokeVideoIndex = 0;
 let karaokeYouTubePlayer = null;
@@ -1370,6 +1373,11 @@ function openKaraokeModal(
   karaokeStatus.textContent = "";
   karaokeLoading.style.display = "none";
   karaokeNextButton.style.display = "none";
+
+  if (karaokeYoutubeLink) {
+  karaokeYoutubeLink.href = "#";
+  karaokeYoutubeLink.style.display = "none";
+}
 
   karaokeModal.classList.add("choice-mode");
   karaokeModal.classList.remove("video-mode");
@@ -1594,6 +1602,14 @@ function playKaraokeVideo() {
     karaokeVideos[karaokeVideoIndex];
 
   if (!video?.videoId) return;
+
+  if (karaokeYoutubeLink) {
+  karaokeYoutubeLink.href =
+    `https://www.youtube.com/watch?v=${video.videoId}`;
+
+  karaokeYoutubeLink.style.display =
+    "inline-flex";
+}
 
   karaokeStatus.textContent =
     karaokeVideos.length > 1
