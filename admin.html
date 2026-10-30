@@ -1123,6 +1123,42 @@ align-content: start;
       </select>
     </div>
 
+    <div class="field">
+  <label for="songLyricsUrl">
+    가사 영상 URL (선택)
+  </label>
+
+  <input
+    id="songLyricsUrl"
+    type="url"
+    placeholder="비워두면 자동으로 검색합니다."
+  >
+</div>
+
+<div class="field">
+  <label for="songTjKaraokeUrl">
+    TJ 노래방 URL (선택)
+  </label>
+
+  <input
+    id="songTjKaraokeUrl"
+    type="url"
+    placeholder="비워두면 TJ 영상을 자동으로 검색합니다."
+  >
+</div>
+
+<div class="field">
+  <label for="songKyKaraokeUrl">
+    KY 노래방 URL (선택)
+  </label>
+
+  <input
+    id="songKyKaraokeUrl"
+    type="url"
+    placeholder="비워두면 KY 영상을 자동으로 검색합니다."
+  >
+</div>
+
     <button
       class="save-button"
       id="songSaveButton"
@@ -1420,7 +1456,12 @@ let editingSongId = null;
   document.querySelector("#songArtist").value = "";
   document.querySelector("#songCategory").value = "kpop";
   document.querySelector("#songGenre").value = "ballad";
+      
   document.querySelector("#songProficiency").value = "3";
+
+      document.querySelector("#songLyricsUrl").value = "";
+document.querySelector("#songTjKaraokeUrl").value = "";
+document.querySelector("#songKyKaraokeUrl").value = "";
 
   document.querySelector("#songSaveButton").textContent =
     "노래 등록";
@@ -1475,6 +1516,15 @@ window.editSong = function(id) {
 
 document.querySelector("#songProficiency").value =
   String(song.proficiency ?? 3);
+
+  document.querySelector("#songLyricsUrl").value =
+  song.lyrics_url || "";
+
+document.querySelector("#songTjKaraokeUrl").value =
+  song.tj_karaoke_url || "";
+
+document.querySelector("#songKyKaraokeUrl").value =
+  song.ky_karaoke_url || "";
   
   document.querySelector("#songSaveButton").textContent =
     "노래 수정";
@@ -2927,6 +2977,15 @@ showManagePage(savedManagePage);
     const proficiency =
   Number(document.querySelector("#songProficiency").value);
 
+    const lyricsUrl =
+  document.querySelector("#songLyricsUrl").value.trim();
+
+const tjKaraokeUrl =
+  document.querySelector("#songTjKaraokeUrl").value.trim();
+
+const kyKaraokeUrl =
+  document.querySelector("#songKyKaraokeUrl").value.trim();
+
     const status =
       document.querySelector("#songStatus");
 
@@ -2949,7 +3008,10 @@ if (editingSongId !== null) {
   artist,
   category,
   genre,
-  proficiency
+  proficiency,
+  lyrics_url: lyricsUrl || null,
+  tj_karaoke_url: tjKaraokeUrl || null,
+  ky_karaoke_url: kyKaraokeUrl || null
 })
       .eq("id", editingSongId);
 
@@ -2963,7 +3025,10 @@ if (editingSongId !== null) {
   artist,
   category,
   genre,
-  proficiency
+  proficiency,
+  lyrics_url: lyricsUrl || null,
+  tj_karaoke_url: tjKaraokeUrl || null,
+  ky_karaoke_url: kyKaraokeUrl || null
 });
 
   error = result.error;
@@ -2983,6 +3048,10 @@ document.querySelector("#songArtist").value = "";
 document.querySelector("#songCategory").value = "kpop";
 document.querySelector("#songGenre").value = "ballad";
 
+document.querySelector("#songLyricsUrl").value = "";
+document.querySelector("#songTjKaraokeUrl").value = "";
+document.querySelector("#songKyKaraokeUrl").value = "";
+    
 if (editingSongId !== null) {
   status.textContent = "노래를 수정했어요. 🩵";
 } else {
