@@ -3009,3 +3009,26 @@ body.dark-mode .schedule-view-item small {
 .karaoke-modal.choice-mode .karaoke-back-button {
   display: none;
 }
+
+.karaoke-modal.video-mode .karaoke-back-button {
+  position: absolute;
+  top: 18px;
+  left: 14px;
+
+  display: flex;
+  margin: 0;
+  z-index: 5;
+}
+
+/* ← 버튼 공간만큼 상단 글자들을 아래로 이동 */
+.karaoke-modal.video-mode .karaoke-label {
+  transform: translateY(10px);
+}
+
+.karaoke-modal.video-mode .karaoke-title {
+  transform: translateY(10px);
+}
+
+.karaoke-modal.video-mode .karaoke-artist {
+  transform: translateY(10px);
+}
