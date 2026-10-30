@@ -2972,3 +2972,40 @@ body.dark-mode .schedule-view-item small {
 .karaoke-modal.video-mode .song-version-choice {
   display: none !important;
 }
+
+.karaoke-back-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  margin: 0 0 10px 0;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #eef6ff;
+  color: #6f9fd8;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.karaoke-back-button:hover {
+  transform: translateX(-2px);
+  background: #e3f0ff;
+}
+
+.karaoke-modal.video-mode .karaoke-back-button {
+  display: flex;
+}
+
+.karaoke-modal.choice-mode .karaoke-back-button {
+  display: none;
+}
