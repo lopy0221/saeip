@@ -41,27 +41,16 @@ if (cacheResponse.ok) {
   if (cached.length > 0) {
     const item = cached[0];
 
-    const createdAt =
-      new Date(item.created_at).getTime();
-
-    const cacheAge =
-      Date.now() - createdAt;
-
-    const twentyFourHours =
-      24 * 60 * 60 * 1000;
-
-    if (cacheAge < twentyFourHours) {
-      return res.status(200).json({
-        video: {
-          videoId: item.video_id,
-          title: item.video_title || "",
-          channelTitle:
-            item.channel_title || "",
-          thumbnail: item.thumbnail || ""
-        },
-        cached: true
-      });
-    }
+    return res.status(200).json({
+  video: {
+    videoId: item.video_id,
+    title: item.video_title || "",
+    channelTitle:
+      item.channel_title || "",
+    thumbnail: item.thumbnail || ""
+  },
+  cached: true
+});
   }
 }
 
@@ -138,9 +127,9 @@ await fetch(
 );
 
     return res.status(200).json({
-      video: videos[0]
-    });
-
+  video: selectedVideo
+});
+    
   } catch (error) {
     console.error(error);
 
