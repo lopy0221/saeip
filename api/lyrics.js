@@ -39,8 +39,9 @@ export default async function handler(req, res) {
       console.error(data);
 
       return res.status(response.status).json({
-        error: "YouTube 검색에 실패했습니다."
-      });
+  error: "YouTube 검색에 실패했습니다.",
+  details: data
+});
     }
 
     const videos = (data.items || [])
