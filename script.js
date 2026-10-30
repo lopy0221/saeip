@@ -1650,6 +1650,18 @@ const autoTjVideo =
     video => video.type === "tj"
   );
 
+      if (
+  karaokeTjLink &&
+  !manualTjVideoId &&
+  autoTjVideo?.videoId
+) {
+  karaokeTjLink.href =
+    `https://www.youtube.com/watch?v=${autoTjVideo.videoId}`;
+
+  karaokeTjLink.style.display =
+    "inline-flex";
+}
+
 const autoKyVideo =
   autoVideos.find(
     video => video.type === "ky"
@@ -1672,7 +1684,6 @@ const kyVideo =
     : autoKyVideo;
 
 karaokeVideos = [
-  tjVideo,
   kyVideo
 ].filter(Boolean);
 
