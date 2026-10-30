@@ -1729,7 +1729,7 @@ karaokeVideos = [
       karaokeLoading.style.display = "none";
 
       karaokeStatus.textContent =
-        "노래방 영상을 찾지 못했어요.";
+        "";
     }
   }
 );
