@@ -1345,6 +1345,11 @@ const karaokeModalArtist =
 const karaokeModalClose =
   document.querySelector("#karaokeModalClose");
 
+const karaokeNextButton =
+  document.querySelector("#karaokeNextButton");
+
+let karaokeVideos = [];
+let karaokeVideoIndex = 0;
 
 async function openKaraokeModal(title, artist) {
   if (!karaokeModal || !karaokePlayer) return;
@@ -1384,10 +1389,19 @@ async function openKaraokeModal(title, artist) {
 
     karaokeLoading.style.display = "none";
 
-    karaokePlayer.src =
-      `https://www.youtube.com/embed/${data.video.videoId}?autoplay=1`;
+    karaokeVideos =
+  Array.isArray(data.videos) && data.videos.length
+    ? data.videos
+    : [data.video];
 
-    karaokePlayer.style.display = "block";
+karaokeVideoIndex = 0;
+
+playKaraokeVideo();
+
+karaokeNextButton.style.display =
+  karaokeVideos.length > 1
+    ? "block"
+    : "none";
 
   } catch (error) {
     console.error(
@@ -1402,6 +1416,22 @@ async function openKaraokeModal(title, artist) {
   }
 }
 
+function playKaraokeVideo() {
+  const video =
+    karaokeVideos[karaokeVideoIndex];
+
+  if (!video?.videoId) return;
+
+  karaokePlayer.src =
+    `https://www.youtube.com/embed/${video.videoId}?autoplay=1`;
+
+  karaokePlayer.style.display = "block";
+
+  karaokeStatus.textContent =
+    karaokeVideos.length > 1
+      ? `${karaokeVideoIndex + 1} / ${karaokeVideos.length} 검색 결과`
+      : "";
+}
 
 function closeKaraokeModal() {
   if (!karaokeModal || !karaokePlayer) return;
@@ -1415,6 +1445,19 @@ function closeKaraokeModal() {
 
   karaokeStatus.textContent = "";
 }
+
+karaokeNextButton?.addEventListener(
+  "click",
+  () => {
+    if (karaokeVideos.length <= 1) return;
+
+    karaokeVideoIndex =
+      (karaokeVideoIndex + 1) %
+      karaokeVideos.length;
+
+    playKaraokeVideo();
+  }
+);
 
 
 document.addEventListener("click", event => {
