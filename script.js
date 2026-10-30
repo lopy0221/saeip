@@ -1753,10 +1753,7 @@ function playKaraokeVideo() {
     "inline-flex";
 }
 
-  karaokeStatus.textContent =
-    karaokeVideos.length > 1
-      ? `${karaokeVideoIndex + 1} / ${karaokeVideos.length} 검색 결과`
-      : "";
+  karaokeStatus.textContent = "";
 
   if (karaokeYouTubePlayer) {
     karaokeYoutubePlayer.cueVideoById(
