@@ -1454,7 +1454,8 @@ karaokeBackButton?.addEventListener("click", () => {
   karaokeModal.classList.add("choice-mode");
 
   if (karaokeYoutubePlayer) {
-  karaokeYoutubePlayer.stopVideo();
+  karaokeYoutubePlayer.destroy();
+  karaokeYoutubePlayer = null;
 }
 
   karaokeStatus.textContent = "";
