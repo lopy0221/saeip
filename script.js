@@ -1766,14 +1766,11 @@ function playKaraokeVideo() {
       videoId: video.videoId,
 
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
         rel: 0
       },
 
       events: {
-        onReady: event => {
-          event.target.playVideo();
-        },
 
         onError: () => {
           playNextKaraokeVideoAutomatically();
