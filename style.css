@@ -2921,3 +2921,34 @@ body.dark-mode .schedule-view-item small {
 #karaokeNextButton {
   display: none !important;
 }
+
+#karaokeTjLink,
+#karaokeYoutubeLink {
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 14px;
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #eef6ff;
+  color: #6f9fd8;
+
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+#karaokeTjLink:hover,
+#karaokeYoutubeLink:hover {
+  transform: translateY(-2px);
+  background: #e3f0ff;
+}
