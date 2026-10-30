@@ -674,6 +674,77 @@ align-content: start;
   padding: 11px 18px;
 }
 
+.song-admin-filters {
+  margin-bottom: 18px;
+}
+
+.song-admin-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.song-admin-country-filters,
+.song-admin-genre-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.song-filter,
+.song-genre-filter {
+  border: 1px solid #dce8f6;
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: #f8fbff;
+  color: #7890ad;
+  font-size: 12px;
+  font-weight: 800;
+  transition: .15s;
+}
+
+.song-filter:hover,
+.song-genre-filter:hover {
+  border-color: #b8d2f3;
+  background: #f0f7ff;
+}
+
+.song-filter.active,
+.song-genre-filter.active {
+  border-color: #92bcef;
+  background: #eaf4ff;
+  color: #6698dc;
+}
+
+.song-admin-search {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.song-admin-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid #dbe6f3;
+  border-radius: 11px;
+  outline: none;
+  background: #fbfdff;
+  color: #40536f;
+  font-size: 12px;
+}
+
+.song-admin-search input:focus {
+  border-color: #91b7ee;
+  box-shadow: 0 0 0 3px rgba(120, 167, 234, .1);
+}
+
+.song-admin-search input::placeholder {
+  color: #a0afc2;
+}
+    
 .song-admin-list {
   width: 100%;
   overflow: hidden;
@@ -709,6 +780,58 @@ align-content: start;
 
 .song-admin-row:hover {
   background: #f8fbff;
+}
+    /* 노래 등록 / 수정 팝업 */
+
+.song-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(42, 61, 87, .35);
+  backdrop-filter: blur(3px);
+}
+
+.song-modal.hidden {
+  display: none;
+}
+
+.song-modal-card {
+  width: min(460px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid #dce8f6;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(58, 86, 124, .22);
+}
+
+.song-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.song-modal-head h2 {
+  margin: 0;
+  color: #405875;
+  font-size: 18px;
+}
+
+.song-modal-close {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: #eef5ff;
+  color: #719bd4;
+  font-weight: 800;
 }
   </style>
 
@@ -838,7 +961,72 @@ align-content: start;
       + 노래 등록
     </button>
   </div>
+<div class="song-admin-filters">
 
+  <div class="song-admin-top-row">
+
+    <div class="song-admin-country-filters">
+      <button type="button" class="song-filter active" data-category="all">
+        전체
+      </button>
+
+      <button type="button" class="song-filter" data-category="kpop">
+        KPOP
+      </button>
+
+      <button type="button" class="song-filter" data-category="jpop">
+        JPOP
+      </button>
+    </div>
+
+    <div class="song-admin-search">
+      <input
+        id="songAdminSearch"
+        type="search"
+        placeholder="곡 제목 또는 가수 검색"
+        autocomplete="off"
+      >
+    </div>
+
+  </div>
+
+  <div class="song-admin-genre-filters">
+
+    <button type="button" class="song-genre-filter active" data-genre="all">
+      전체
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="ballad">
+      발라드
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="dance">
+      댄스
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="band">
+      밴드
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="hiphop">
+      힙합/랩
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="rnb">
+      R&B
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="ost">
+      OST
+    </button>
+
+    <button type="button" class="song-genre-filter" data-genre="homework">
+      숙제곡
+    </button>
+
+  </div>
+
+</div>
   <div class="song-admin-list">
     <div class="song-admin-table-header">
       <span>번호</span>
@@ -857,6 +1045,101 @@ align-content: start;
   </div>
 </section>
 
+<!-- 노래 등록 / 수정 팝업 -->
+<div
+  class="song-modal hidden"
+  id="songModal"
+>
+  <div class="song-modal-card">
+
+    <div class="song-modal-head">
+      <h2 id="songModalTitle">새 노래 등록</h2>
+
+      <button
+        class="song-modal-close"
+        id="songModalClose"
+        type="button"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="songTitle">곡명</label>
+      <input
+        id="songTitle"
+        type="text"
+        maxlength="100"
+        placeholder="곡명을 입력해 주세요."
+      >
+    </div>
+
+    <div class="field">
+      <label for="songArtist">가수</label>
+      <input
+        id="songArtist"
+        type="text"
+        maxlength="100"
+        placeholder="가수를 입력해 주세요."
+      >
+    </div>
+
+    <div class="field">
+      <label for="songCategory">카테고리</label>
+      <select id="songCategory">
+        <option value="kpop">KPOP</option>
+        <option value="jpop">JPOP</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="songGenre">장르</label>
+      <select id="songGenre">
+        <option value="ballad">발라드</option>
+        <option value="dance">댄스</option>
+        <option value="band">밴드</option>
+        <option value="hiphop">힙합/랩</option>
+        <option value="rnb">R&B</option>
+        <option value="ost">OST</option>
+        <option value="homework">숙제곡</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="songProficiency">숙련도</label>
+      <select id="songProficiency">
+        <option value="1">★</option>
+        <option value="2">★★</option>
+        <option value="3" selected>★★★</option>
+        <option value="4">★★★★</option>
+        <option value="5">★★★★★</option>
+      </select>
+    </div>
+
+    <button
+      class="save-button"
+      id="songSaveButton"
+      type="button"
+    >
+      노래 등록
+    </button>
+
+    <button
+      class="cancel-edit"
+      id="songCancelButton"
+      type="button"
+    >
+      취소
+    </button>
+
+    <div
+      class="status"
+      id="songStatus"
+    ></div>
+
+  </div>
+</div>
+    
 <!-- 날짜 클릭 시 일정 선택창 -->
 <div
   class="schedule-modal hidden"
@@ -922,6 +1205,9 @@ align-content: start;
 let scheduleReplays = [];
 let songs = [];
 
+    let selectedSongCategory = "all";
+let selectedSongGenre = "all";
+
 // ↓ 여기부터 추가
 async function loadSongs() {
   try {
@@ -955,69 +1241,207 @@ async function loadSongs() {
 
   if (!list) return;
 
-  if (!songs.length) {
-    list.innerHTML = `
-      <div class="empty">
-        등록된 노래가 없어요.
-      </div>
-    `;
-    return;
-  }
+  const searchInput =
+  document.querySelector("#songAdminSearch");
 
-  list.innerHTML = songs.map(song => {
-    const category =
-      song.category === "jpop"
-        ? "JPOP"
-        : "KPOP";
+const keyword =
+  (searchInput?.value || "")
+    .trim()
+    .toLowerCase();
 
-    const genreNames = {
-  ballad: "발라드",
-  dance: "댄스",
-  band: "밴드",
-  hiphop: "힙합/랩",
-  rnb: "R&B",
-  ost: "OST",
-  homework: "숙제곡"
-};
+const filteredSongs =
+  songs.filter(song => {
 
+    const categoryMatch =
+      selectedSongCategory === "all" ||
+      song.category === selectedSongCategory;
+
+    const genreMatch =
+      selectedSongGenre === "all" ||
+      song.genre === selectedSongGenre;
+
+    const searchMatch =
+      !keyword ||
+      (song.title || "")
+        .toLowerCase()
+        .includes(keyword) ||
+      (song.artist || "")
+        .toLowerCase()
+        .includes(keyword);
+
+    return (
+      categoryMatch &&
+      genreMatch &&
+      searchMatch
+    );
+  });
+
+if (!filteredSongs.length) {
+  list.innerHTML = `
+    <div class="empty">
+      조건에 맞는 노래가 없어요.
+    </div>
+  `;
+  return;
+}
+  const genreNames = {
+    ballad: "발라드",
+    dance: "댄스",
+    band: "밴드",
+    hiphop: "힙합/랩",
+    rnb: "R&B",
+    ost: "OST",
+    homework: "숙제곡"
+  };
+
+  list.innerHTML = filteredSongs.map((song, index) => {
     const genre =
-      genreNames[song.genre] || song.genre || "";
+      genreNames[song.genre] ||
+      song.genre ||
+      "";
+
+    const proficiency =
+      Number(song.proficiency || 0);
 
     return `
-      <div class="schedule-item">
-        <div class="schedule-info">
-          <h3>${escapeHTML(song.title || "")}</h3>
+      <div class="song-admin-row">
 
-          <p>
-            ${escapeHTML(song.artist || "")}
-· ${category}
-· ${escapeHTML(genre)}
-· ${"★".repeat(song.proficiency || 0)}${"☆".repeat(5 - (song.proficiency || 0))}
-          </p>
+        <span style="text-align:center;">
+          ${index + 1}
+        </span>
+
+        <span>
+          ${escapeHTML(song.title || "")}
+        </span>
+
+        <span>
+          ${escapeHTML(song.artist || "")}
+        </span>
+
+        <span style="text-align:center;">
+          ${escapeHTML(genre)}
+        </span>
+
+        <span
+          style="
+            text-align:center;
+            color:#78a8ec;
+            letter-spacing:1px;
+          "
+        >
+          ${"★".repeat(proficiency)}
+        </span>
+
+        <div
+          class="item-buttons"
+          style="justify-content:center;"
+        >
+          <button
+            type="button"
+            class="edit-button"
+            onclick="editSong(${song.id})"
+          >
+            수정
+          </button>
+
+          <button
+            type="button"
+            class="delete-button"
+            onclick="deleteSong(${song.id})"
+          >
+            삭제
+          </button>
         </div>
-        <div class="item-buttons">
-  <button
-    type="button"
-    class="small-button"
-    onclick="editSong(${song.id})"
-  >
-    수정
-  </button>
 
-  <button
-    type="button"
-    class="delete-button"
-    onclick="deleteSong(${song.id})"
-  >
-    삭제
-  </button>
-</div>
       </div>
     `;
   }).join("");
 }
+      document
+  .querySelector("#songAdminSearch")
+  ?.addEventListener("input", () => {
+    renderSongs();
+  });
 
+document
+  .querySelectorAll(".song-filter")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+
+      selectedSongCategory =
+        button.dataset.category;
+
+      document
+        .querySelectorAll(".song-filter")
+        .forEach(item => {
+          item.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      renderSongs();
+    });
+  });
+
+document
+  .querySelectorAll(".song-genre-filter")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+
+      selectedSongGenre =
+        button.dataset.genre;
+
+      document
+        .querySelectorAll(".song-genre-filter")
+        .forEach(item => {
+          item.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      renderSongs();
+    });
+  });
 let editingSongId = null;
+    function openSongModal() {
+  editingSongId = null;
+
+  document.querySelector("#songModalTitle").textContent =
+    "새 노래 등록";
+
+  document.querySelector("#songTitle").value = "";
+  document.querySelector("#songArtist").value = "";
+  document.querySelector("#songCategory").value = "kpop";
+  document.querySelector("#songGenre").value = "ballad";
+  document.querySelector("#songProficiency").value = "3";
+
+  document.querySelector("#songSaveButton").textContent =
+    "노래 등록";
+
+  document.querySelector("#songStatus").textContent = "";
+
+  document
+    .querySelector("#songModal")
+    .classList.remove("hidden");
+}
+
+function closeSongModal() {
+  document
+    .querySelector("#songModal")
+    .classList.add("hidden");
+}
+
+document
+  .querySelector("#songAddButton")
+  .addEventListener("click", openSongModal);
+
+document
+  .querySelector("#songModalClose")
+  .addEventListener("click", closeSongModal);
+
+document
+  .querySelector("#songCancelButton")
+  .addEventListener("click", closeSongModal);
 
 window.editSong = function(id) {
   const song =
