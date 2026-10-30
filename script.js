@@ -1354,6 +1354,9 @@ const karaokeNextButton =
 const karaokeYoutubeLink =
   document.querySelector("#karaokeYoutubeLink");
 
+const karaokeTjLink =
+  document.querySelector("#karaokeTjLink");
+
 let karaokeVideos = [];
 let karaokeVideoIndex = 0;
 let karaokeYouTubePlayer = null;
