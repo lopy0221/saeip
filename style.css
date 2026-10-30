@@ -3020,15 +3020,6 @@ body.dark-mode .schedule-view-item small {
   z-index: 5;
 }
 
-/* ← 버튼 공간만큼 상단 글자들을 아래로 이동 */
-.karaoke-modal.video-mode .karaoke-label {
-  transform: translateY(22px);
-}
-
-.karaoke-modal.video-mode .karaoke-title {
-  transform: translateY(22px);
-}
-
-.karaoke-modal.video-mode .karaoke-artist {
-  transform: translateY(22px);
+.karaoke-modal.video-mode .karaoke-modal-head {
+  padding-top: 36px;
 }
