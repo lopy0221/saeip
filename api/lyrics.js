@@ -16,6 +16,55 @@ export default async function handler(req, res) {
       });
     }
 
+    const cacheKey =
+  `lyrics|${artist || ""}|${title}`
+    .trim()
+    .toLowerCase();
+
+const cacheResponse = await fetch(
+  `${SUPABASE_URL}/rest/v1/youtube_search_cache` +
+  `?cache_key=eq.${encodeURIComponent(cacheKey)}` +
+  `&select=*` +
+  `&limit=1`,
+  {
+    headers: {
+      apikey: SUPABASE_SECRET_KEY,
+      Authorization:
+        `Bearer ${SUPABASE_SECRET_KEY}`
+    }
+  }
+);
+
+if (cacheResponse.ok) {
+  const cached = await cacheResponse.json();
+
+  if (cached.length > 0) {
+    const item = cached[0];
+
+    const createdAt =
+      new Date(item.created_at).getTime();
+
+    const cacheAge =
+      Date.now() - createdAt;
+
+    const twentyFourHours =
+      24 * 60 * 60 * 1000;
+
+    if (cacheAge < twentyFourHours) {
+      return res.status(200).json({
+        video: {
+          videoId: item.video_id,
+          title: item.video_title || "",
+          channelTitle:
+            item.channel_title || "",
+          thumbnail: item.thumbnail || ""
+        },
+        cached: true
+      });
+    }
+  }
+}
+
     const query =
       `${artist || ""} ${title} 가사 lyrics`.trim();
 
@@ -60,6 +109,33 @@ export default async function handler(req, res) {
         error: "가사 영상을 찾지 못했습니다."
       });
     }
+
+    const selectedVideo = videos[0];
+
+await fetch(
+  `${SUPABASE_URL}/rest/v1/youtube_search_cache?on_conflict=cache_key`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_SECRET_KEY,
+      Authorization:
+        `Bearer ${SUPABASE_SECRET_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      cache_key: cacheKey,
+      video_id: selectedVideo.videoId,
+      video_title: selectedVideo.title,
+      channel_title:
+        selectedVideo.channelTitle,
+      thumbnail:
+        selectedVideo.thumbnail || "",
+      created_at:
+        new Date().toISOString()
+    })
+  }
+);
 
     return res.status(200).json({
       video: videos[0]
