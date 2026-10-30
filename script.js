@@ -1194,3 +1194,43 @@ function updateBroadcastDays() {
 }
 
 updateBroadcastDays();
+
+/* =========================
+   관리자 로그인 팝업
+========================= */
+
+const adminLoginLink =
+  document.querySelector("#adminLoginLink");
+
+const adminLoginModal =
+  document.querySelector("#adminLoginModal");
+
+const adminLoginClose =
+  document.querySelector("#adminLoginClose");
+
+const adminLoginPassword =
+  document.querySelector("#adminLoginPassword");
+
+adminLoginLink?.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  adminLoginModal.classList.add("show");
+
+  adminLoginPassword.value = "";
+
+  document.querySelector("#adminLoginStatus").textContent = "";
+
+  setTimeout(() => {
+    adminLoginPassword.focus();
+  }, 50);
+});
+
+adminLoginClose?.addEventListener("click", () => {
+  adminLoginModal.classList.remove("show");
+});
+
+adminLoginModal?.addEventListener("click", (event) => {
+  if (event.target === adminLoginModal) {
+    adminLoginModal.classList.remove("show");
+  }
+});
