@@ -62,6 +62,40 @@ export default async function handler(req, res) {
           ""
       }));
 
+    // 검색된 영상들의 실제 임베드 가능 여부 확인
+const videoIds = videos
+  .map(video => video.videoId)
+  .join(",");
+
+const detailParams = new URLSearchParams({
+  part: "status",
+  id: videoIds,
+  key: apiKey
+});
+
+const detailResponse = await fetch(
+  `https://www.googleapis.com/youtube/v3/videos?${detailParams}`
+);
+
+const detailData = await detailResponse.json();
+
+if (detailResponse.ok) {
+  const embeddableIds = new Set(
+    (detailData.items || [])
+      .filter(item =>
+        item.status?.embeddable === true
+      )
+      .map(item => item.id)
+  );
+
+  videos.sort((a, b) => {
+    const aEmbed = embeddableIds.has(a.videoId) ? 1 : 0;
+    const bEmbed = embeddableIds.has(b.videoId) ? 1 : 0;
+
+    return bEmbed - aEmbed;
+  });
+}
+
     if (!videos.length) {
       return res.status(404).json({
         error: "노래방 영상을 찾지 못했습니다."
