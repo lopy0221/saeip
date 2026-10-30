@@ -1474,6 +1474,12 @@ document.querySelector("#songProficiency").value =
 
   document.querySelector("#songStatus").textContent =
     "수정할 내용을 입력해 주세요.";
+  document.querySelector("#songModalTitle").textContent =
+  "노래 수정";
+
+document
+  .querySelector("#songModal")
+  .classList.remove("hidden");
 };
     
     window.deleteSong =
@@ -2982,7 +2988,10 @@ document.querySelector("#songSaveButton").textContent =
   "노래 등록";
 
 await loadSongs();
-  });
+
+setTimeout(() => {
+  closeSongModal();
+}, 500);
     
     checkSession();
   </script>
