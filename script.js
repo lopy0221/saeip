@@ -1319,3 +1319,123 @@ adminLoginPassword?.addEventListener(
     }
   }
 );
+
+/* =========================
+   노래방 영상 팝업
+========================= */
+
+const karaokeModal =
+  document.querySelector("#karaokeModal");
+
+const karaokePlayer =
+  document.querySelector("#karaokePlayer");
+
+const karaokeLoading =
+  document.querySelector("#karaokeLoading");
+
+const karaokeStatus =
+  document.querySelector("#karaokeStatus");
+
+const karaokeModalTitle =
+  document.querySelector("#karaokeModalTitle");
+
+const karaokeModalArtist =
+  document.querySelector("#karaokeModalArtist");
+
+const karaokeModalClose =
+  document.querySelector("#karaokeModalClose");
+
+
+async function openKaraokeModal(title, artist) {
+  if (!karaokeModal || !karaokePlayer) return;
+
+  karaokeModalTitle.textContent = title;
+  karaokeModalArtist.textContent = artist;
+
+  karaokeStatus.textContent = "";
+
+  karaokePlayer.src = "";
+  karaokePlayer.style.display = "none";
+
+  karaokeLoading.style.display = "flex";
+  karaokeLoading.textContent =
+    "노래방 영상을 찾고 있어요...";
+
+  karaokeModal.classList.add("is-open");
+  karaokeModal.setAttribute("aria-hidden", "false");
+
+  try {
+    const params = new URLSearchParams({
+      title,
+      artist
+    });
+
+    const response =
+      await fetch(`/api/karaoke?${params}`);
+
+    const data =
+      await response.json();
+
+    if (!response.ok || !data.video?.videoId) {
+      throw new Error(
+        data.error || "노래방 영상을 찾지 못했습니다."
+      );
+    }
+
+    karaokeLoading.style.display = "none";
+
+    karaokePlayer.src =
+      `https://www.youtube.com/embed/${data.video.videoId}?autoplay=1`;
+
+    karaokePlayer.style.display = "block";
+
+  } catch (error) {
+    console.error(
+      "노래방 영상 검색 오류:",
+      error
+    );
+
+    karaokeLoading.style.display = "none";
+
+    karaokeStatus.textContent =
+      "노래방 영상을 찾지 못했어요.";
+  }
+}
+
+
+function closeKaraokeModal() {
+  if (!karaokeModal || !karaokePlayer) return;
+
+  karaokeModal.classList.remove("is-open");
+  karaokeModal.setAttribute("aria-hidden", "true");
+
+  /* 영상 재생 정지 */
+  karaokePlayer.src = "";
+  karaokePlayer.style.display = "none";
+
+  karaokeStatus.textContent = "";
+}
+
+
+document.addEventListener("click", event => {
+  const button =
+    event.target.closest(".karaoke-button");
+
+  if (button) {
+    event.preventDefault();
+
+    openKaraokeModal(
+      button.dataset.karaokeTitle || "",
+      button.dataset.karaokeArtist || ""
+    );
+
+    return;
+  }
+
+  if (
+    event.target === karaokeModal ||
+    event.target === karaokeModalClose
+  ) {
+    closeKaraokeModal();
+  }
+});
