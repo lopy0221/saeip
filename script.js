@@ -1594,9 +1594,17 @@ if (
   return;
 }
       const params = new URLSearchParams({
-        title,
-        artist
-      });
+  title,
+  artist
+});
+
+if (manualTjVideoId && !manualKyVideoId) {
+  params.set("type", "ky");
+}
+
+if (!manualTjVideoId && manualKyVideoId) {
+  params.set("type", "tj");
+}
 
       const response =
         await fetch(`/api/karaoke?${params}`);
