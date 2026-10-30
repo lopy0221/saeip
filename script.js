@@ -1357,6 +1357,9 @@ const karaokeYoutubeLink =
 const karaokeTjLink =
   document.querySelector("#karaokeTjLink");
 
+const karaokeBackButton =
+  document.querySelector("#karaokeBackButton");
+
 let karaokeVideos = [];
 let karaokeVideoIndex = 0;
 let karaokeYouTubePlayer = null;
@@ -1445,6 +1448,27 @@ function getYouTubeVideoId(url) {
 
   return "";
 }
+
+karaokeBackButton?.addEventListener("click", () => {
+  karaokeModal.classList.remove("video-mode");
+  karaokeModal.classList.add("choice-mode");
+
+  if (karaokeYoutubePlayer) {
+  karaokeYoutubePlayer.stopVideo();
+}
+
+  karaokeStatus.textContent = "";
+
+  if (karaokeTjLink) {
+    karaokeTjLink.href = "#";
+    karaokeTjLink.style.display = "none";
+  }
+
+  if (karaokeYoutubeLink) {
+    karaokeYoutubeLink.href = "#";
+    karaokeYoutubeLink.style.display = "none";
+  }
+});
 
 lyricsVersionButton?.addEventListener(
   "click",
