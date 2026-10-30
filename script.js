@@ -1234,3 +1234,84 @@ adminLoginModal?.addEventListener("click", (event) => {
     adminLoginModal.classList.remove("show");
   }
 });
+
+/* =========================
+   관리자 Supabase 로그인
+========================= */
+
+const ADMIN_SUPABASE_URL =
+  "https://txwlwxldagplfhlgopyl.supabase.co";
+
+const ADMIN_SUPABASE_KEY =
+  "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
+
+const ADMIN_EMAIL =
+  "jkui1109@gmail.com";
+
+const adminSupabase =
+  window.supabase.createClient(
+    ADMIN_SUPABASE_URL,
+    ADMIN_SUPABASE_KEY
+  );
+
+const adminLoginSubmit =
+  document.querySelector("#adminLoginSubmit");
+
+const adminLoginStatus =
+  document.querySelector("#adminLoginStatus");
+
+async function submitAdminLogin() {
+  const password =
+    adminLoginPassword.value;
+
+  if (!password) {
+    adminLoginStatus.textContent =
+      "비밀번호를 입력해 주세요.";
+    return;
+  }
+
+  adminLoginStatus.textContent =
+    "로그인 중...";
+
+  const { data, error } =
+    await adminSupabase.auth.signInWithPassword({
+      email: ADMIN_EMAIL,
+      password
+    });
+
+  if (error) {
+    adminLoginStatus.textContent =
+      "비밀번호가 올바르지 않아요.";
+    return;
+  }
+
+  if (
+    !data.user ||
+    data.user.email !== ADMIN_EMAIL
+  ) {
+    await adminSupabase.auth.signOut();
+
+    adminLoginStatus.textContent =
+      "관리자 계정이 아닙니다.";
+    return;
+  }
+
+  adminLoginStatus.textContent = "";
+
+  window.location.href =
+    "/admin.html";
+}
+
+adminLoginSubmit?.addEventListener(
+  "click",
+  submitAdminLogin
+);
+
+adminLoginPassword?.addEventListener(
+  "keydown",
+  event => {
+    if (event.key === "Enter") {
+      submitAdminLogin();
+    }
+  }
+);
