@@ -23,89 +23,80 @@ export default async function handler(req, res) {
   }
 
   try {
-    const query =
-      `${artist} ${title} 노래방 TJ 금영`.trim();
+    async function searchKaraoke(type) {
+  const keyword =
+    type === "tj"
+      ? `${artist} ${title} TJ 노래방`
+      : `${artist} ${title} 금영 노래방`;
 
-    const params = new URLSearchParams({
-      part: "snippet",
-      type: "video",
-      maxResults: "5",
-      q: query,
-      videoEmbeddable: "true",
-      videoSyndicated: "true",
-      key: apiKey
-    });
+  const params = new URLSearchParams({
+    part: "snippet",
+    type: "video",
+    maxResults: "5",
+    q: keyword.trim(),
+    videoEmbeddable: "true",
+    videoSyndicated: "true",
+    key: apiKey
+  });
 
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${params}`
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("YouTube API 오류:", data);
-
-      return res.status(response.status).json({
-        error: "YouTube 검색에 실패했습니다."
-      });
-    }
-
-    const videos = (data.items || [])
-      .filter(item => item.id?.videoId)
-      .map(item => ({
-        videoId: item.id.videoId,
-        title: item.snippet?.title || "",
-        channelTitle: item.snippet?.channelTitle || "",
-        thumbnail:
-          item.snippet?.thumbnails?.medium?.url ||
-          item.snippet?.thumbnails?.default?.url ||
-          ""
-      }));
-
-    // 검색된 영상들의 실제 임베드 가능 여부 확인
-const videoIds = videos
-  .map(video => video.videoId)
-  .join(",");
-
-const detailParams = new URLSearchParams({
-  part: "status",
-  id: videoIds,
-  key: apiKey
-});
-
-const detailResponse = await fetch(
-  `https://www.googleapis.com/youtube/v3/videos?${detailParams}`
-);
-
-const detailData = await detailResponse.json();
-
-if (detailResponse.ok) {
-  const embeddableIds = new Set(
-    (detailData.items || [])
-      .filter(item =>
-        item.status?.embeddable === true
-      )
-      .map(item => item.id)
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/search?${params}`
   );
 
-  videos.sort((a, b) => {
-    const aEmbed = embeddableIds.has(a.videoId) ? 1 : 0;
-    const bEmbed = embeddableIds.has(b.videoId) ? 1 : 0;
+  const data = await response.json();
 
-    return bEmbed - aEmbed;
+  if (!response.ok) {
+    console.error(
+      `YouTube ${type} 검색 오류:`,
+      data
+    );
+
+    return null;
+  }
+
+  const item =
+    (data.items || []).find(
+      item => item.id?.videoId
+    );
+
+  if (!item) {
+    return null;
+  }
+
+  return {
+    type,
+    videoId: item.id.videoId,
+    title: item.snippet?.title || "",
+    channelTitle:
+      item.snippet?.channelTitle || "",
+    thumbnail:
+      item.snippet?.thumbnails?.medium?.url ||
+      item.snippet?.thumbnails?.default?.url ||
+      ""
+  };
+}
+
+const tjVideo =
+  await searchKaraoke("tj");
+
+const kyVideo =
+  await searchKaraoke("ky");
+
+const videos = [
+  tjVideo,
+  kyVideo
+].filter(Boolean);
+
+if (!videos.length) {
+  return res.status(404).json({
+    error: "노래방 영상을 찾지 못했습니다."
   });
 }
 
-    if (!videos.length) {
-      return res.status(404).json({
-        error: "노래방 영상을 찾지 못했습니다."
-      });
-    }
-
-    return res.status(200).json({
-      video: videos[0],
-      videos
-    });
+return res.status(200).json({
+  video: videos[0],
+  videos
+});
 
   } catch (error) {
     console.error("karaoke API 오류:", error);
