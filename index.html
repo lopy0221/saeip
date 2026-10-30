@@ -905,7 +905,49 @@ or
   </main>
 
 
-  
+  <!-- 관리자 로그인 팝업 -->
+<div class="admin-login-modal" id="adminLoginModal">
+  <div class="admin-login-card">
+
+    <button
+      type="button"
+      class="admin-login-close"
+      id="adminLoginClose"
+      aria-label="로그인 창 닫기"
+    >
+      ✕
+    </button>
+
+    <div class="admin-login-icon">
+      ✦
+    </div>
+
+    <h2>새잎 관리자 🩵</h2>
+
+    <p>관리자 비밀번호를 입력해 주세요.</p>
+
+    <input
+      type="password"
+      id="adminLoginPassword"
+      placeholder="비밀번호"
+      autocomplete="current-password"
+    >
+
+    <button
+      type="button"
+      class="admin-login-submit"
+      id="adminLoginSubmit"
+    >
+      관리자 로그인
+    </button>
+
+    <div
+      class="admin-login-status"
+      id="adminLoginStatus"
+    ></div>
+
+  </div>
+</div>
 
 <button
   class="dark-mode-toggle"
