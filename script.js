@@ -1619,12 +1619,12 @@ if (
 
  karaokeVideos = [
   {
-    type: "tj",
-    videoId: manualTjVideoId
-  },
-  {
     type: "ky",
     videoId: manualKyVideoId
+  },
+  {
+    type: "tj",
+    videoId: manualTjVideoId
   }
 ];
   karaokeVideoIndex = 0;
@@ -1712,8 +1712,8 @@ const kyVideo =
     : autoKyVideo;
 
 karaokeVideos = [
-  tjVideo,
-  kyVideo
+  kyVideo,
+  tjVideo
 ].filter(Boolean);
 
       karaokeVideoIndex = 0;
