@@ -123,10 +123,14 @@ if (titleSortDirection === "asc") {
           <div class="song-table-row">
             <span class="song-number">${index + 1}</span>
 
-            <span class="song-title">
-              ${escapeHTML(song.title)}
-            </span>
-
+            <button
+  type="button"
+  class="song-title karaoke-button"
+  data-karaoke-title="${escapeHTML(song.title)}"
+  data-karaoke-artist="${escapeHTML(song.artist)}"
+>
+  ${escapeHTML(song.title)}
+</button>
             <span class="song-artist">
               ${escapeHTML(song.artist)}
             </span>
