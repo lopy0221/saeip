@@ -769,88 +769,33 @@ align-content: start;
   class="panel hidden"
   id="songManagePage"
 >
-  <h2>노래책 관리 🎵</h2>
+  <div class="song-admin-head">
+    <h2>노래책 관리 🎵</h2>
 
-  <div class="layout">
+    <button
+      class="save-button song-add-button"
+      id="songAddButton"
+      type="button"
+    >
+      + 노래 등록
+    </button>
+  </div>
 
-    <!-- 노래 추가 -->
-    <div class="panel">
-      <h2>새 노래 추가</h2>
-
-      <div class="field">
-        <label>곡명</label>
-        <input
-          id="songTitle"
-          type="text"
-          placeholder="곡명을 입력해 주세요."
-        >
-      </div>
-
-      <div class="field">
-        <label>가수</label>
-        <input
-          id="songArtist"
-          type="text"
-          placeholder="가수명을 입력해 주세요."
-        >
-      </div>
-
-      <div class="field">
-        <label>카테고리</label>
-        <select id="songCategory">
-          <option value="kpop">KPOP</option>
-          <option value="jpop">JPOP</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>장르</label>
-        <select id="songGenre">
-  <option value="ballad">발라드</option>
-  <option value="dance">댄스</option>
-  <option value="band">밴드</option>
-  <option value="hiphop">힙합/랩</option>
-  <option value="rnb">R&B</option>
-  <option value="ost">OST</option>
-  <option value="homework">숙제곡</option>
-</select>
- 
-        <label for="songProficiency">숙련도</label>
-<select id="songProficiency">
-  <option value="1">★☆☆☆☆</option>
-  <option value="2">★★☆☆☆</option>
-  <option value="3" selected>★★★☆☆</option>
-  <option value="4">★★★★☆</option>
-  <option value="5">★★★★★</option>
-</select>
-        
-      </div>
-
-      <button
-        class="save-button"
-        id="songSaveButton"
-        type="button"
-      >
-        노래 등록
-      </button>
-
-      <div
-        class="status"
-        id="songStatus"
-      ></div>
+  <div class="song-admin-list">
+    <div class="song-admin-table-header">
+      <span>번호</span>
+      <span>곡 제목</span>
+      <span>가수</span>
+      <span>장르</span>
+      <span>숙련도</span>
+      <span>관리</span>
     </div>
 
-    <!-- 등록된 노래 -->
-    <div class="panel">
-      <h2>등록된 노래</h2>
-
-      <div id="songAdminList">
-        <div class="empty">
-          등록된 노래가 없어요.
-        </div>
+    <div id="songAdminList">
+      <div class="empty">
+        등록된 노래가 없어요.
       </div>
     </div>
-
   </div>
 </section>
 
