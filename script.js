@@ -1754,9 +1754,9 @@ function playKaraokeVideo() {
       : "";
 
   if (karaokeYouTubePlayer) {
-    karaokeYouTubePlayer.loadVideoById(
-      video.videoId
-    );
+    karaokeYoutubePlayer.cueVideoById(
+  video.videoId
+);
 
     return;
   }
