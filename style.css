@@ -2813,3 +2813,31 @@ body.dark-mode .schedule-view-item small {
     font-size: 18px;
   }
 }
+
+/* 다른 노래방 영상 버튼 */
+.karaoke-next-button {
+  display: block;
+
+  margin: 12px auto 0;
+  padding: 10px 18px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: #eef5ff;
+  color: #719bd4;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.karaoke-next-button:hover {
+  background: #e1edfc;
+  transform: translateY(-1px);
+}
