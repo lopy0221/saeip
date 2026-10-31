@@ -1898,17 +1898,23 @@ button.appendChild(eventContent);
 
 function getScheduleTypeName(type) {
   if (type === "planned") return "방송 예정";
-  if (type === "dawn") return "새벽 방송";
-  if (type === "morning") return "아침 방송";
-  if (type === "afternoon") return "낮 방송";
-  if (type === "evening") return "저녁 방송";
+
+  if (
+    type === "broadcast" ||
+    type === "dawn" ||
+    type === "morning" ||
+    type === "afternoon" ||
+    type === "evening"
+  ) {
+    return "방송";
+  }
+
   if (type === "collab") return "합방";
   if (type === "off") return "휴방";
   if (type === "etc") return "기념일";
 
   return "방송";
 }
-
 
 function openScheduleModal(dateKey, dayEvents) {
   const modal =
@@ -2183,53 +2189,38 @@ const replayListHTML =
   </option>
 
   <option
-    value="dawn"
-    ${item?.type === "dawn" ? "selected" : ""}
+    value="broadcast"
+    ${
+      ["broadcast", "dawn", "morning", "afternoon", "evening"]
+        .includes(item?.type)
+        ? "selected"
+        : ""
+    }
   >
-    새벽 방송
+    방송
   </option>
 
   <option
-    value="morning"
-    ${item?.type === "morning" ? "selected" : ""}
+    value="collab"
+    ${item?.type === "collab" ? "selected" : ""}
   >
-    아침 방송
+    합방
   </option>
 
   <option
-    value="afternoon"
-    ${item?.type === "afternoon" ? "selected" : ""}
+    value="off"
+    ${item?.type === "off" ? "selected" : ""}
   >
-    낮 방송
+    휴방
   </option>
-        <option
-          value="evening"
-          ${item?.type === "evening" ? "selected" : ""}
-        >
-          저녁 방송
-        </option>
 
-        <option
-          value="collab"
-          ${item?.type === "collab" ? "selected" : ""}
-        >
-          합방
-        </option>
-
-        <option
-          value="off"
-          ${item?.type === "off" ? "selected" : ""}
-        >
-          휴방
-        </option>
-
-        <option
-          value="etc"
-          ${item?.type === "etc" ? "selected" : ""}
-        >
-          기념일
-        </option>
-      </select>
+  <option
+    value="etc"
+    ${item?.type === "etc" ? "selected" : ""}
+  >
+    기념일
+  </option>
+</select>
     </div>
 
     <div class="field">
