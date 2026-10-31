@@ -1,3 +1,9 @@
+const SUPABASE_URL =
+  "https://txwlwxldagplfhlgopyl.supabase.co";
+
+const SUPABASE_SECRET_KEY =
+  process.env.SUPABASE_SECRET_KEY;
+
 export default async function handler(req, res) {
   try {
     const { title, artist } = req.query;
