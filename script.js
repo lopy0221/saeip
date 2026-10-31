@@ -117,7 +117,7 @@ if (titleSortDirection === "asc") {
           homework: "숙제곡"
         };
 
-        const proficiency = Number(song.proficiency || 3);
+        const proficiency = Number(song.proficiency ?? 3);
 
         return `
           <div class="song-table-row">
