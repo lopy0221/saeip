@@ -97,9 +97,9 @@ if (cacheResponse.ok) {
 }
       
   const keyword =
-    type === "tj"
-      ? `${artist} ${title} TJ 노래방`
-      : `${artist} ${title} 금영 노래방`;
+  type === "tj"
+    ? `${artist} ${title} TJ 노래방`
+    : `${title} ${artist} KY Karaoke`;
 
   const params = new URLSearchParams({
     part: "snippet",
