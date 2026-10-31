@@ -2378,7 +2378,8 @@ body.dark-mode .schedule-view-item small {
 #songs .songbook-search input {
   height: 100%;
   padding: 0;
-  line-height: 42px;
+  line-height: normal;
+  transform: translateY(2px);
 }
 
 /* 노래책 정렬 버튼 기본 디자인 제거 */
