@@ -1873,3 +1873,23 @@ document.addEventListener("click", event => {
     closeKaraokeModal();
   }
 });
+
+const randomSongButton =
+  document.querySelector("#randomSongButton");
+
+randomSongButton?.addEventListener("click", () => {
+  if (!songs.length) return;
+
+  const randomIndex =
+    Math.floor(Math.random() * songs.length);
+
+  const randomSong = songs[randomIndex];
+
+  openKaraokeModal(
+    randomSong.title || "",
+    randomSong.artist || "",
+    randomSong.lyrics_url || "",
+    randomSong.tj_karaoke_url || "",
+    randomSong.ky_karaoke_url || ""
+  );
+});
