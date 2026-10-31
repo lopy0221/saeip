@@ -1364,6 +1364,8 @@ let karaokeVideos = [];
 let karaokeVideoIndex = 0;
 let karaokeYouTubePlayer = null;
 
+let openedFromRandomSong = false;
+
 function openKaraokeModal(
   title,
   artist,
@@ -1455,6 +1457,24 @@ function getYouTubeVideoId(url) {
 }
 
 karaokeBackButton?.addEventListener("click", () => {
+
+    if (openedFromRandomSong) {
+    if (karaokeYouTubePlayer) {
+      karaokeYouTubePlayer.destroy();
+      karaokeYouTubePlayer = null;
+    }
+
+    karaokeModal.classList.remove("is-open");
+    karaokeModal.setAttribute("aria-hidden", "true");
+
+    randomSongModal.classList.add("is-open");
+    randomSongModal.setAttribute("aria-hidden", "false");
+
+    openedFromRandomSong = false;
+
+    return;
+  }
+  
   karaokeModal.classList.remove("video-mode");
   karaokeModal.classList.add("choice-mode");
 
@@ -1997,12 +2017,15 @@ randomSingButton?.addEventListener("click", () => {
     "true"
   );
 
-  openKaraokeModal(
-    selectedRandomSong.title || "",
-    selectedRandomSong.artist || "",
-    selectedRandomSong.lyrics_url || "",
-    selectedRandomSong.tj_karaoke_url || "",
-    selectedRandomSong.ky_karaoke_url || ""
-  );
-  karaokeVersionButton?.click();
+  openedFromRandomSong = true;
+
+openKaraokeModal(
+  selectedRandomSong.title || "",
+  selectedRandomSong.artist || "",
+  selectedRandomSong.lyrics_url || "",
+  selectedRandomSong.tj_karaoke_url || "",
+  selectedRandomSong.ky_karaoke_url || ""
+);
+
+karaokeVersionButton?.click();
 });
