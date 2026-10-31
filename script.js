@@ -453,19 +453,23 @@ function renderWeeklySchedule() {
       .map(event => {
         let typeText = "방송";
 
-        if (event.type === "morning") {
-          typeText = "아침 방송";
-        } else if (event.type === "afternoon") {
-          typeText = "낮 방송";
-        } else if (event.type === "evening") {
-          typeText = "저녁 방송";
-        } else if (event.type === "collab") {
-          typeText = "합방";
-        } else if (event.type === "off") {
-          typeText = "휴방";
-        } else if (event.type === "etc") {
-          typeText = "기념일";
-        }
+        if (event.type === "planned") {
+  typeText = "방송 예정";
+} else if (
+  event.type === "broadcast" ||
+  event.type === "dawn" ||
+  event.type === "morning" ||
+  event.type === "afternoon" ||
+  event.type === "evening"
+) {
+  typeText = "방송";
+} else if (event.type === "collab") {
+  typeText = "합방";
+} else if (event.type === "off") {
+  typeText = "휴방";
+} else if (event.type === "etc") {
+  typeText = "기념일";
+}
 
         return `
           <span class="weekly-event">
@@ -650,20 +654,23 @@ const eventHTML = groupedEntries
       .map(event => {
         let typeText = "방송";
 
-        if (event.type === "morning") {
-          typeText = "아침 방송";
-        } else if (event.type === "afternoon") {
-          typeText = "낮 방송";
-        } else if (event.type === "evening") {
-          typeText = "저녁 방송";
-        } else if (event.type === "collab") {
-          typeText = "합방";
-        } else if (event.type === "off") {
-          typeText = "휴방";
-        } else if (event.type === "etc") {
-          typeText = "기념일";
-        }
-
+        if (event.type === "planned") {
+  typeText = "방송 예정";
+} else if (
+  event.type === "broadcast" ||
+  event.type === "dawn" ||
+  event.type === "morning" ||
+  event.type === "afternoon" ||
+  event.type === "evening"
+) {
+  typeText = "방송";
+} else if (event.type === "collab") {
+  typeText = "합방";
+} else if (event.type === "off") {
+  typeText = "휴방";
+} else if (event.type === "etc") {
+  typeText = "기념일";
+}
         const time = event.time || "";
 
         return `${escapeHTML(time)} ${escapeHTML(typeText)}`.trim();
@@ -794,19 +801,23 @@ if (
           .map(event => {
             let typeText = "방송";
 
-            if (event.type === "morning") {
-              typeText = "아침 방송";
-            } else if (event.type === "afternoon") {
-              typeText = "낮 방송";
-            } else if (event.type === "evening") {
-              typeText = "저녁 방송";
-            } else if (event.type === "collab") {
-              typeText = "합방";
-            } else if (event.type === "off") {
-              typeText = "휴방";
-            } else if (event.type === "etc") {
-              typeText = "기념일";
-            }
+            if (event.type === "planned") {
+  typeText = "방송 예정";
+} else if (
+  event.type === "broadcast" ||
+  event.type === "dawn" ||
+  event.type === "morning" ||
+  event.type === "afternoon" ||
+  event.type === "evening"
+) {
+  typeText = "방송";
+} else if (event.type === "collab") {
+  typeText = "합방";
+} else if (event.type === "off") {
+  typeText = "휴방";
+} else if (event.type === "etc") {
+  typeText = "기념일";
+}
 
             const time = event.time || "";
 
