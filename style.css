@@ -3245,3 +3245,62 @@ body.dark-mode .schedule-view-item small {
   cursor: default;
   transform: none;
 }
+
+/* =========================
+   클립 & 캐치
+========================= */
+
+#clips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#clips .clip-catch-layout {
+  width: min(1400px, 94vw);
+  height: calc(100vh - 120px);
+
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 32px;
+
+  padding-top: 35px;
+  box-sizing: border-box;
+}
+
+
+/* 왼쪽 / 오른쪽 영역 */
+#clips .clip-catch-side {
+  min-width: 0;
+}
+
+
+/* 제목 */
+#clips .clip-catch-title {
+  margin: 0 0 28px;
+
+  text-align: center;
+
+  font-size: 32px;
+  font-weight: 800;
+
+  color: #6fa3e8;
+}
+
+
+/* 가운데 세로선 */
+#clips .clip-catch-divider {
+  width: 1px;
+  height: 100%;
+
+  background: rgba(146, 188, 239, 0.55);
+}
+
+
+/* 카드 영역 */
+#clips .clip-catch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
