@@ -2353,11 +2353,14 @@ const timeField =
 function updateTimeFieldVisibility() {
   if (!modalType || !timeField) return;
 
-  if (modalType.value === "off") {
-    timeField.style.display = "none";
-  } else {
-    timeField.style.display = "";
-  }
+  if (
+  modalType.value === "off" ||
+  modalType.value === "etc"
+) {
+  timeField.style.display = "none";
+} else {
+  timeField.style.display = "";
+}
 }
 
 modalType.addEventListener(
