@@ -2149,6 +2149,7 @@ body.dark-mode .schedule-view-item small {
   color: #6f86a6;
   text-align: right;
   white-space: pre-line;
+  word-break: keep-all;
 }
 
 /* =========================
