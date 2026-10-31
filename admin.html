@@ -1696,6 +1696,28 @@ let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
 
       schedules = data || [];
 
+      schedules.sort((a, b) => {
+  // 날짜가 다르면 날짜순
+  if (a.date !== b.date) {
+    return String(a.date).localeCompare(String(b.date));
+  }
+
+  // 같은 날짜에서는 휴방이 항상 맨 위
+  if (a.type === "off" && b.type !== "off") {
+    return -1;
+  }
+
+  if (a.type !== "off" && b.type === "off") {
+    return 1;
+  }
+
+  // 나머지는 빠른 시간순
+  const timeA = a.time || "23:59";
+  const timeB = b.time || "23:59";
+
+  return timeA.localeCompare(timeB);
+});
+
 renderAdminCalendar();
     }
 
