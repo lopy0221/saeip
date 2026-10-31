@@ -87,7 +87,7 @@ if (cacheResponse.ok) {
   const params = new URLSearchParams({
     part: "snippet",
     type: "video",
-    maxResults: "5",
+    maxResults: "20",
     q: keyword.trim(),
     videoEmbeddable: "true",
     videoSyndicated: "true",
