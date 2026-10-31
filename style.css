@@ -3247,60 +3247,146 @@ body.dark-mode .schedule-view-item small {
 }
 
 /* =========================
-   클립 & 캐치
+   유저클립 - SOOP 스타일
 ========================= */
 
 #clips {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
-#clips .clip-catch-layout {
-  width: min(1400px, 94vw);
-  height: calc(100vh - 120px);
-
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 32px;
-
-  padding-top: 35px;
-  box-sizing: border-box;
+#clips .soop-clips-page {
+  width: min(1280px, 92vw);
+  margin-top: 25px;
 }
 
 
-/* 왼쪽 / 오른쪽 영역 */
-#clips .clip-catch-side {
-  min-width: 0;
+/* 상단 제목 */
+#clips .soop-clips-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
 }
 
+#clips .soop-clips-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-/* 제목 */
-#clips .clip-catch-title {
-  margin: 0 0 28px;
+#clips .soop-clips-heading h2 {
+  margin: 0;
 
-  text-align: center;
-
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 800;
 
-  color: #6fa3e8;
+  color: #405875;
+}
+
+#clips #clipCount {
+  font-size: 13px;
+  font-weight: 500;
+  color: #91a2b8;
 }
 
 
-/* 가운데 세로선 */
-#clips .clip-catch-divider {
-  width: 1px;
-  height: 100%;
+/* 검색 버튼 */
+#clips .clip-search-button {
+  border: 0;
+  padding: 0;
 
-  background: rgba(146, 188, 239, 0.55);
+  background: transparent;
+  color: #6f829c;
+
+  font-size: 25px;
+  line-height: 1;
+
+  cursor: pointer;
 }
 
 
-/* 카드 영역 */
-#clips .clip-catch-grid {
+/* 필터 박스 */
+#clips .soop-clips-filter-box {
+  padding: 0 24px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  border: 1px solid #dce7f4;
+  border-radius: 14px;
+}
+
+
+/* 필터 한 줄 */
+#clips .soop-filter-row {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid #e6edf6;
+}
+
+#clips .soop-filter-row:last-child {
+  border-bottom: 0;
+}
+
+#clips .soop-filter-row > strong {
+  width: 100px;
+  flex-shrink: 0;
+
+  font-size: 13px;
+  color: #526982;
+}
+
+
+/* 필터 버튼 묶음 */
+#clips .soop-filter-options {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+
+/* 필터 버튼 */
+#clips .soop-filter-button,
+#clips .soop-sort-button,
+#clips .soop-period-button {
+  border: 0;
+  padding: 5px 0;
+
+  background: transparent;
+
+  font-family: inherit;
+  font-size: 13px;
+  color: #8a9aae;
+
+  cursor: pointer;
+}
+
+#clips .soop-filter-button:hover,
+#clips .soop-sort-button:hover,
+#clips .soop-period-button:hover {
+  color: #70a1f3;
+}
+
+
+/* 선택된 필터 */
+#clips .soop-filter-button.active,
+#clips .soop-sort-button.active,
+#clips .soop-period-button.active {
+  color: #70a1f3;
+  font-weight: 700;
+}
+
+
+/* 영상 목록 */
+#clips .soop-clips-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  gap: 18px;
+  gap: 28px 16px;
+
+  margin-top: 22px;
 }
