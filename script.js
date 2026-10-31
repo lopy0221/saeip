@@ -1395,6 +1395,11 @@ karaokeModal.dataset.kyKaraokeUrl =
   karaokeYoutubeLink.style.display = "none";
 }
 
+  if (karaokeTjLink) {
+  karaokeTjLink.href = "#";
+  karaokeTjLink.style.display = "none";
+}
+
   karaokeModal.classList.add("choice-mode");
   karaokeModal.classList.remove("video-mode");
 
