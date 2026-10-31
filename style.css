@@ -2379,7 +2379,7 @@ body.dark-mode .schedule-view-item small {
   height: 100%;
   padding: 0;
   line-height: normal;
-  transform: translateY(2px);
+  transform: translateY(3px);
 }
 
 /* 노래책 정렬 버튼 기본 디자인 제거 */
