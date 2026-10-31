@@ -107,7 +107,7 @@ if (cacheResponse.ok) {
 
     const selectedVideo = videos[0];
 
-await fetch(
+const cacheSaveResponse = await fetch(
   `${SUPABASE_URL}/rest/v1/youtube_search_cache?on_conflict=cache_key`,
   {
     method: "POST",
@@ -131,6 +131,17 @@ await fetch(
     })
   }
 );
+
+if (!cacheSaveResponse.ok) {
+  const cacheSaveError =
+    await cacheSaveResponse.text();
+
+  console.error(
+    "YouTube 캐시 저장 실패:",
+    cacheSaveResponse.status,
+    cacheSaveError
+  );
+}
 
     return res.status(200).json({
   video: selectedVideo
