@@ -105,6 +105,9 @@ const scheduleResponse = await fetch(
 function getBroadcastType(broadStart) {
   if (!broadStart) return null;
 
+  return "broadcast";
+}
+
   const timePart = String(broadStart).split(" ")[1];
 
   if (!timePart) return null;
