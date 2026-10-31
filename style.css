@@ -3049,3 +3049,15 @@ body.dark-mode .schedule-view-item small {
   color: #ffffff;
   transform: translateY(-1px);
 }
+
+.songbook-search {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.songbook-search .random-song-button {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin-top: 8px;
+}
