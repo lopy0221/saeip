@@ -2004,4 +2004,5 @@ randomSingButton?.addEventListener("click", () => {
     selectedRandomSong.tj_karaoke_url || "",
     selectedRandomSong.ky_karaoke_url || ""
   );
+  karaokeVersionButton?.click();
 });
