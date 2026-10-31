@@ -222,23 +222,11 @@ await fetch(
 return selectedVideo;
 }
 
-const requestedType =
-  String(req.query.type || "")
-    .toLowerCase();
-
-const tjVideo =
-  requestedType === "ky"
-    ? null
-    : await searchKaraoke("tj");
-
 const kyVideo =
-  requestedType === "tj"
-    ? null
-    : await searchKaraoke("ky");
+  await searchKaraoke("ky");
 
 const videos = [
-  kyVideo,
-  tjVideo
+  kyVideo
 ].filter(Boolean);
 
 if (!videos.length) {
