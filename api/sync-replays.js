@@ -2,7 +2,7 @@ const SUPABASE_URL = "https://txwlwxldagplfhlgopyl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
 const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     const SOOP_ID = "likey0u";
 
