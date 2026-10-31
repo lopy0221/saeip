@@ -3023,3 +3023,29 @@ body.dark-mode .schedule-view-item small {
 .karaoke-modal.video-mode .karaoke-modal-head {
   padding-top: 36px;
 }
+
+/* 랜덤 노래 버튼 */
+.random-song-button {
+  display: block;
+  margin: 10px 0 0 auto;
+  padding: 9px 16px;
+
+  border: 1px solid #92BCEF;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #5f8fc9;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.random-song-button:hover {
+  background: #92BCEF;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
