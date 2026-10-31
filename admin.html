@@ -2162,15 +2162,15 @@ const replayListHTML =
     </select>
 
     <select id="modalHour">
-      ${Array.from(
-        { length: 12 },
-        (_, i) => i + 1
-      ).map(hour => `
-        <option value="${hour}">
-          ${String(hour).padStart(2, "0")}시
-        </option>
-      `).join("")}
-    </select>
+  ${Array.from(
+    { length: 12 },
+    (_, i) => i
+  ).map(hour => `
+    <option value="${hour}">
+      ${String(hour).padStart(2, "0")}시
+    </option>
+  `).join("")}
+</select>
 
     <select id="modalMinute">
       ${Array.from(
@@ -2324,7 +2324,7 @@ const replayListHTML =
   const currentTime =
   item?.time
     ? String(item.time).slice(0, 5)
-    : "12:00";
+    : "10:00";
 
 const [hour24, minute] =
   currentTime.split(":").map(Number);
@@ -2332,15 +2332,53 @@ const [hour24, minute] =
 const period =
   hour24 >= 12 ? "PM" : "AM";
 
-const hour12 =
-  hour24 % 12 || 12;
+const displayHour =
+  period === "AM"
+    ? hour24
+    : (hour24 === 12 ? 12 : hour24 - 12);
 
 document.querySelector("#modalPeriod").value =
   period;
 
-document.querySelector("#modalHour").value =
-  String(hour12);
+  function updateHourOptions(selectedHour = null) {
+  const periodSelect =
+    document.querySelector("#modalPeriod");
 
+  const hourSelect =
+    document.querySelector("#modalHour");
+
+  if (!periodSelect || !hourSelect) return;
+
+  const period = periodSelect.value;
+
+  const hours =
+    period === "AM"
+      ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      : [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+  hourSelect.innerHTML =
+    hours.map(hour => `
+      <option value="${hour}">
+        ${String(hour).padStart(2, "0")}시
+      </option>
+    `).join("");
+
+  if (
+    selectedHour !== null &&
+    hours.includes(Number(selectedHour))
+  ) {
+    hourSelect.value =
+      String(selectedHour);
+  }
+}
+
+  document
+  .querySelector("#modalPeriod")
+  .addEventListener("change", () => {
+    updateHourOptions();
+  });
+
+updateHourOptions(displayHour);
 document.querySelector("#modalMinute").value =
   String(minute);
 
@@ -2773,10 +2811,6 @@ window.saveCalendarSchedule =
 
   const minute =
     document.querySelector("#modalMinute").value;
-
-  if (period === "AM" && hour === 12) {
-    hour = 0;
-  }
 
   if (period === "PM" && hour !== 12) {
     hour += 12;
