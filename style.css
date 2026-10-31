@@ -3027,7 +3027,7 @@ body.dark-mode .schedule-view-item small {
 /* 랜덤 노래 버튼 */
 .random-song-button {
   display: block;
-  margin: 10px 0 0 auto;
+  margin: 8px 0 0 0;
   padding: 9px 16px;
 
   border: 1px solid #92BCEF;
