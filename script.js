@@ -371,11 +371,21 @@ async function loadStreamSchedule() {
   });
 });
 
-// 같은 날짜의 일정은 빠른 시간부터 정렬
+// 휴방은 항상 맨 위,
+// 나머지 일정은 빠른 시간부터 정렬
 Object.values(streamSchedule).forEach(events => {
   events.sort((a, b) => {
+    if (a.type === "off" && b.type !== "off") {
+      return -1;
+    }
+
+    if (a.type !== "off" && b.type === "off") {
+      return 1;
+    }
+
     const timeA = a.time || "23:59";
     const timeB = b.time || "23:59";
+
     return timeA.localeCompare(timeB);
   });
 });
