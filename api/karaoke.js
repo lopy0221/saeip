@@ -114,30 +114,52 @@ if (cacheResponse.ok) {
     item => item.id?.videoId
   );
 
+const normalizedTitle =
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9가-힣]/g, "");
+
 const item =
-  type === "tj"
-    ? items.find(item => {
-        const text =
-          `${item.snippet?.title || ""} ` +
-          `${item.snippet?.channelTitle || ""}`
-            .toLowerCase();
+  items.find(item => {
+    const videoTitle =
+      String(item.snippet?.title || "")
+        .toLowerCase();
 
-        return (
-          text.includes("tj") ||
-          text.includes("태진")
-        );
-      })
-    : items.find(item => {
-        const text =
-          `${item.snippet?.title || ""} ` +
-          `${item.snippet?.channelTitle || ""}`
-            .toLowerCase();
+    const channelTitle =
+      String(item.snippet?.channelTitle || "")
+        .toLowerCase();
 
-        return (
-          text.includes("금영") ||
-          text.includes("ky")
-        );
-      });
+    const normalizedVideoTitle =
+      videoTitle.replace(
+        /[^a-z0-9가-힣]/g,
+        ""
+      );
+
+    const isCorrectKaraoke =
+      type === "tj"
+        ? (
+            videoTitle.includes("tj") ||
+            videoTitle.includes("태진") ||
+            channelTitle.includes("tj") ||
+            channelTitle.includes("태진")
+          )
+        : (
+            videoTitle.includes("금영") ||
+            videoTitle.includes("ky") ||
+            channelTitle.includes("금영") ||
+            channelTitle.includes("ky")
+          );
+
+    const isCorrectSong =
+      normalizedVideoTitle.includes(
+        normalizedTitle
+      );
+
+    return (
+      isCorrectKaraoke &&
+      isCorrectSong
+    );
+  });
 
   if (!item) {
     return null;
