@@ -108,27 +108,7 @@ function getBroadcastType(broadStart) {
   return "broadcast";
 }
 
-  const timePart = String(broadStart).split(" ")[1];
-
-  if (!timePart) return null;
-
-  const hour = Number(timePart.split(":")[0]);
-
-  if (hour >= 0 && hour < 6) {
-    return "dawn";
-  }
-
-  if (hour >= 6 && hour < 12) {
-    return "morning";
-  }
-
-  if (hour >= 12 && hour < 18) {
-    return "afternoon";
-  }
-
-  return "evening";
-}
-
+  
 const matches = schedules.map((schedule) => {
   // 휴방 / 기념일 / 합방은 자동 다시보기 매칭에서 제외
   if (
