@@ -3064,3 +3064,180 @@ body.dark-mode .schedule-view-item small {
   position: relative;
   z-index: 10;
 }
+
+/* ==================================================
+   랜덤 노래 슬롯머신 팝업
+================================================== */
+
+.random-song-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(50, 75, 105, 0.28);
+  backdrop-filter: blur(7px);
+}
+
+.random-song-modal.is-open {
+  display: flex;
+}
+
+.random-song-card {
+  position: relative;
+  width: min(520px, 92vw);
+  padding: 34px 32px 30px;
+
+  border: 1px solid rgba(146, 188, 239, 0.65);
+  border-radius: 24px;
+
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(80, 120, 170, 0.22);
+
+  text-align: center;
+}
+
+.random-song-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: #edf5ff;
+  color: #75a7e4;
+
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.random-song-title {
+  color: #6fa6e9;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.random-song-guide {
+  margin: 7px 0 22px;
+  color: #8a9bb0;
+  font-size: 14px;
+}
+
+.random-slot-machine {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 105px;
+  padding: 15px 25px;
+
+  border: 2px solid #92BCEF;
+  border-radius: 20px;
+
+  background: #f3f8ff;
+}
+
+.random-slot-machine::before,
+.random-slot-machine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 25px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.random-slot-machine::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    #f3f8ff,
+    transparent
+  );
+}
+
+.random-slot-machine::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    #f3f8ff,
+    transparent
+  );
+}
+
+.random-slot-text {
+  position: relative;
+  z-index: 2;
+
+  color: #477dbf;
+  font-size: 26px;
+  font-weight: 900;
+
+  word-break: keep-all;
+}
+
+.random-song-result {
+  min-height: 25px;
+  margin-top: 14px;
+
+  color: #8295aa;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.random-song-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.random-reroll-button,
+.random-sing-button {
+  min-width: 145px;
+  padding: 12px 18px;
+
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 800;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.random-reroll-button {
+  border: 1px solid #92BCEF;
+  background: #ffffff;
+  color: #6b9edc;
+}
+
+.random-sing-button {
+  border: 1px solid #92BCEF;
+  background: #92BCEF;
+  color: #ffffff;
+}
+
+.random-reroll-button:hover,
+.random-sing-button:hover {
+  transform: translateY(-2px);
+}
+
+.random-reroll-button:disabled,
+.random-sing-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
