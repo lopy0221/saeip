@@ -1877,19 +1877,131 @@ document.addEventListener("click", event => {
 const randomSongButton =
   document.querySelector("#randomSongButton");
 
+const randomSongModal =
+  document.querySelector("#randomSongModal");
+
+const randomSongClose =
+  document.querySelector("#randomSongClose");
+
+const randomSlotText =
+  document.querySelector("#randomSlotText");
+
+const randomSongResult =
+  document.querySelector("#randomSongResult");
+
+const randomRerollButton =
+  document.querySelector("#randomRerollButton");
+
+const randomSingButton =
+  document.querySelector("#randomSingButton");
+
+let selectedRandomSong = null;
+let randomSongRunning = false;
+
+function runRandomSongSlot() {
+  if (!songs.length || randomSongRunning) return;
+
+  randomSongRunning = true;
+  selectedRandomSong = null;
+
+  randomSongResult.textContent =
+    "노래를 고르는 중... 🎲";
+
+  randomRerollButton.disabled = true;
+  randomSingButton.disabled = true;
+
+  let count = 0;
+  const totalCount = 24;
+
+  function spin() {
+    const previewSong =
+      songs[Math.floor(Math.random() * songs.length)];
+
+    randomSlotText.textContent =
+      previewSong.title || "???";
+
+    count++;
+
+    if (count < totalCount) {
+      // 뒤로 갈수록 점점 느려지는 슬롯머신
+      const delay =
+        45 + Math.pow(count / totalCount, 3) * 300;
+
+      setTimeout(spin, delay);
+      return;
+    }
+
+    selectedRandomSong =
+      songs[Math.floor(Math.random() * songs.length)];
+
+    randomSlotText.textContent =
+      selectedRandomSong.title || "???";
+
+    randomSongResult.textContent =
+      selectedRandomSong.artist || "";
+
+    randomSongRunning = false;
+
+    randomRerollButton.disabled = false;
+    randomSingButton.disabled = false;
+  }
+
+  spin();
+}
+
 randomSongButton?.addEventListener("click", () => {
   if (!songs.length) return;
 
-  const randomIndex =
-    Math.floor(Math.random() * songs.length);
+  randomSongModal.classList.add("is-open");
+  randomSongModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
-  const randomSong = songs[randomIndex];
+  runRandomSongSlot();
+});
+
+randomRerollButton?.addEventListener("click", () => {
+  runRandomSongSlot();
+});
+
+randomSongClose?.addEventListener("click", () => {
+  if (randomSongRunning) return;
+
+  randomSongModal.classList.remove("is-open");
+  randomSongModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+});
+
+randomSongModal?.addEventListener("click", event => {
+  if (
+    event.target === randomSongModal &&
+    !randomSongRunning
+  ) {
+    randomSongModal.classList.remove("is-open");
+    randomSongModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+});
+
+randomSingButton?.addEventListener("click", () => {
+  if (!selectedRandomSong) return;
+
+  randomSongModal.classList.remove("is-open");
+  randomSongModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
 
   openKaraokeModal(
-    randomSong.title || "",
-    randomSong.artist || "",
-    randomSong.lyrics_url || "",
-    randomSong.tj_karaoke_url || "",
-    randomSong.ky_karaoke_url || ""
+    selectedRandomSong.title || "",
+    selectedRandomSong.artist || "",
+    selectedRandomSong.lyrics_url || "",
+    selectedRandomSong.tj_karaoke_url || "",
+    selectedRandomSong.ky_karaoke_url || ""
   );
 });
