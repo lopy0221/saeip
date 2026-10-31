@@ -2755,9 +2755,12 @@ window.saveCalendarSchedule =
   const type =
     document.querySelector("#modalType").value;
 
-  if (type === "off") {
-    return null;
-  }
+  if (
+  type === "off" ||
+  type === "etc"
+) {
+  return null;
+}
 
   const period =
     document.querySelector("#modalPeriod").value;
