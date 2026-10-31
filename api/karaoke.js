@@ -66,16 +66,33 @@ if (cacheResponse.ok) {
       24 * 60 * 60 * 1000;
 
     if (cacheAge < twentyFourHours) {
-      return {
-        type,
-        videoId: item.video_id,
-        title: item.video_title || "",
-        channelTitle:
-          item.channel_title || "",
-        thumbnail: item.thumbnail || "",
-        cached: true
-      };
-    }
+  const normalizedTitle =
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9가-힣]/g, "");
+
+  const normalizedCachedTitle =
+    String(item.video_title || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9가-힣]/g, "");
+
+  const isCorrectSong =
+    normalizedCachedTitle.includes(
+      normalizedTitle
+    );
+
+  if (isCorrectSong) {
+    return {
+      type,
+      videoId: item.video_id,
+      title: item.video_title || "",
+      channelTitle:
+        item.channel_title || "",
+      thumbnail: item.thumbnail || "",
+      cached: true
+    };
+  }
+}
   }
 }
       
