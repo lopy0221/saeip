@@ -198,8 +198,8 @@ const kyVideo =
     : await searchKaraoke("ky");
 
 const videos = [
-  tjVideo,
-  kyVideo
+  kyVideo,
+  tjVideo
 ].filter(Boolean);
 
 if (!videos.length) {
