@@ -2320,6 +2320,30 @@ document.querySelector("#modalHour").value =
 
 document.querySelector("#modalMinute").value =
   String(minute);
+
+  const modalType =
+  document.querySelector("#modalType");
+
+const timeField =
+  document.querySelector("#modalPeriod")
+    ?.closest(".field");
+
+function updateTimeFieldVisibility() {
+  if (!modalType || !timeField) return;
+
+  if (modalType.value === "off") {
+    timeField.style.display = "none";
+  } else {
+    timeField.style.display = "";
+  }
+}
+
+modalType.addEventListener(
+  "change",
+  updateTimeFieldVisibility
+);
+
+updateTimeFieldVisibility();
 }
 
     window.showReplayAddForm =
@@ -2703,6 +2727,13 @@ window.saveCalendarSchedule =
     .replace(" 일정", ""),
 
       time: (() => {
+  const type =
+    document.querySelector("#modalType").value;
+
+  if (type === "off") {
+    return null;
+  }
+
   const period =
     document.querySelector("#modalPeriod").value;
 
