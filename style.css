@@ -3060,4 +3060,7 @@ body.dark-mode .schedule-view-item small {
   grid-column: 1 / -1;
   justify-self: end;
   margin-top: 8px;
+
+  position: relative;
+  z-index: 10;
 }
