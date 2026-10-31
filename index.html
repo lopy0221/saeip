@@ -668,38 +668,162 @@ or
 </section>
 
 
-   <!-- 06. 클립 & 캐치 -->
+   <!-- 06. 유저클립 -->
 <section class="page-section" id="clips">
 
-  <div class="clip-catch-layout">
+  <div class="soop-clips-page">
 
-    <!-- 왼쪽 : 클립 -->
-    <div class="clip-catch-side clip-side">
+    <!-- 상단 제목 -->
+    <div class="soop-clips-header">
 
-      <h2 class="clip-catch-title">
-        클립
-      </h2>
+      <div class="soop-clips-heading">
+        <h2>
+          유저클립
+          <span id="clipCount"></span>
+        </h2>
 
-      <div class="clip-catch-grid" id="soopClipGrid">
+        <button
+          type="button"
+          class="clip-search-button"
+          id="clipSearchButton"
+          aria-label="클립 검색"
+        >
+          ⌕
+        </button>
       </div>
 
     </div>
 
 
-    <!-- 가운데 구분선 -->
-    <div class="clip-catch-divider"></div>
+    <!-- 필터 박스 -->
+    <div class="soop-clips-filter-box">
 
+      <!-- 제작 유형 -->
+      <div class="soop-filter-row">
 
-    <!-- 오른쪽 : 캐치 -->
-    <div class="clip-catch-side catch-side">
+        <strong>제작 유형</strong>
 
-      <h2 class="clip-catch-title">
-        캐치
-      </h2>
+        <div class="soop-filter-options">
+          <button
+            type="button"
+            class="soop-filter-button active"
+            data-type="all"
+          >
+            전체
+          </button>
 
-      <div class="clip-catch-grid" id="soopCatchGrid">
+          <button
+            type="button"
+            class="soop-filter-button"
+            data-type="clip"
+          >
+            클립
+          </button>
+
+          <button
+            type="button"
+            class="soop-filter-button"
+            data-type="catch"
+          >
+            캐치
+          </button>
+        </div>
+
       </div>
 
+
+      <!-- 정렬 -->
+      <div class="soop-filter-row">
+
+        <strong>정렬</strong>
+
+        <div class="soop-filter-options">
+          <button
+            type="button"
+            class="soop-sort-button active"
+            data-sort="latest"
+          >
+            최신순
+          </button>
+
+          <button
+            type="button"
+            class="soop-sort-button"
+            data-sort="popular"
+          >
+            인기순
+          </button>
+
+          <button
+            type="button"
+            class="soop-sort-button"
+            data-sort="oldest"
+          >
+            오래된순
+          </button>
+
+          <button
+            type="button"
+            class="soop-sort-button"
+            data-sort="views"
+          >
+            조회순
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- 기간 -->
+      <div class="soop-filter-row">
+
+        <strong>기간</strong>
+
+        <div class="soop-filter-options">
+          <button
+            type="button"
+            class="soop-period-button active"
+            data-period="all"
+          >
+            전체
+          </button>
+
+          <button
+            type="button"
+            class="soop-period-button"
+            data-period="3month"
+          >
+            3개월
+          </button>
+
+          <button
+            type="button"
+            class="soop-period-button"
+            data-period="6month"
+          >
+            6개월
+          </button>
+
+          <button
+            type="button"
+            class="soop-period-button"
+            data-period="1year"
+          >
+            1년
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 클립 목록 -->
+    <div
+      class="soop-clips-grid"
+      id="soopClipsGrid"
+    >
     </div>
 
   </div>
