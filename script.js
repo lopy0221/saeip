@@ -2089,7 +2089,13 @@ function renderSoopClips() {
         clip.title_name || "제목 없는 클립";
 
       const thumbnail =
-        clip.thumb || "";
+  clip.thumb
+    ? (
+        clip.thumb.startsWith("//")
+          ? `https:${clip.thumb}`
+          : clip.thumb
+      )
+    : "";
 
       const views =
         Number(clip.read_cnt || 0);
