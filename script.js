@@ -2059,6 +2059,74 @@ karaokeVersionButton?.click();
 
 let soopClips = [];
 
+function renderSoopClips() {
+  const grid =
+    document.querySelector("#soopClipsGrid");
+
+  const count =
+    document.querySelector("#clipCount");
+
+  if (!grid) return;
+
+  if (count) {
+    count.textContent = soopClips.length
+      ? `${soopClips.length}개`
+      : "";
+  }
+
+  if (!soopClips.length) {
+    grid.innerHTML = `
+      <div class="soop-clips-empty">
+        등록된 클립이 없어요.
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = soopClips
+    .map(clip => {
+      const title =
+        clip.title_name || "제목 없는 클립";
+
+      const thumbnail =
+        clip.thumb || "";
+
+      const views =
+        Number(clip.read_cnt || 0);
+
+      const date =
+        clip.reg_date || "";
+
+      return `
+        <article class="soop-clip-card">
+
+          <div class="soop-clip-thumbnail">
+            <img
+              src="${escapeHTML(thumbnail)}"
+              alt="${escapeHTML(title)}"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="soop-clip-info">
+
+            <strong class="soop-clip-title">
+              ${escapeHTML(title)}
+            </strong>
+
+            <div class="soop-clip-meta">
+              <span>조회 ${views.toLocaleString()}</span>
+              <span>${escapeHTML(date)}</span>
+            </div>
+
+          </div>
+
+        </article>
+      `;
+    })
+    .join("");
+}
+
 async function loadSoopClips() {
   try {
     const response = await fetch("/api/clips");
