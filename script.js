@@ -2052,3 +2052,39 @@ openKaraokeModal(
 
 karaokeVersionButton?.click();
 });
+
+/* =========================
+   SOOP 유저클립
+========================= */
+
+let soopClips = [];
+
+async function loadSoopClips() {
+  try {
+    const response = await fetch("/api/clips");
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.error || "클립을 불러오지 못했습니다."
+      );
+    }
+
+    soopClips = Array.isArray(data.clips)
+      ? data.clips
+      : [];
+
+    console.log(
+      "SOOP 클립 불러오기 완료:",
+      soopClips
+    );
+
+  } catch (error) {
+    console.error(
+      "SOOP 클립 불러오기 오류:",
+      error
+    );
+  }
+}
+
+loadSoopClips();
