@@ -328,8 +328,10 @@ async function loadScheduleReplays() {
   }
 }
 
-let calendarYear = 2026;
-let calendarMonth = 9; // 0=1월, 9=10월
+const calendarToday = new Date();
+
+let calendarYear = calendarToday.getFullYear();
+let calendarMonth = calendarToday.getMonth();
 let selectedCalendarKey = "";
 
 // Supabase에서 방송 일정 불러오기
