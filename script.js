@@ -2074,6 +2074,8 @@ async function loadSoopClips() {
       ? data.clips
       : [];
 
+    renderSoopClips();
+
     console.log(
       "SOOP 클립 불러오기 완료:",
       soopClips
