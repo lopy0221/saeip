@@ -2089,11 +2089,11 @@ function renderSoopClips() {
         clip.title_name || "제목 없는 클립";
 
       const thumbnail =
-  clip.thumb
+  clip.ucc?.thumb
     ? (
-        clip.thumb.startsWith("//")
-          ? `https:${clip.thumb}`
-          : clip.thumb
+        clip.ucc.thumb.startsWith("//")
+          ? `https:${clip.ucc.thumb}`
+          : clip.ucc.thumb
       )
     : "";
 
