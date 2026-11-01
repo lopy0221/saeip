@@ -1571,8 +1571,10 @@ document
     await loadSongs();
   };
     
-    let adminCalendarYear = 2026;
-let adminCalendarMonth = 9; // 0부터 시작하므로 9 = 10월
+    const adminCalendarToday = new Date();
+
+let adminCalendarYear = adminCalendarToday.getFullYear();
+let adminCalendarMonth = adminCalendarToday.getMonth();
 
     function showLogin() {
       loginPage.classList.remove("hidden");
