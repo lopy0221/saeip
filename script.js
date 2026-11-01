@@ -2104,7 +2104,10 @@ function renderSoopClips() {
         clip.reg_date || "";
 
       return `
-        <article class="soop-clip-card">
+        <article
+  class="soop-clip-card"
+  data-title-no="${clip.title_no}"
+>
 
           <div class="soop-clip-thumbnail">
             <img
@@ -2131,6 +2134,20 @@ function renderSoopClips() {
       `;
     })
     .join("");
+  document.addEventListener("click", event => {
+  const card = event.target.closest(".soop-clip-card");
+
+  if (!card) return;
+
+  const titleNo = card.dataset.titleNo;
+
+  if (!titleNo) return;
+
+  window.open(
+    `https://vod.sooplive.co.kr/player/${titleNo}`,
+    "_blank"
+  );
+});
 }
 
 async function loadSoopClips() {
