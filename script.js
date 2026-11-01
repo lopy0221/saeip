@@ -2134,20 +2134,7 @@ function renderSoopClips() {
       `;
     })
     .join("");
-  document.addEventListener("click", event => {
-  const card = event.target.closest(".soop-clip-card");
-
-  if (!card) return;
-
-  const titleNo = card.dataset.titleNo;
-
-  if (!titleNo) return;
-
-  window.open(
-    `https://vod.sooplive.co.kr/player/${titleNo}`,
-    "_blank"
-  );
-});
+ 
 }
 
 async function loadSoopClips() {
