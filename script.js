@@ -2098,7 +2098,7 @@ function renderSoopClips() {
     : "";
 
       const views =
-        Number(clip.read_cnt || 0);
+  Number(clip.count?.read_cnt || 0);
 
       const date =
         clip.reg_date || "";
