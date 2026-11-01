@@ -3390,3 +3390,66 @@ body.dark-mode .schedule-view-item small {
 
   margin-top: 22px;
 }
+
+/* =========================
+   SOOP 유저클립 카드
+========================= */
+
+#clips .soop-clip-card {
+  min-width: 0;
+  cursor: pointer;
+}
+
+#clips .soop-clip-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e9f1fa;
+}
+
+#clips .soop-clip-thumbnail img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+#clips .soop-clip-card:hover .soop-clip-thumbnail img {
+  transform: scale(1.03);
+}
+
+#clips .soop-clip-info {
+  padding: 10px 2px 0;
+}
+
+#clips .soop-clip-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 700;
+  color: #405875;
+  word-break: keep-all;
+}
+
+#clips .soop-clip-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+
+  font-size: 12px;
+  color: #91a2b8;
+}
+
+#clips .soop-clips-empty {
+  grid-column: 1 / -1;
+  padding: 80px 0;
+  text-align: center;
+  color: #91a2b8;
+}
