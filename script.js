@@ -2192,14 +2192,6 @@ async function loadSoopClips() {
       ? data.clips
       : [];
 
-    console.log(
-  "SOOP 제작 유형 확인:",
-  soopClips.map(clip => ({
-    title: clip.title_name,
-    ucc_type: clip.ucc?.ucc_type
-  }))
-);
-
     renderSoopClips();
 
     console.log(
