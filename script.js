@@ -2192,6 +2192,15 @@ async function loadSoopClips() {
       ? data.clips
       : [];
 
+    console.table(
+  soopClips.map(clip => ({
+    제목: clip.title_name,
+    ucc_type: clip.ucc?.ucc_type,
+    user_nick: clip.ucc?.user_nick,
+    title_no: clip.title_no
+  }))
+);
+
     renderSoopClips();
 
     console.log(
