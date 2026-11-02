@@ -3527,3 +3527,33 @@ body.dark-mode .schedule-view-item small {
   display: block;
   border: 0;
 }
+
+/* 다시보기 숨기기 */
+
+#clips .soop-hide-replay {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-left: 8px;
+
+  font-size: 13px;
+  color: #8a9aae;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+#clips .soop-hide-replay input {
+  width: 15px;
+  height: 15px;
+
+  margin: 0;
+
+  accent-color: #70a1f3;
+  cursor: pointer;
+}
+
+#clips .soop-hide-replay:hover {
+  color: #70a1f3;
+}
