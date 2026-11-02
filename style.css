@@ -3569,6 +3569,7 @@ body.dark-mode .schedule-view-item small {
 #clips .soop-hide-replay span {
   order: 1;
   line-height: 18px;
+  transform: translateY(1px);
 }
 
 #clips .soop-hide-replay input::after {
