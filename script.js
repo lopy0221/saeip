@@ -2164,6 +2164,19 @@ document.addEventListener("click", event => {
   clipModal.setAttribute("aria-hidden", "false");
 });
 
+function closeClipModal() {
+  if (!clipModal || !clipPlayer) return;
+
+  clipModal.classList.remove("show");
+  clipModal.setAttribute("aria-hidden", "true");
+
+  clipPlayer.src = "";
+}
+
+clipModalClose?.addEventListener("click", () => {
+  closeClipModal();
+});
+
 async function loadSoopClips() {
   try {
     const response = await fetch("/api/clips");
