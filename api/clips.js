@@ -29,14 +29,29 @@ if (!catchResponse.ok) {
 
 const catchData = await catchResponse.json();
 
+    const replayUrl =
+  `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
+  `?page=1&per_page=60&orderby=reg_date`;
+
+const replayResponse = await fetch(replayUrl);
+
+if (!replayResponse.ok) {
+  throw new Error(
+    `SOOP 다시보기 API 오류: ${replayResponse.status}`
+  );
+}
+
+const replayData = await replayResponse.json();
+
     return res.status(200).json({
   success: true,
   streamer: SOOP_ID,
 
+  replays: replayData.data || [],
+
   clips: data.data || [],
 
-  catches:
-    catchData.contents || []
+  catches: catchData.contents || []
 });
 
   } catch (error) {
