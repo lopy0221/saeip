@@ -3538,6 +3538,7 @@ body.dark-mode .schedule-view-item small {
   margin-left: 10px;
 
   font-size: 13px;
+  line-height: 1;
   color: #8a9aae;
 
   cursor: pointer;
@@ -3547,6 +3548,8 @@ body.dark-mode .schedule-view-item small {
 #clips .soop-hide-replay input {
   appearance: none;
   -webkit-appearance: none;
+
+  order: 2;
 
   position: relative;
 
@@ -3561,6 +3564,11 @@ body.dark-mode .schedule-view-item small {
   cursor: pointer;
 
   transition: 0.2s ease;
+}
+
+#clips .soop-hide-replay span {
+  order: 1;
+  line-height: 18px;
 }
 
 #clips .soop-hide-replay input::after {
