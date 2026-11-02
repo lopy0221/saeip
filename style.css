@@ -3528,14 +3528,14 @@ body.dark-mode .schedule-view-item small {
   border: 0;
 }
 
-/* 다시보기 숨기기 */
+/* 다시보기 숨기기 토글 */
 
 #clips .soop-hide-replay {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 
-  margin-left: 8px;
+  margin-left: 10px;
 
   font-size: 13px;
   color: #8a9aae;
@@ -3545,15 +3545,50 @@ body.dark-mode .schedule-view-item small {
 }
 
 #clips .soop-hide-replay input {
-  width: 15px;
-  height: 15px;
+  appearance: none;
+  -webkit-appearance: none;
+
+  position: relative;
+
+  width: 32px;
+  height: 18px;
 
   margin: 0;
 
-  accent-color: #70a1f3;
+  background: #dce6f1;
+  border-radius: 999px;
+
   cursor: pointer;
+
+  transition: 0.2s ease;
 }
 
-#clips .soop-hide-replay:hover {
+#clips .soop-hide-replay input::after {
+  content: "";
+
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  width: 12px;
+  height: 12px;
+
+  background: #ffffff;
+  border-radius: 50%;
+
+  box-shadow: 0 1px 4px rgba(50, 80, 110, 0.18);
+
+  transition: 0.2s ease;
+}
+
+#clips .soop-hide-replay input:checked {
+  background: #70a1f3;
+}
+
+#clips .soop-hide-replay input:checked::after {
+  transform: translateX(14px);
+}
+
+#clips .soop-hide-replay:hover span {
   color: #70a1f3;
 }
