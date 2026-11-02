@@ -2137,6 +2137,33 @@ function renderSoopClips() {
  
 }
 
+const clipModal =
+  document.querySelector("#clipModal");
+
+const clipPlayer =
+  document.querySelector("#clipPlayer");
+
+const clipModalClose =
+  document.querySelector("#clipModalClose");
+
+document.addEventListener("click", event => {
+  const card =
+    event.target.closest(".soop-clip-card");
+
+  if (!card) return;
+
+  const titleNo =
+    card.dataset.titleNo;
+
+  if (!titleNo || !clipModal || !clipPlayer) return;
+
+  clipPlayer.src =
+    `https://vod.sooplive.co.kr/player/${titleNo}`;
+
+  clipModal.classList.add("show");
+  clipModal.setAttribute("aria-hidden", "false");
+});
+
 async function loadSoopClips() {
   try {
     const response = await fetch("/api/clips");
