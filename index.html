@@ -701,36 +701,50 @@ or
       <!-- 제작 유형 -->
       <div class="soop-filter-row">
 
-        <strong>제작 유형</strong>
+        <strong>VOD 유형</strong>
 
         <div class="soop-filter-options">
-          <button
-            type="button"
-            class="soop-filter-button active"
-            data-type="all"
-          >
-            전체
-          </button>
+  <button
+    type="button"
+    class="soop-filter-button active"
+    data-type="all"
+  >
+    전체
+  </button>
 
-          <button
-            type="button"
-            class="soop-filter-button"
-            data-type="clip"
-          >
-            클립
-          </button>
+  <button
+    type="button"
+    class="soop-filter-button"
+    data-type="replay"
+  >
+    다시보기
+  </button>
 
-          <button
-            type="button"
-            class="soop-filter-button"
-            data-type="catch"
-          >
-            캐치
-          </button>
-        </div>
+  <button
+    type="button"
+    class="soop-filter-button"
+    data-type="clip"
+  >
+    클립
+  </button>
 
-      </div>
+  <button
+    type="button"
+    class="soop-filter-button"
+    data-type="catch"
+  >
+    캐치
+  </button>
 
+  <label class="soop-hide-replay">
+    <input
+      type="checkbox"
+      id="hideReplayCheckbox"
+    >
+    <span>다시보기 숨기기</span>
+  </label>
+</div>
+</div>
 
       <!-- 정렬 -->
       <div class="soop-filter-row">
