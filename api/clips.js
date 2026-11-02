@@ -3,7 +3,7 @@ const SOOP_ID = "likey0u";
 module.exports = async function handler(req, res) {
   try {
     const url =
-      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip` +
+      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
       `?page=1&per_page=60&orderby=reg_date`;
 
     const response = await fetch(url);
