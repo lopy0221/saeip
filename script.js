@@ -2073,19 +2073,36 @@ let selectedSoopSort = "latest";
 let selectedPeriod = "all";
 
 let soopCurrentPage = 1;
-let soopHasNextPage = true;
+let soopTotalPages = 0;
+let soopTotalItems = 0;
 let soopLoading = false;
 
 const SOOP_ITEMS_PER_PAGE = 60;
 
 /*
-  이미 불러온 페이지를 저장한다.
-  같은 페이지로 돌아갔을 때 API를 다시 호출하지 않는다.
+  같은 조건 / 같은 페이지를 다시 열었을 때
+  API를 다시 호출하지 않도록 캐시
 */
 const soopPageCache = new Map();
 
-function getSoopCacheKey(page, type) {
-  return `${type}:${page}`;
+
+/* =========================
+   공통 함수
+========================= */
+
+function getSoopCacheKey(page) {
+  const hideReplay =
+    document.querySelector(
+      "#hideReplayCheckbox"
+    )?.checked || false;
+
+  return [
+    selectedVodType,
+    selectedSoopSort,
+    selectedPeriod,
+    hideReplay,
+    page
+  ].join(":");
 }
 
 function getSoopDate(item) {
@@ -2102,105 +2119,15 @@ function getSoopViews(item) {
     item.count?.readCnt ??
     item.read_cnt ??
     item.readCnt ??
+    item.view_count ??
     0
   );
 }
 
-function sortSoopItems(items) {
-  const result = [...items];
 
-  if (selectedSoopSort === "latest") {
-    result.sort((a, b) => {
-      return (
-        new Date(getSoopDate(b)) -
-        new Date(getSoopDate(a))
-      );
-    });
-  }
-
-  if (selectedSoopSort === "oldest") {
-    result.sort((a, b) => {
-      return (
-        new Date(getSoopDate(a)) -
-        new Date(getSoopDate(b))
-      );
-    });
-  }
-
-  if (selectedSoopSort === "views") {
-    result.sort((a, b) => {
-      return (
-        getSoopViews(b) -
-        getSoopViews(a)
-      );
-    });
-  }
-
-  return result;
-}
-
-function filterSoopPeriod(items) {
-  if (selectedPeriod === "all") {
-    return items;
-  }
-
-  const limitDate = new Date();
-
-  if (selectedPeriod === "3month") {
-    limitDate.setMonth(
-      limitDate.getMonth() - 3
-    );
-  }
-
-  if (selectedPeriod === "6month") {
-    limitDate.setMonth(
-      limitDate.getMonth() - 6
-    );
-  }
-
-  if (selectedPeriod === "1year") {
-    limitDate.setFullYear(
-      limitDate.getFullYear() - 1
-    );
-  }
-
-  return items.filter(item => {
-    const date =
-      new Date(getSoopDate(item));
-
-    return (
-      !Number.isNaN(date.getTime()) &&
-      date >= limitDate
-    );
-  });
-}
-
-function getVisibleSoopItems() {
-  let items = [...soopClips];
-
-  /*
-    전체 탭일 때만
-    '다시보기 숨기기' 적용
-  */
-  const hideReplay =
-    document.querySelector(
-      "#hideReplayCheckbox"
-    )?.checked || false;
-
-  if (
-    selectedVodType === "all" &&
-    hideReplay
-  ) {
-    items = items.filter(
-      item => item.vod_type !== "replay"
-    );
-  }
-
-  items = filterSoopPeriod(items);
-  items = sortSoopItems(items);
-
-  return items;
-}
+/* =========================
+   SOOP 데이터 불러오기
+========================= */
 
 async function loadSoopClips(
   page = 1,
@@ -2208,14 +2135,21 @@ async function loadSoopClips(
 ) {
   if (soopLoading) return;
 
+  page = Math.max(
+    1,
+    Number(page) || 1
+  );
+
+  const hideReplay =
+    document.querySelector(
+      "#hideReplayCheckbox"
+    )?.checked || false;
+
   const cacheKey =
-    getSoopCacheKey(
-      page,
-      selectedVodType
-    );
+    getSoopCacheKey(page);
 
   /*
-    캐시가 있으면 서버에 다시 요청하지 않는다.
+    이미 받은 데이터면 캐시 사용
   */
   if (
     !force &&
@@ -2224,9 +2158,17 @@ async function loadSoopClips(
     const cached =
       soopPageCache.get(cacheKey);
 
-    soopClips = cached.items;
-    soopHasNextPage = cached.hasNextPage;
-    soopCurrentPage = page;
+    soopClips =
+      cached.items;
+
+    soopCurrentPage =
+      cached.page;
+
+    soopTotalPages =
+      cached.totalPages;
+
+    soopTotalItems =
+      cached.total;
 
     renderSoopClips();
     return;
@@ -2251,7 +2193,11 @@ async function loadSoopClips(
     const params =
       new URLSearchParams({
         page: String(page),
-        type: selectedVodType
+        type: selectedVodType,
+        sort: selectedSoopSort,
+        period: selectedPeriod,
+        hideReplay:
+          String(hideReplay)
       });
 
     const response =
@@ -2272,42 +2218,32 @@ async function loadSoopClips(
       );
     }
 
-    let items =
+    soopClips =
       Array.isArray(data.items)
         ? data.items
         : [];
 
+    soopCurrentPage =
+      Number(data.page) || page;
+
+    soopTotalPages =
+      Number(data.totalPages) || 0;
+
+    soopTotalItems =
+      Number(data.total) || 0;
+
     /*
-      전체 탭은 서버에서 최대 180개가 올 수 있으므로
-      현재 서버 배치 안에서 정렬한다.
+      현재 조건 + 현재 페이지 저장
     */
-    items = sortSoopItems(items);
-
-    soopClips = items;
-    soopCurrentPage = page;
-
-    if (selectedVodType === "all") {
-      soopHasNextPage =
-        Boolean(
-          data.hasMore?.replay ||
-          data.hasMore?.clip ||
-          data.hasMore?.catch
-        );
-    } else {
-      soopHasNextPage =
-        Boolean(
-          data.hasMore?.[
-            selectedVodType
-          ]
-        );
-    }
-
     soopPageCache.set(
       cacheKey,
       {
         items: soopClips,
-        hasNextPage:
-          soopHasNextPage
+        page: soopCurrentPage,
+        totalPages:
+          soopTotalPages,
+        total:
+          soopTotalItems
       }
     );
 
@@ -2332,38 +2268,34 @@ async function loadSoopClips(
   }
 }
 
+
 /* =========================
-   SOOP 카드 렌더링
+   SOOP 카드 표시
 ========================= */
 
 function renderSoopClips() {
   const grid =
-    document.querySelector("#soopClipsGrid");
+    document.querySelector(
+      "#soopClipsGrid"
+    );
 
   const count =
-    document.querySelector("#clipCount");
+    document.querySelector(
+      "#clipCount"
+    );
 
   if (!grid) return;
 
-  const visibleItems =
-    getVisibleSoopItems();
-
   /*
-    전체 탭은 서버에서 최대 180개가 오므로
-    현재 페이지에는 60개만 표시
+    이제 서버에서 정확히 60개를
+    보내주기 때문에 slice 필요 없음
   */
-  const pageItems =
-    visibleItems.slice(
-      0,
-      SOOP_ITEMS_PER_PAGE
-    );
-
   if (count) {
     count.textContent =
-      `${pageItems.length}개`;
+      `${soopTotalItems.toLocaleString()}개`;
   }
 
-  if (!pageItems.length) {
+  if (!soopClips.length) {
     grid.innerHTML = `
       <div class="soop-clips-empty">
         조건에 맞는 VOD가 없어요.
@@ -2375,98 +2307,118 @@ function renderSoopClips() {
   }
 
   grid.innerHTML =
-    pageItems.map(item => {
+    soopClips
+      .map(item => {
 
-      const title =
-        item.title_name ||
-        item.titleName ||
-        item.title ||
-        "제목 없는 VOD";
+        const title =
+          item.title_name ||
+          item.titleName ||
+          item.title ||
+          "제목 없는 VOD";
 
-      const rawThumbnail =
-        item.ucc?.thumb ||
-        item.thumbnail ||
-        item.thumb ||
-        "";
+        let thumbnail =
+          item.ucc?.thumb ||
+          item.thumbnail ||
+          item.thumb ||
+          "";
 
-      const thumbnail =
-        rawThumbnail.startsWith("//")
-          ? `https:${rawThumbnail}`
-          : rawThumbnail;
+        if (
+          thumbnail &&
+          thumbnail.startsWith("//")
+        ) {
+          thumbnail =
+            `https:${thumbnail}`;
+        }
 
-      const views =
-        getSoopViews(item);
+        const views =
+          getSoopViews(item);
 
-      const date =
-        getSoopDate(item);
+        const date =
+          getSoopDate(item);
 
-      const titleNo =
-        item.title_no ||
-        item.titleNo ||
-        "";
+        const titleNo =
+          item.title_no ||
+          item.titleNo ||
+          "";
 
-      return `
-        <article
-          class="soop-clip-card"
-          data-title-no="${escapeHTML(
-            String(titleNo)
-          )}"
-          data-vod-type="${escapeHTML(
-            item.vod_type || ""
-          )}"
-        >
+        return `
+          <article
+            class="soop-clip-card"
+            data-title-no="${escapeHTML(
+              String(titleNo)
+            )}"
+            data-vod-type="${escapeHTML(
+              item.vod_type || ""
+            )}"
+          >
 
-          <div class="soop-clip-thumbnail">
-            ${
-              thumbnail
-                ? `
-                  <img
-                    src="${escapeHTML(thumbnail)}"
-                    alt="${escapeHTML(title)}"
-                    loading="lazy"
-                  >
-                `
-                : `
-                  <div class="soop-clip-no-image">
-                    SAEIP
-                  </div>
-                `
-            }
-          </div>
+            <div class="soop-clip-thumbnail">
 
-          <div class="soop-clip-info">
+              ${
+                thumbnail
+                  ? `
+                    <img
+                      src="${escapeHTML(
+                        thumbnail
+                      )}"
+                      alt="${escapeHTML(
+                        title
+                      )}"
+                      loading="lazy"
+                    >
+                  `
+                  : `
+                    <div class="soop-clip-no-image">
+                      SAEIP
+                    </div>
+                  `
+              }
 
-            <strong class="soop-clip-title">
-              ${escapeHTML(title)}
-            </strong>
-
-            <div class="soop-clip-meta">
-              <span>
-                조회 ${views.toLocaleString()}
-              </span>
-
-              <span>
-                ${escapeHTML(date)}
-              </span>
             </div>
 
-          </div>
+            <div class="soop-clip-info">
 
-        </article>
-      `;
-    }).join("");
+              <strong
+                class="soop-clip-title"
+              >
+                ${escapeHTML(title)}
+              </strong>
+
+              <div
+                class="soop-clip-meta"
+              >
+
+                <span>
+                  조회
+                  ${views.toLocaleString()}
+                </span>
+
+                <span>
+                  ${escapeHTML(date)}
+                </span>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+      })
+      .join("");
 
   renderSoopPagination();
 }
 
 
 /* =========================
-   SOOP 페이지네이션
+   페이지네이션
 ========================= */
 
 function renderSoopPagination() {
   let pagination =
-    document.querySelector("#soopPagination");
+    document.querySelector(
+      "#soopPagination"
+    );
 
   if (!pagination) {
     pagination =
@@ -2489,28 +2441,18 @@ function renderSoopPagination() {
     );
   }
 
-  /*
-    SOOP API에서 전체 페이지 수를
-    확실하게 받는 구조가 아니므로
-    현재 페이지 주변만 표시한다.
-  */
+  if (!pagination) return;
 
-  const startPage =
-    Math.max(
-      1,
-      soopCurrentPage - 4
-    );
-
-  const endPage =
-    soopHasNextPage
-      ? Math.max(
-          soopCurrentPage + 1,
-          startPage + 9
-        )
-      : soopCurrentPage;
+  if (soopTotalPages <= 1) {
+    pagination.innerHTML = "";
+    return;
+  }
 
   let html = "";
 
+  /*
+    이전 버튼
+  */
   if (soopCurrentPage > 1) {
     html += `
       <button
@@ -2524,27 +2466,82 @@ function renderSoopPagination() {
     `;
   }
 
+  /*
+    첫 페이지
+  */
+  html += createSoopPageButton(1);
+
+  /*
+    현재 페이지 기준
+    앞뒤 2페이지 표시
+  */
+  let startPage =
+    Math.max(
+      2,
+      soopCurrentPage - 2
+    );
+
+  let endPage =
+    Math.min(
+      soopTotalPages - 1,
+      soopCurrentPage + 2
+    );
+
+  /*
+    앞쪽 ...
+  */
+  if (startPage > 2) {
+    html += `
+      <span
+        class="soop-page-dots"
+      >
+        ...
+      </span>
+    `;
+  }
+
   for (
     let page = startPage;
     page <= endPage;
     page++
   ) {
+    html +=
+      createSoopPageButton(page);
+  }
+
+  /*
+    뒤쪽 ...
+  */
+  if (
+    endPage <
+    soopTotalPages - 1
+  ) {
     html += `
-      <button
-        type="button"
-        class="soop-page-button ${
-          page === soopCurrentPage
-            ? "active"
-            : ""
-        }"
-        data-page="${page}"
+      <span
+        class="soop-page-dots"
       >
-        ${page}
-      </button>
+        ...
+      </span>
     `;
   }
 
-  if (soopHasNextPage) {
+  /*
+    마지막 페이지
+  */
+  if (soopTotalPages > 1) {
+    html +=
+      createSoopPageButton(
+        soopTotalPages
+      );
+  }
+
+  /*
+    다음 버튼
+  */
+  if (
+    soopCurrentPage <
+    soopTotalPages
+  ) {
     html += `
       <button
         type="button"
@@ -2560,9 +2557,25 @@ function renderSoopPagination() {
   pagination.innerHTML = html;
 }
 
+function createSoopPageButton(page) {
+  return `
+    <button
+      type="button"
+      class="soop-page-button ${
+        page === soopCurrentPage
+          ? "active"
+          : ""
+      }"
+      data-page="${page}"
+    >
+      ${page}
+    </button>
+  `;
+}
+
 
 /* =========================
-   페이지 버튼
+   페이지 이동
 ========================= */
 
 document.addEventListener(
@@ -2577,11 +2590,12 @@ document.addEventListener(
     if (!button) return;
 
     const page =
-      Number(button.dataset.page);
+      Number(
+        button.dataset.page
+      );
 
     if (
       !page ||
-      page < 1 ||
       page === soopCurrentPage ||
       soopLoading
     ) {
@@ -2656,15 +2670,17 @@ const hideReplayCheckbox =
     "#hideReplayCheckbox"
   );
 
-hideReplayCheckbox?.addEventListener(
-  "change",
-  () => {
+hideReplayCheckbox
+  ?.addEventListener(
+    "change",
+    async () => {
 
-    soopCurrentPage = 1;
-    renderSoopClips();
+      soopCurrentPage = 1;
 
-  }
-);
+      await loadSoopClips(1);
+
+    }
+  );
 
 
 /* =========================
@@ -2679,11 +2695,20 @@ document
 
     button.addEventListener(
       "click",
-      () => {
+      async () => {
 
-        selectedSoopSort =
+        const sort =
           button.dataset.sort ||
           "latest";
+
+        if (
+          sort === selectedSoopSort
+        ) {
+          return;
+        }
+
+        selectedSoopSort = sort;
+        soopCurrentPage = 1;
 
         document
           .querySelectorAll(
@@ -2698,7 +2723,7 @@ document
 
           });
 
-        renderSoopClips();
+        await loadSoopClips(1);
       }
     );
 
@@ -2717,11 +2742,20 @@ document
 
     button.addEventListener(
       "click",
-      () => {
+      async () => {
 
-        selectedPeriod =
+        const period =
           button.dataset.period ||
           "all";
+
+        if (
+          period === selectedPeriod
+        ) {
+          return;
+        }
+
+        selectedPeriod = period;
+        soopCurrentPage = 1;
 
         document
           .querySelectorAll(
@@ -2736,9 +2770,7 @@ document
 
           });
 
-        soopCurrentPage = 1;
-
-        renderSoopClips();
+        await loadSoopClips(1);
       }
     );
 
@@ -2750,10 +2782,14 @@ document
 ========================= */
 
 const clipModal =
-  document.querySelector("#clipModal");
+  document.querySelector(
+    "#clipModal"
+  );
 
 const clipPlayer =
-  document.querySelector("#clipPlayer");
+  document.querySelector(
+    "#clipPlayer"
+  );
 
 const clipModalClose =
   document.querySelector(
@@ -2816,21 +2852,25 @@ function closeClipModal() {
   clipPlayer.src = "";
 }
 
-clipModalClose?.addEventListener(
-  "click",
-  closeClipModal
-);
+clipModalClose
+  ?.addEventListener(
+    "click",
+    closeClipModal
+  );
 
-clipModal?.addEventListener(
-  "click",
-  event => {
+clipModal
+  ?.addEventListener(
+    "click",
+    event => {
 
-    if (event.target === clipModal) {
-      closeClipModal();
+      if (
+        event.target === clipModal
+      ) {
+        closeClipModal();
+      }
+
     }
-
-  }
-);
+  );
 
 document.addEventListener(
   "keydown",
@@ -2838,9 +2878,9 @@ document.addEventListener(
 
     if (
       event.key === "Escape" &&
-      clipModal?.classList.contains(
-        "show"
-      )
+      clipModal
+        ?.classList
+        .contains("show")
     ) {
       closeClipModal();
     }
