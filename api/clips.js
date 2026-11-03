@@ -1,121 +1,93 @@
 const SOOP_ID = "likey0u";
 
-/* ========================================
-   SOOP 페이지 전체 불러오기
-======================================== */
+const REPLAY_PER_PAGE = 60;
+const CLIP_PER_PAGE = 60;
+const CATCH_PER_PAGE = 40;
 
-async function fetchAllPages({
-  makeUrl,
-  getItems,
-  perPage = 60,
-  maxPages = 100
-}) {
-  const allItems = [];
+async function fetchJson(url) {
+  const response = await fetch(url);
 
-  for (let page = 1; page <= maxPages; page++) {
-    const url = makeUrl(page, perPage);
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(
-        `SOOP API 오류 (${response.status}) / page=${page}`
-      );
-    }
-
-    const data = await response.json();
-
-    const items = getItems(data);
-
-    if (!Array.isArray(items) || items.length === 0) {
-      break;
-    }
-
-    allItems.push(...items);
-
-    // 마지막 페이지
-    if (items.length < perPage) {
-      break;
-    }
+  if (!response.ok) {
+    throw new Error(
+      `SOOP API 오류: ${response.status}`
+    );
   }
 
-  return allItems;
+  return response.json();
 }
-
-
-/* ========================================
-   API
-======================================== */
 
 module.exports = async function handler(req, res) {
   try {
+    const page = Math.max(
+      1,
+      Number(req.query.page) || 1
+    );
 
-   const [replays, clips, catches] = await Promise.all([
+    /*
+      같은 페이지의 다시보기 / 클립 / CATCH를
+      동시에 가져온다.
+    */
+    const [
+      replayData,
+      clipData,
+      catchData
+    ] = await Promise.all([
 
-  /* 다시보기 */
-  fetchAllPages({
-    perPage: 60,
+      fetchJson(
+        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
+        `?page=${page}` +
+        `&per_page=${REPLAY_PER_PAGE}` +
+        `&orderby=reg_date`
+      ),
 
-    makeUrl: (page, perPage) =>
-      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
-      `?page=${page}` +
-      `&per_page=${perPage}` +
-      `&orderby=reg_date`,
+      fetchJson(
+        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
+        `?page=${page}` +
+        `&per_page=${CLIP_PER_PAGE}` +
+        `&orderby=reg_date`
+      ),
 
-    getItems: data =>
-      Array.isArray(data.data)
-        ? data.data
-        : []
-  }),
+      fetchJson(
+        `https://api-channel.sooplive.com/v1.3/channel/${SOOP_ID}/vod/catch` +
+        `?startDate=` +
+        `&endDate=` +
+        `&keyword=` +
+        `&orderBy=reg_date` +
+        `&page=${page}` +
+        `&perPage=${CATCH_PER_PAGE}` +
+        `&field=title,contents,user_nick,user_id`
+      )
 
+    ]);
 
-  /* 클립 */
-  fetchAllPages({
-    perPage: 60,
+    const replays =
+      Array.isArray(replayData.data)
+        ? replayData.data
+        : [];
 
-    makeUrl: (page, perPage) =>
-      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
-      `?page=${page}` +
-      `&per_page=${perPage}` +
-      `&orderby=reg_date`,
+    const clips =
+      Array.isArray(clipData.data)
+        ? clipData.data
+        : [];
 
-    getItems: data =>
-      Array.isArray(data.data)
-        ? data.data
-        : []
-  }),
+    const catches =
+      Array.isArray(catchData.contents)
+        ? catchData.contents
+        : [];
 
-
-  /* CATCH */
-  fetchAllPages({
-    perPage: 40,
-
-    makeUrl: (page, perPage) =>
-      `https://api-channel.sooplive.com/v1.3/channel/${SOOP_ID}/vod/catch` +
-      `?startDate=` +
-      `&endDate=` +
-      `&keyword=` +
-      `&orderBy=reg_date` +
-      `&page=${page}` +
-      `&perPage=${perPage}` +
-      `&field=title,contents,user_nick,user_id`,
-
-    getItems: data =>
-      Array.isArray(data.contents)
-        ? data.contents
-        : []
-  })
-
-]);
-
-    /* ====================================
-       결과 반환
-    ==================================== */
+    /*
+      짧게 캐시해서 같은 페이지를 다시 열 때
+      SOOP API를 매번 호출하지 않도록 한다.
+    */
+    res.setHeader(
+      "Cache-Control",
+      "s-maxage=120, stale-while-revalidate=300"
+    );
 
     return res.status(200).json({
       success: true,
-
       streamer: SOOP_ID,
+      page,
 
       replays,
       clips,
@@ -124,19 +96,13 @@ module.exports = async function handler(req, res) {
       counts: {
         replays: replays.length,
         clips: clips.length,
-        catches: catches.length,
-
-        total:
-          replays.length +
-          clips.length +
-          catches.length
+        catches: catches.length
       }
     });
 
   } catch (error) {
-
     console.error(
-      "SOOP 전체 VOD 불러오기 오류:",
+      "SOOP VOD 불러오기 오류:",
       error
     );
 
