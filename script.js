@@ -2464,6 +2464,21 @@ function applyPeriodFilter() {
         card.style.display = "none";
       }
     });
+  updateVisibleClipCount();
+}
+
+function updateVisibleClipCount() {
+  const count =
+    document.querySelector("#clipCount");
+
+  if (!count) return;
+
+  const visibleCards =
+    [...document.querySelectorAll(".soop-clip-card")]
+      .filter(card => card.style.display !== "none");
+
+  count.textContent =
+    `${visibleCards.length}개`;
 }
 
 document
