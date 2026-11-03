@@ -2086,27 +2086,41 @@ function renderSoopClips() {
   grid.innerHTML = soopClips
     .map(clip => {
       const title =
-        clip.title_name || "제목 없는 클립";
+  clip.title_name ||
+  clip.titleName ||
+  "제목 없는 VOD";
 
-      const thumbnail =
-  clip.ucc?.thumb
-    ? (
-        clip.ucc.thumb.startsWith("//")
-          ? `https:${clip.ucc.thumb}`
-          : clip.ucc.thumb
-      )
-    : "";
+const rawThumbnail =
+  clip.ucc?.thumb || "";
 
-      const views =
-  Number(clip.count?.read_cnt || 0);
+const thumbnail =
+  rawThumbnail.startsWith("//")
+    ? `https:${rawThumbnail}`
+    : rawThumbnail;
 
-      const date =
-        clip.reg_date || "";
+const views =
+  Number(
+    clip.count?.read_cnt ??
+    clip.count?.readCnt ??
+    clip.read_cnt ??
+    clip.readCnt ??
+    0
+  );
+
+const date =
+  clip.reg_date ||
+  clip.regDate ||
+  "";
+
+const titleNo =
+  clip.title_no ||
+  clip.titleNo ||
+  "";
 
       return `
         <article
   class="soop-clip-card"
-  data-title-no="${clip.title_no}"
+  data-title-no="${titleNo}"
 >
 
           <div class="soop-clip-thumbnail">
@@ -2188,18 +2202,32 @@ async function loadSoopClips() {
       );
     }
 
-    soopClips = Array.isArray(data.clips)
-      ? data.clips
-      : [];
+    const replays = Array.isArray(data.replays)
+  ? data.replays.map(item => ({
+      ...item,
+      vod_type: "replay"
+    }))
+  : [];
 
-    console.table(
-  soopClips.map(clip => ({
-    제목: clip.title_name,
-    ucc_type: clip.ucc?.ucc_type,
-    user_nick: clip.ucc?.user_nick,
-    title_no: clip.title_no
-  }))
-);
+const clips = Array.isArray(data.clips)
+  ? data.clips.map(item => ({
+      ...item,
+      vod_type: "clip"
+    }))
+  : [];
+
+const catches = Array.isArray(data.catches)
+  ? data.catches.map(item => ({
+      ...item,
+      vod_type: "catch"
+    }))
+  : [];
+
+soopClips = [
+  ...replays,
+  ...clips,
+  ...catches
+];
 
     renderSoopClips();
 
