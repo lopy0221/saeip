@@ -1114,6 +1114,14 @@ function showPage(hash, updateURL = true) {
   // 선택한 화면만 표시
   sections[targetIndex].classList.add("active-page");
 
+  if (
+  targetHash === "#clips" &&
+  !soopClipsLoaded
+) {
+  soopClipsLoaded = true;
+  loadSoopClips();
+}
+
   // 오른쪽 점 표시
   dots.forEach((dot, index) => {
     dot.classList.toggle("active", index === targetIndex);
@@ -2058,6 +2066,7 @@ karaokeVersionButton?.click();
 ========================= */
 
 let soopClips = [];
+let soopClipsLoaded = false;
 
 const SOOP_ITEMS_PER_PAGE = 60;
 let soopCurrentPage = 1;
@@ -2387,8 +2396,6 @@ soopClips = [
     );
   }
 }
-
-loadSoopClips();
 
 document
   .querySelectorAll(".soop-filter-button")
