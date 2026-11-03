@@ -2121,6 +2121,7 @@ const titleNo =
         <article
   class="soop-clip-card"
   data-title-no="${titleNo}"
+  data-vod-type="${clip.vod_type}"
 >
 
           <div class="soop-clip-thumbnail">
@@ -2257,3 +2258,33 @@ soopClips = [
 }
 
 loadSoopClips();
+
+document
+  .querySelectorAll(".soop-filter-button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      const type = button.dataset.type;
+
+      document
+        .querySelectorAll(".soop-filter-button")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      document
+        .querySelectorAll(".soop-clip-card")
+        .forEach(card => {
+          const cardType =
+            card.dataset.vodType;
+
+          card.style.display =
+            type === "all" ||
+            cardType === type
+              ? ""
+              : "none";
+        });
+    });
+  });
