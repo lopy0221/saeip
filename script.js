@@ -2106,11 +2106,30 @@ function getSoopCacheKey(page) {
 }
 
 function getSoopDate(item) {
-  return (
+  const rawDate =
     item.reg_date ||
     item.regDate ||
-    ""
-  );
+    "";
+
+  if (!rawDate) return "";
+
+  const date = new Date(rawDate);
+
+  if (Number.isNaN(date.getTime())) {
+    return rawDate;
+  }
+
+  return new Intl.DateTimeFormat(
+    "ko-KR",
+    {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }
+  )
+    .format(date)
+    .replace(/\s/g, "");
 }
 
 function getSoopViews(item) {
