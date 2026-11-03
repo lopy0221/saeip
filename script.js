@@ -2061,4 +2061,789 @@ openKaraokeModal(
 karaokeVersionButton?.click();
 });
 
+/* =========================
+   SOOP VOD
+========================= */
 
+let soopClips = [];
+let soopClipsLoaded = false;
+
+let selectedVodType = "all";
+let selectedSoopSort = "latest";
+let selectedPeriod = "all";
+
+let soopCurrentPage = 1;
+let soopHasNextPage = true;
+let soopLoading = false;
+
+const SOOP_ITEMS_PER_PAGE = 60;
+
+/*
+  이미 불러온 페이지를 저장한다.
+  같은 페이지로 돌아갔을 때 API를 다시 호출하지 않는다.
+*/
+const soopPageCache = new Map();
+
+function getSoopCacheKey(page, type) {
+  return `${type}:${page}`;
+}
+
+function getSoopDate(item) {
+  return (
+    item.reg_date ||
+    item.regDate ||
+    ""
+  );
+}
+
+function getSoopViews(item) {
+  return Number(
+    item.count?.read_cnt ??
+    item.count?.readCnt ??
+    item.read_cnt ??
+    item.readCnt ??
+    0
+  );
+}
+
+function sortSoopItems(items) {
+  const result = [...items];
+
+  if (selectedSoopSort === "latest") {
+    result.sort((a, b) => {
+      return (
+        new Date(getSoopDate(b)) -
+        new Date(getSoopDate(a))
+      );
+    });
+  }
+
+  if (selectedSoopSort === "oldest") {
+    result.sort((a, b) => {
+      return (
+        new Date(getSoopDate(a)) -
+        new Date(getSoopDate(b))
+      );
+    });
+  }
+
+  if (selectedSoopSort === "views") {
+    result.sort((a, b) => {
+      return (
+        getSoopViews(b) -
+        getSoopViews(a)
+      );
+    });
+  }
+
+  return result;
+}
+
+function filterSoopPeriod(items) {
+  if (selectedPeriod === "all") {
+    return items;
+  }
+
+  const limitDate = new Date();
+
+  if (selectedPeriod === "3month") {
+    limitDate.setMonth(
+      limitDate.getMonth() - 3
+    );
+  }
+
+  if (selectedPeriod === "6month") {
+    limitDate.setMonth(
+      limitDate.getMonth() - 6
+    );
+  }
+
+  if (selectedPeriod === "1year") {
+    limitDate.setFullYear(
+      limitDate.getFullYear() - 1
+    );
+  }
+
+  return items.filter(item => {
+    const date =
+      new Date(getSoopDate(item));
+
+    return (
+      !Number.isNaN(date.getTime()) &&
+      date >= limitDate
+    );
+  });
+}
+
+function getVisibleSoopItems() {
+  let items = [...soopClips];
+
+  /*
+    전체 탭일 때만
+    '다시보기 숨기기' 적용
+  */
+  const hideReplay =
+    document.querySelector(
+      "#hideReplayCheckbox"
+    )?.checked || false;
+
+  if (
+    selectedVodType === "all" &&
+    hideReplay
+  ) {
+    items = items.filter(
+      item => item.vod_type !== "replay"
+    );
+  }
+
+  items = filterSoopPeriod(items);
+  items = sortSoopItems(items);
+
+  return items;
+}
+
+async function loadSoopClips(
+  page = 1,
+  force = false
+) {
+  if (soopLoading) return;
+
+  const cacheKey =
+    getSoopCacheKey(
+      page,
+      selectedVodType
+    );
+
+  /*
+    캐시가 있으면 서버에 다시 요청하지 않는다.
+  */
+  if (
+    !force &&
+    soopPageCache.has(cacheKey)
+  ) {
+    const cached =
+      soopPageCache.get(cacheKey);
+
+    soopClips = cached.items;
+    soopHasNextPage = cached.hasNextPage;
+    soopCurrentPage = page;
+
+    renderSoopClips();
+    return;
+  }
+
+  soopLoading = true;
+
+  const grid =
+    document.querySelector(
+      "#soopClipsGrid"
+    );
+
+  if (grid) {
+    grid.innerHTML = `
+      <div class="soop-clips-empty">
+        불러오는 중...
+      </div>
+    `;
+  }
+
+  try {
+    const params =
+      new URLSearchParams({
+        page: String(page),
+        type: selectedVodType
+      });
+
+    const response =
+      await fetch(
+        `/api/clips?${params.toString()}`
+      );
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+      throw new Error(
+        data.error ||
+        "VOD를 불러오지 못했습니다."
+      );
+    }
+
+    let items =
+      Array.isArray(data.items)
+        ? data.items
+        : [];
+
+    /*
+      전체 탭은 서버에서 최대 180개가 올 수 있으므로
+      현재 서버 배치 안에서 정렬한다.
+    */
+    items = sortSoopItems(items);
+
+    soopClips = items;
+    soopCurrentPage = page;
+
+    if (selectedVodType === "all") {
+      soopHasNextPage =
+        Boolean(
+          data.hasMore?.replay ||
+          data.hasMore?.clip ||
+          data.hasMore?.catch
+        );
+    } else {
+      soopHasNextPage =
+        Boolean(
+          data.hasMore?.[
+            selectedVodType
+          ]
+        );
+    }
+
+    soopPageCache.set(
+      cacheKey,
+      {
+        items: soopClips,
+        hasNextPage:
+          soopHasNextPage
+      }
+    );
+
+    renderSoopClips();
+
+  } catch (error) {
+    console.error(
+      "SOOP VOD 불러오기 오류:",
+      error
+    );
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="soop-clips-empty">
+          VOD를 불러오지 못했어요.
+        </div>
+      `;
+    }
+
+  } finally {
+    soopLoading = false;
+  }
+}
+
+/* =========================
+   SOOP 카드 렌더링
+========================= */
+
+function renderSoopClips() {
+  const grid =
+    document.querySelector("#soopClipsGrid");
+
+  const count =
+    document.querySelector("#clipCount");
+
+  if (!grid) return;
+
+  const visibleItems =
+    getVisibleSoopItems();
+
+  /*
+    전체 탭은 서버에서 최대 180개가 오므로
+    현재 페이지에는 60개만 표시
+  */
+  const pageItems =
+    visibleItems.slice(
+      0,
+      SOOP_ITEMS_PER_PAGE
+    );
+
+  if (count) {
+    count.textContent =
+      `${pageItems.length}개`;
+  }
+
+  if (!pageItems.length) {
+    grid.innerHTML = `
+      <div class="soop-clips-empty">
+        조건에 맞는 VOD가 없어요.
+      </div>
+    `;
+
+    renderSoopPagination();
+    return;
+  }
+
+  grid.innerHTML =
+    pageItems.map(item => {
+
+      const title =
+        item.title_name ||
+        item.titleName ||
+        item.title ||
+        "제목 없는 VOD";
+
+      const rawThumbnail =
+        item.ucc?.thumb ||
+        item.thumbnail ||
+        item.thumb ||
+        "";
+
+      const thumbnail =
+        rawThumbnail.startsWith("//")
+          ? `https:${rawThumbnail}`
+          : rawThumbnail;
+
+      const views =
+        getSoopViews(item);
+
+      const date =
+        getSoopDate(item);
+
+      const titleNo =
+        item.title_no ||
+        item.titleNo ||
+        "";
+
+      return `
+        <article
+          class="soop-clip-card"
+          data-title-no="${escapeHTML(
+            String(titleNo)
+          )}"
+          data-vod-type="${escapeHTML(
+            item.vod_type || ""
+          )}"
+        >
+
+          <div class="soop-clip-thumbnail">
+            ${
+              thumbnail
+                ? `
+                  <img
+                    src="${escapeHTML(thumbnail)}"
+                    alt="${escapeHTML(title)}"
+                    loading="lazy"
+                  >
+                `
+                : `
+                  <div class="soop-clip-no-image">
+                    SAEIP
+                  </div>
+                `
+            }
+          </div>
+
+          <div class="soop-clip-info">
+
+            <strong class="soop-clip-title">
+              ${escapeHTML(title)}
+            </strong>
+
+            <div class="soop-clip-meta">
+              <span>
+                조회 ${views.toLocaleString()}
+              </span>
+
+              <span>
+                ${escapeHTML(date)}
+              </span>
+            </div>
+
+          </div>
+
+        </article>
+      `;
+    }).join("");
+
+  renderSoopPagination();
+}
+
+
+/* =========================
+   SOOP 페이지네이션
+========================= */
+
+function renderSoopPagination() {
+  let pagination =
+    document.querySelector("#soopPagination");
+
+  if (!pagination) {
+    pagination =
+      document.createElement("div");
+
+    pagination.id =
+      "soopPagination";
+
+    pagination.className =
+      "soop-pagination";
+
+    const grid =
+      document.querySelector(
+        "#soopClipsGrid"
+      );
+
+    grid?.insertAdjacentElement(
+      "afterend",
+      pagination
+    );
+  }
+
+  /*
+    SOOP API에서 전체 페이지 수를
+    확실하게 받는 구조가 아니므로
+    현재 페이지 주변만 표시한다.
+  */
+
+  const startPage =
+    Math.max(
+      1,
+      soopCurrentPage - 4
+    );
+
+  const endPage =
+    soopHasNextPage
+      ? Math.max(
+          soopCurrentPage + 1,
+          startPage + 9
+        )
+      : soopCurrentPage;
+
+  let html = "";
+
+  if (soopCurrentPage > 1) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button soop-page-arrow"
+        data-page="${soopCurrentPage - 1}"
+        aria-label="이전 페이지"
+      >
+        ‹
+      </button>
+    `;
+  }
+
+  for (
+    let page = startPage;
+    page <= endPage;
+    page++
+  ) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button ${
+          page === soopCurrentPage
+            ? "active"
+            : ""
+        }"
+        data-page="${page}"
+      >
+        ${page}
+      </button>
+    `;
+  }
+
+  if (soopHasNextPage) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button soop-page-arrow"
+        data-page="${soopCurrentPage + 1}"
+        aria-label="다음 페이지"
+      >
+        ›
+      </button>
+    `;
+  }
+
+  pagination.innerHTML = html;
+}
+
+
+/* =========================
+   페이지 버튼
+========================= */
+
+document.addEventListener(
+  "click",
+  async event => {
+
+    const button =
+      event.target.closest(
+        ".soop-page-button"
+      );
+
+    if (!button) return;
+
+    const page =
+      Number(button.dataset.page);
+
+    if (
+      !page ||
+      page < 1 ||
+      page === soopCurrentPage ||
+      soopLoading
+    ) {
+      return;
+    }
+
+    await loadSoopClips(page);
+
+    document
+      .querySelector("#clips")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+  }
+);
+
+
+/* =========================
+   VOD 종류 필터
+========================= */
+
+document
+  .querySelectorAll(
+    ".soop-filter-button"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        const type =
+          button.dataset.type ||
+          "all";
+
+        if (
+          type === selectedVodType
+        ) {
+          return;
+        }
+
+        selectedVodType = type;
+        soopCurrentPage = 1;
+
+        document
+          .querySelectorAll(
+            ".soop-filter-button"
+          )
+          .forEach(item => {
+
+            item.classList.toggle(
+              "active",
+              item === button
+            );
+
+          });
+
+        await loadSoopClips(1);
+      }
+    );
+
+  });
+
+
+/* =========================
+   다시보기 숨기기
+========================= */
+
+const hideReplayCheckbox =
+  document.querySelector(
+    "#hideReplayCheckbox"
+  );
+
+hideReplayCheckbox?.addEventListener(
+  "change",
+  () => {
+
+    soopCurrentPage = 1;
+    renderSoopClips();
+
+  }
+);
+
+
+/* =========================
+   정렬
+========================= */
+
+document
+  .querySelectorAll(
+    ".soop-sort-button"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        selectedSoopSort =
+          button.dataset.sort ||
+          "latest";
+
+        document
+          .querySelectorAll(
+            ".soop-sort-button"
+          )
+          .forEach(item => {
+
+            item.classList.toggle(
+              "active",
+              item === button
+            );
+
+          });
+
+        renderSoopClips();
+      }
+    );
+
+  });
+
+
+/* =========================
+   기간 필터
+========================= */
+
+document
+  .querySelectorAll(
+    ".soop-period-button"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        selectedPeriod =
+          button.dataset.period ||
+          "all";
+
+        document
+          .querySelectorAll(
+            ".soop-period-button"
+          )
+          .forEach(item => {
+
+            item.classList.toggle(
+              "active",
+              item === button
+            );
+
+          });
+
+        soopCurrentPage = 1;
+
+        renderSoopClips();
+      }
+    );
+
+  });
+
+
+/* =========================
+   VOD 모달
+========================= */
+
+const clipModal =
+  document.querySelector("#clipModal");
+
+const clipPlayer =
+  document.querySelector("#clipPlayer");
+
+const clipModalClose =
+  document.querySelector(
+    "#clipModalClose"
+  );
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const card =
+      event.target.closest(
+        ".soop-clip-card"
+      );
+
+    if (!card) return;
+
+    const titleNo =
+      card.dataset.titleNo;
+
+    if (
+      !titleNo ||
+      !clipModal ||
+      !clipPlayer
+    ) {
+      return;
+    }
+
+    clipPlayer.src =
+      `https://vod.sooplive.co.kr/player/${titleNo}`;
+
+    clipModal.classList.add(
+      "show"
+    );
+
+    clipModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+  }
+);
+
+function closeClipModal() {
+  if (
+    !clipModal ||
+    !clipPlayer
+  ) {
+    return;
+  }
+
+  clipModal.classList.remove(
+    "show"
+  );
+
+  clipModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  clipPlayer.src = "";
+}
+
+clipModalClose?.addEventListener(
+  "click",
+  closeClipModal
+);
+
+clipModal?.addEventListener(
+  "click",
+  event => {
+
+    if (event.target === clipModal) {
+      closeClipModal();
+    }
+
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      clipModal?.classList.contains(
+        "show"
+      )
+    ) {
+      closeClipModal();
+    }
+
+  }
+);
