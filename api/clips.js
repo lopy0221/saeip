@@ -50,69 +50,63 @@ async function fetchAllPages({
 module.exports = async function handler(req, res) {
   try {
 
-    /* ------------------------------------
-       다시보기 전체
-    ------------------------------------ */
+   const [replays, clips, catches] = await Promise.all([
 
-    const replays = await fetchAllPages({
-      perPage: 60,
+  /* 다시보기 */
+  fetchAllPages({
+    perPage: 60,
 
-      makeUrl: (page, perPage) =>
-        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
-        `?page=${page}` +
-        `&per_page=${perPage}` +
-        `&orderby=reg_date`,
+    makeUrl: (page, perPage) =>
+      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
+      `?page=${page}` +
+      `&per_page=${perPage}` +
+      `&orderby=reg_date`,
 
-      getItems: data =>
-        Array.isArray(data.data)
-          ? data.data
-          : []
-    });
-
-
-    /* ------------------------------------
-       클립 전체
-    ------------------------------------ */
-
-    const clips = await fetchAllPages({
-      perPage: 60,
-
-      makeUrl: (page, perPage) =>
-        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
-        `?page=${page}` +
-        `&per_page=${perPage}` +
-        `&orderby=reg_date`,
-
-      getItems: data =>
-        Array.isArray(data.data)
-          ? data.data
-          : []
-    });
+    getItems: data =>
+      Array.isArray(data.data)
+        ? data.data
+        : []
+  }),
 
 
-    /* ------------------------------------
-       CATCH 전체
-    ------------------------------------ */
+  /* 클립 */
+  fetchAllPages({
+    perPage: 60,
 
-    const catches = await fetchAllPages({
-      perPage: 40,
+    makeUrl: (page, perPage) =>
+      `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
+      `?page=${page}` +
+      `&per_page=${perPage}` +
+      `&orderby=reg_date`,
 
-      makeUrl: (page, perPage) =>
-        `https://api-channel.sooplive.com/v1.3/channel/${SOOP_ID}/vod/catch` +
-        `?startDate=` +
-        `&endDate=` +
-        `&keyword=` +
-        `&orderBy=reg_date` +
-        `&page=${page}` +
-        `&perPage=${perPage}` +
-        `&field=title,contents,user_nick,user_id`,
+    getItems: data =>
+      Array.isArray(data.data)
+        ? data.data
+        : []
+  }),
 
-      getItems: data =>
-        Array.isArray(data.contents)
-          ? data.contents
-          : []
-    });
 
+  /* CATCH */
+  fetchAllPages({
+    perPage: 40,
+
+    makeUrl: (page, perPage) =>
+      `https://api-channel.sooplive.com/v1.3/channel/${SOOP_ID}/vod/catch` +
+      `?startDate=` +
+      `&endDate=` +
+      `&keyword=` +
+      `&orderBy=reg_date` +
+      `&page=${page}` +
+      `&perPage=${perPage}` +
+      `&field=title,contents,user_nick,user_id`,
+
+    getItems: data =>
+      Array.isArray(data.contents)
+        ? data.contents
+        : []
+  })
+
+]);
 
     /* ====================================
        결과 반환
