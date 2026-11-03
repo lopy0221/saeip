@@ -2413,3 +2413,77 @@ document
       applyVodFilter();
     });
   });
+
+let selectedPeriod = "all";
+
+function applyPeriodFilter() {
+  const now = new Date();
+
+  document
+    .querySelectorAll(".soop-clip-card")
+    .forEach(card => {
+      const titleNo = card.dataset.titleNo;
+
+      const clip = soopClips.find(item =>
+        String(item.title_no || item.titleNo || "") ===
+        String(titleNo)
+      );
+
+      if (!clip) return;
+
+      const dateText =
+        clip.reg_date ||
+        clip.regDate ||
+        "";
+
+      const clipDate = new Date(dateText);
+
+      let matchesPeriod = true;
+
+      if (selectedPeriod !== "all") {
+        const limitDate = new Date(now);
+
+        if (selectedPeriod === "3month") {
+          limitDate.setMonth(limitDate.getMonth() - 3);
+        }
+
+        if (selectedPeriod === "6month") {
+          limitDate.setMonth(limitDate.getMonth() - 6);
+        }
+
+        if (selectedPeriod === "1year") {
+          limitDate.setFullYear(limitDate.getFullYear() - 1);
+        }
+
+        matchesPeriod =
+          !Number.isNaN(clipDate.getTime()) &&
+          clipDate >= limitDate;
+      }
+
+      if (!matchesPeriod) {
+        card.style.display = "none";
+      }
+    });
+}
+
+document
+  .querySelectorAll(".soop-period-button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      selectedPeriod =
+        button.dataset.period || "all";
+
+      document
+        .querySelectorAll(".soop-period-button")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      renderSoopClips();
+      applyVodFilter();
+      applyPeriodFilter();
+    });
+  });
