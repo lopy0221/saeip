@@ -2227,7 +2227,19 @@ soopClips = [
   ...replays,
   ...clips,
   ...catches
-];
+].sort((a, b) => {
+  const dateA =
+    a.reg_date ||
+    a.regDate ||
+    "";
+
+  const dateB =
+    b.reg_date ||
+    b.regDate ||
+    "";
+
+  return new Date(dateB) - new Date(dateA);
+});
 
     renderSoopClips();
 
