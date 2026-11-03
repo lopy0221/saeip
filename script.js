@@ -2289,19 +2289,103 @@ document
     });
   });
 
+let selectedVodType = "all";
+
 const hideReplayCheckbox =
   document.querySelector("#hideReplayCheckbox");
 
-hideReplayCheckbox?.addEventListener("change", () => {
+function applyVodFilter() {
   const hideReplay =
-    hideReplayCheckbox.checked;
+    hideReplayCheckbox?.checked || false;
 
   document
     .querySelectorAll(".soop-clip-card")
     .forEach(card => {
-      if (card.dataset.vodType === "replay") {
-        card.style.display =
-          hideReplay ? "none" : "";
-      }
+      const cardType =
+        card.dataset.vodType;
+
+      const matchesType =
+        selectedVodType === "all" ||
+        cardType === selectedVodType;
+
+      const hiddenByReplayToggle =
+        selectedVodType === "all" &&
+        hideReplay &&
+        cardType === "replay";
+
+      card.style.display =
+        matchesType && !hiddenByReplayToggle
+          ? ""
+          : "none";
     });
-});
+}
+
+document
+  .querySelectorAll(".soop-filter-button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      selectedVodType =
+        button.dataset.type || "all";
+
+      document
+        .querySelectorAll(".soop-filter-button")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      applyVodFilter();
+    });
+  });
+
+hideReplayCheckbox?.addEventListener(
+  "change",
+  applyVodFilter
+);
+
+document
+  .querySelectorAll(".soop-sort-button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      const sortType =
+        button.dataset.sort;
+
+      document
+        .querySelectorAll(".soop-sort-button")
+        .forEach(item => {
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+        });
+
+      if (sortType === "latest") {
+        soopClips.sort((a, b) => {
+          const dateA =
+            a.reg_date || a.regDate || "";
+
+          const dateB =
+            b.reg_date || b.regDate || "";
+
+          return new Date(dateB) - new Date(dateA);
+        });
+      }
+
+      if (sortType === "oldest") {
+        soopClips.sort((a, b) => {
+          const dateA =
+            a.reg_date || a.regDate || "";
+
+          const dateB =
+            b.reg_date || b.regDate || "";
+
+          return new Date(dateA) - new Date(dateB);
+        });
+      }
+
+      renderSoopClips();
+      applyVodFilter();
+    });
+  });
