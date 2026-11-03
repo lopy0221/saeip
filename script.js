@@ -2288,3 +2288,20 @@ document
         });
     });
   });
+
+const hideReplayCheckbox =
+  document.querySelector("#hideReplayCheckbox");
+
+hideReplayCheckbox?.addEventListener("change", () => {
+  const hideReplay =
+    hideReplayCheckbox.checked;
+
+  document
+    .querySelectorAll(".soop-clip-card")
+    .forEach(card => {
+      if (card.dataset.vodType === "replay") {
+        card.style.display =
+          hideReplay ? "none" : "";
+      }
+    });
+});
