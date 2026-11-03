@@ -2159,9 +2159,10 @@ const titleNo =
 
         </article>
       `;
-    })
+        })
     .join("");
- 
+
+  renderSoopPagination();
 }
 
 const clipModal =
@@ -2189,6 +2190,124 @@ document.addEventListener("click", event => {
 
   clipModal.classList.add("show");
   clipModal.setAttribute("aria-hidden", "false");
+});
+
+function renderSoopPagination() {
+  let pagination =
+    document.querySelector("#soopPagination");
+
+  if (!pagination) {
+    pagination = document.createElement("div");
+    pagination.id = "soopPagination";
+    pagination.className = "soop-pagination";
+
+    const grid =
+      document.querySelector("#soopClipsGrid");
+
+    grid?.insertAdjacentElement(
+      "afterend",
+      pagination
+    );
+  }
+
+  const totalPages =
+    Math.ceil(
+      soopClips.length / SOOP_ITEMS_PER_PAGE
+    );
+
+  if (totalPages <= 1) {
+    pagination.innerHTML = "";
+    return;
+  }
+
+  const groupSize = 10;
+
+  const groupStart =
+    Math.floor((soopCurrentPage - 1) / groupSize) *
+      groupSize +
+    1;
+
+  const groupEnd =
+    Math.min(
+      groupStart + groupSize - 1,
+      totalPages
+    );
+
+  let html = "";
+
+  if (groupStart > 1) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button soop-page-arrow"
+        data-page="${groupStart - 1}"
+        aria-label="이전 페이지"
+      >
+        ‹
+      </button>
+    `;
+  }
+
+  for (
+    let page = groupStart;
+    page <= groupEnd;
+    page++
+  ) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button ${
+          page === soopCurrentPage ? "active" : ""
+        }"
+        data-page="${page}"
+      >
+        ${page}
+      </button>
+    `;
+  }
+
+  if (groupEnd < totalPages) {
+    html += `
+      <button
+        type="button"
+        class="soop-page-button soop-page-arrow"
+        data-page="${groupEnd + 1}"
+        aria-label="다음 페이지"
+      >
+        ›
+      </button>
+    `;
+  }
+
+  pagination.innerHTML = html;
+}
+
+document.addEventListener("click", event => {
+  const pageButton =
+    event.target.closest(".soop-page-button");
+
+  if (!pageButton) return;
+
+  const page =
+    Number(pageButton.dataset.page);
+
+  if (!page || page === soopCurrentPage) {
+    return;
+  }
+
+  soopCurrentPage = page;
+
+  renderSoopClips();
+
+  const clipsSection =
+    document.querySelector("#clips");
+
+  if (clipsSection) {
+    clipsSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
 });
 
 function closeClipModal() {
