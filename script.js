@@ -2388,10 +2388,22 @@ document
       if (sortType === "views") {
   soopClips.sort((a, b) => {
     const viewsA =
-      Number(a.view_cnt || a.viewCnt || a.views || 0);
+      Number(
+        a.count?.read_cnt ??
+        a.count?.readCnt ??
+        a.read_cnt ??
+        a.readCnt ??
+        0
+      );
 
     const viewsB =
-      Number(b.view_cnt || b.viewCnt || b.views || 0);
+      Number(
+        b.count?.read_cnt ??
+        b.count?.readCnt ??
+        b.read_cnt ??
+        b.readCnt ??
+        0
+      );
 
     return viewsB - viewsA;
   });
