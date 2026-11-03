@@ -2385,6 +2385,18 @@ document
         });
       }
 
+      if (sortType === "views") {
+  soopClips.sort((a, b) => {
+    const viewsA =
+      Number(a.view_cnt || a.viewCnt || a.views || 0);
+
+    const viewsB =
+      Number(b.view_cnt || b.viewCnt || b.views || 0);
+
+    return viewsB - viewsA;
+  });
+}
+
       renderSoopClips();
       applyVodFilter();
     });
