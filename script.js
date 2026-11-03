@@ -2070,6 +2070,7 @@ let soopClipsLoaded = false;
 
 const SOOP_ITEMS_PER_PAGE = 60;
 let soopCurrentPage = 1;
+let soopApiPage = 1;
 
 function renderSoopClips() {
   const grid =
@@ -2291,7 +2292,7 @@ function renderSoopPagination() {
   pagination.innerHTML = html;
 }
 
-document.addEventListener("click", event => {
+document.addEventListener("click", async event => {
   const pageButton =
     event.target.closest(".soop-page-button");
 
@@ -2300,13 +2301,18 @@ document.addEventListener("click", event => {
   const page =
     Number(pageButton.dataset.page);
 
-  if (!page || page === soopCurrentPage) {
+  if (!page || page === soopApiPage) {
     return;
   }
 
-  soopCurrentPage = page;
+  // 중복 클릭 방지
+  document
+    .querySelectorAll(".soop-page-button")
+    .forEach(button => {
+      button.disabled = true;
+    });
 
-  renderSoopClips();
+  await loadSoopClips(page);
 
   const clipsSection =
     document.querySelector("#clips");
@@ -2332,9 +2338,12 @@ clipModalClose?.addEventListener("click", () => {
   closeClipModal();
 });
 
-async function loadSoopClips() {
+async function loadSoopClips(page = 1) {
   try {
-    const response = await fetch("/api/clips");
+    const response = await fetch(
+      `/api/clips?page=${page}`
+    );
+
     const data = await response.json();
 
     if (!response.ok || !data.success) {
@@ -2381,6 +2390,9 @@ soopClips = [
 
   return new Date(dateB) - new Date(dateA);
 });
+
+    soopApiPage = page;
+soopCurrentPage = 1;
 
     renderSoopClips();
 
