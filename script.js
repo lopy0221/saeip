@@ -2113,23 +2113,13 @@ function getSoopDate(item) {
 
   if (!rawDate) return "";
 
-  const date = new Date(rawDate);
+  const datePart =
+    String(rawDate).slice(0, 10);
 
-  if (Number.isNaN(date.getTime())) {
-    return rawDate;
-  }
-
-  return new Intl.DateTimeFormat(
-    "ko-KR",
-    {
-      timeZone: "Asia/Seoul",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }
-  )
-    .format(date)
-    .replace(/\s/g, "");
+  return datePart.replace(
+    /-/g,
+    "."
+  );
 }
 
 function getSoopViews(item) {
