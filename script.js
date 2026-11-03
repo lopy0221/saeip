@@ -2059,6 +2059,9 @@ karaokeVersionButton?.click();
 
 let soopClips = [];
 
+const SOOP_ITEMS_PER_PAGE = 60;
+let soopCurrentPage = 1;
+
 function renderSoopClips() {
   const grid =
     document.querySelector("#soopClipsGrid");
@@ -2083,8 +2086,17 @@ function renderSoopClips() {
     return;
   }
 
-  grid.innerHTML = soopClips
-    .map(clip => {
+  const startIndex =
+  (soopCurrentPage - 1) * SOOP_ITEMS_PER_PAGE;
+
+const endIndex =
+  startIndex + SOOP_ITEMS_PER_PAGE;
+
+const pageClips =
+  soopClips.slice(startIndex, endIndex);
+  
+  grid.innerHTML = pageClips
+  .map(clip => {
       const title =
   clip.title_name ||
   clip.titleName ||
