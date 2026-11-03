@@ -1,20 +1,19 @@
-const SOOP_ID = "likey0u";
+const SUPABASE_URL =
+  "https://txwlwxldagplfhlgopyl.supabase.co";
+
+const SUPABASE_SECRET_KEY =
+  process.env.SUPABASE_SECRET_KEY;
+
 const ITEMS_PER_PAGE = 60;
-
-async function fetchJson(url) {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(
-      `SOOP API 오류: ${response.status}`
-    );
-  }
-
-  return response.json();
-}
 
 module.exports = async function handler(req, res) {
   try {
+    if (!SUPABASE_SECRET_KEY) {
+      throw new Error(
+        "SUPABASE_SECRET_KEY가 설정되지 않았습니다."
+      );
+    }
+
     const page = Math.max(
       1,
       Number(req.query.page) || 1
@@ -23,166 +22,229 @@ module.exports = async function handler(req, res) {
     const type =
       req.query.type || "all";
 
-    let replays = [];
-    let clips = [];
-    let catches = [];
+    const sort =
+      req.query.sort || "latest";
 
-    // =========================
-    // 다시보기
-    // =========================
-    if (
-      type === "all" ||
-      type === "replay"
-    ) {
-      const replayData = await fetchJson(
-        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/review` +
-        `?page=${page}` +
-        `&per_page=${ITEMS_PER_PAGE}` +
-        `&orderby=reg_date`
-      );
+    const period =
+      req.query.period || "all";
 
-      replays =
-        Array.isArray(replayData.data)
-          ? replayData.data
-          : [];
-    }
-
-    // =========================
-    // 클립
-    // =========================
-    if (
-      type === "all" ||
-      type === "clip"
-    ) {
-      const clipData = await fetchJson(
-        `https://chapi.sooplive.com/api/${SOOP_ID}/vods/clip/all` +
-        `?page=${page}` +
-        `&per_page=${ITEMS_PER_PAGE}` +
-        `&orderby=reg_date`
-      );
-
-      clips =
-        Array.isArray(clipData.data)
-          ? clipData.data
-          : [];
-    }
-
-    // =========================
-    // CATCH
-    // =========================
-    if (
-      type === "all" ||
-      type === "catch"
-    ) {
-      const catchData = await fetchJson(
-        `https://api-channel.sooplive.com/v1.3/channel/${SOOP_ID}/vod/catch` +
-        `?startDate=` +
-        `&endDate=` +
-        `&keyword=` +
-        `&orderBy=reg_date` +
-        `&page=${page}` +
-        `&perPage=${ITEMS_PER_PAGE}` +
-        `&field=title,contents,user_nick,user_id`
-      );
-
-      catches =
-        Array.isArray(catchData.contents)
-          ? catchData.contents
-          : [];
-    }
-
-    // =========================
-    // 타입 표시
-    // =========================
-
-    replays = replays.map(item => ({
-      ...item,
-      vod_type: "replay"
-    }));
-
-    clips = clips.map(item => ({
-      ...item,
-      vod_type: "clip"
-    }));
-
-    catches = catches.map(item => ({
-      ...item,
-      vod_type: "catch"
-    }));
-
-    // =========================
-    // 전체일 경우 합치기
-    // =========================
-
-    let items = [
-      ...replays,
-      ...clips,
-      ...catches
-    ];
-
-    // 최신순
-    items.sort((a, b) => {
-      const dateA =
-        a.reg_date ||
-        a.regDate ||
-        "";
-
-      const dateB =
-        b.reg_date ||
-        b.regDate ||
-        "";
-
-      return (
-        new Date(dateB) -
-        new Date(dateA)
-      );
-    });
+    const hideReplay =
+      req.query.hideReplay === "true";
 
     /*
-      type이 하나만 선택되어 있으면 최대 60개.
-      all이면 각 종류에서 최대 60개씩 들어올 수 있음.
+      Supabase 조회 범위
 
-      all의 정확한 전역 페이지네이션은
-      별도의 데이터 저장소가 있어야 가장 안정적임.
+      page 1 = 0 ~ 59
+      page 2 = 60 ~ 119
+      page 3 = 120 ~ 179
     */
+    const from =
+      (page - 1) * ITEMS_PER_PAGE;
+
+    const to =
+      from + ITEMS_PER_PAGE - 1;
+
+    const params =
+      new URLSearchParams();
+
+    params.set(
+      "select",
+      "title_no,vod_type,title,thumbnail,view_count,reg_date"
+    );
+
+    /*
+      종류 필터
+    */
+    if (
+      type === "replay" ||
+      type === "clip" ||
+      type === "catch"
+    ) {
+      params.set(
+        "vod_type",
+        `eq.${type}`
+      );
+    }
+
+    /*
+      전체에서 다시보기 숨기기
+    */
+    if (
+      type === "all" &&
+      hideReplay
+    ) {
+      params.set(
+        "vod_type",
+        "neq.replay"
+      );
+    }
+
+    /*
+      기간 필터
+    */
+    if (period !== "all") {
+      const limitDate =
+        new Date();
+
+      if (period === "3month") {
+        limitDate.setMonth(
+          limitDate.getMonth() - 3
+        );
+      }
+
+      if (period === "6month") {
+        limitDate.setMonth(
+          limitDate.getMonth() - 6
+        );
+      }
+
+      if (period === "1year") {
+        limitDate.setFullYear(
+          limitDate.getFullYear() - 1
+        );
+      }
+
+      params.set(
+        "reg_date",
+        `gte.${limitDate.toISOString()}`
+      );
+    }
+
+    /*
+      정렬
+    */
+    if (sort === "oldest") {
+      params.set(
+        "order",
+        "reg_date.asc.nullslast"
+      );
+    } else if (sort === "views") {
+      params.set(
+        "order",
+        "view_count.desc,reg_date.desc.nullslast"
+      );
+    } else {
+      params.set(
+        "order",
+        "reg_date.desc.nullslast"
+      );
+    }
+
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/soop_vods?${params.toString()}`,
+        {
+          headers: {
+            apikey:
+              SUPABASE_SECRET_KEY,
+
+            Authorization:
+              `Bearer ${SUPABASE_SECRET_KEY}`,
+
+            Range:
+              `${from}-${to}`,
+
+            Prefer:
+              "count=exact"
+          }
+        }
+      );
+
+    if (!response.ok) {
+      const message =
+        await response.text();
+
+      throw new Error(
+        `Supabase 조회 오류: ${message}`
+      );
+    }
+
+    const rows =
+      await response.json();
+
+    /*
+      전체 개수
+    */
+    const contentRange =
+      response.headers.get(
+        "content-range"
+      );
+
+    let total = 0;
+
+    if (contentRange) {
+      const match =
+        contentRange.match(
+          /\/(\d+)$/
+        );
+
+      if (match) {
+        total =
+          Number(match[1]);
+      }
+    }
+
+    const totalPages =
+      total > 0
+        ? Math.ceil(
+            total / ITEMS_PER_PAGE
+          )
+        : 0;
+
+    /*
+      기존 script.js에서 사용하던
+      SOOP 데이터 형태로 맞춰준다.
+    */
+    const items =
+      rows.map(item => ({
+        title_no:
+          item.title_no,
+
+        vod_type:
+          item.vod_type,
+
+        title_name:
+          item.title || "",
+
+        thumbnail:
+          item.thumbnail || "",
+
+        read_cnt:
+          Number(
+            item.view_count || 0
+          ),
+
+        reg_date:
+          item.reg_date
+      }));
 
     res.setHeader(
       "Cache-Control",
-      "s-maxage=120, stale-while-revalidate=300"
+      "s-maxage=60, stale-while-revalidate=300"
     );
 
     return res.status(200).json({
       success: true,
 
-      streamer: SOOP_ID,
-
       page,
-      type,
+      perPage:
+        ITEMS_PER_PAGE,
 
-      items,
+      total,
+      totalPages,
 
-      counts: {
-        replay: replays.length,
-        clip: clips.length,
-        catch: catches.length,
-        loaded: items.length
-      },
+      hasPrevious:
+        page > 1,
 
-      hasMore: {
-        replay:
-          replays.length === ITEMS_PER_PAGE,
+      hasMore:
+        page < totalPages,
 
-        clip:
-          clips.length === ITEMS_PER_PAGE,
-
-        catch:
-          catches.length === ITEMS_PER_PAGE
-      }
+      items
     });
 
   } catch (error) {
     console.error(
-      "SOOP VOD 불러오기 오류:",
+      "SOOP VOD 조회 오류:",
       error
     );
 
