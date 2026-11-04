@@ -105,13 +105,16 @@ function normalizeItem(item, type) {
     null;
 
   return {
-    title_no: String(titleNo),
-    vod_type: type,
-    title,
-    thumbnail,
-    view_count: viewCount,
-    reg_date: regDate
-  };
+  title_no: String(titleNo),
+  vod_type: type,
+  title,
+  thumbnail,
+  view_count: viewCount,
+  reg_date: regDate,
+  auth_no: item.authNo == null
+    ? null
+    : Number(item.authNo)
+};
 }
 
 async function fetchPage(page) {
