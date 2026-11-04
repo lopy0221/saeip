@@ -1730,21 +1730,20 @@ if (!manualTjVideoId && manualKyVideoId) {
     ? data.videos
     : [data.video];
 
-const autoTjVideo =
+      const autoTjVideo =
   autoVideos.find(
     video => video.type === "tj"
   );
 
-      if (
-  karaokeTjLink &&
-  !manualTjVideoId &&
-  autoTjVideo?.videoId
-) {
-  karaokeTjLink.href =
-    `https://www.youtube.com/watch?v=${autoTjVideo.videoId}`;
+if (karaokeTjLink) {
+  const tjUrl = manualTjVideoId
+    ? tjKaraokeUrl
+    : autoTjVideo?.videoId
+      ? `https://www.youtube.com/watch?v=${autoTjVideo.videoId}`
+      : "";
 
-  karaokeTjLink.style.display =
-    "inline-flex";
+  karaokeTjLink.href = tjUrl || "#";
+  karaokeTjLink.style.display = tjUrl ? "inline-flex" : "none";
 }
 
 const autoKyVideo =
