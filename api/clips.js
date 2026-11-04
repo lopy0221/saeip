@@ -289,7 +289,11 @@ if (startDate || endDate) {
   item.reg_date,
 
 auth_no:
-  item.auth_no
+  item.auth_no,
+
+is_subplus:
+  item.vod_type === "replay" &&
+  Number(item.auth_no) === 107
 }));
 
     res.setHeader(
