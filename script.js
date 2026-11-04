@@ -2072,6 +2072,10 @@ let selectedVodType = "all";
 let selectedSoopSort = "latest";
 let selectedPeriod = "all";
 
+// 직접 선택한 날짜 범위
+let selectedSoopStartDate = "";
+let selectedSoopEndDate = "";
+
 let soopCurrentPage = 1;
 let soopTotalPages = 0;
 let soopTotalItems = 0;
@@ -2100,6 +2104,8 @@ function getSoopCacheKey(page) {
     selectedVodType,
     selectedSoopSort,
     selectedPeriod,
+    selectedSoopStartDate,
+    selectedSoopEndDate,
     hideReplay,
     page
   ].join(":");
@@ -2200,14 +2206,29 @@ async function loadSoopClips(
 
   try {
     const params =
-      new URLSearchParams({
-        page: String(page),
-        type: selectedVodType,
-        sort: selectedSoopSort,
-        period: selectedPeriod,
-        hideReplay:
-          String(hideReplay)
-      });
+  new URLSearchParams({
+    page: String(page),
+    type: selectedVodType,
+    sort: selectedSoopSort,
+    period: selectedPeriod,
+    hideReplay:
+      String(hideReplay)
+  });
+
+// 직접 선택한 시작일과 종료일 전달
+if (selectedSoopStartDate) {
+  params.set(
+    "startDate",
+    selectedSoopStartDate
+  );
+}
+
+if (selectedSoopEndDate) {
+  params.set(
+    "endDate",
+    selectedSoopEndDate
+  );
+}
 
     const response =
       await fetch(
@@ -2750,46 +2771,109 @@ document
 ========================= */
 
 document
-  .querySelectorAll(
-    ".soop-period-button"
-  )
+  .querySelectorAll(".soop-period-button")
   .forEach(button => {
+    button.addEventListener("click", async () => {
+      const period = button.dataset.period || "all";
 
-    button.addEventListener(
-      "click",
-      async () => {
-
-        const period =
-          button.dataset.period ||
-          "all";
-
-        if (
-          period === selectedPeriod
-        ) {
-          return;
-        }
-
-        selectedPeriod = period;
-        soopCurrentPage = 1;
-
-        document
-          .querySelectorAll(
-            ".soop-period-button"
-          )
-          .forEach(item => {
-
-            item.classList.toggle(
-              "active",
-              item === button
-            );
-
-          });
-
-        await loadSoopClips(1);
+      if (
+        period === selectedPeriod &&
+        !selectedSoopStartDate &&
+        !selectedSoopEndDate
+      ) {
+        return;
       }
-    );
 
+      selectedPeriod = period;
+      selectedSoopStartDate = "";
+      selectedSoopEndDate = "";
+      soopCurrentPage = 1;
+
+      const startInput = document.querySelector("#soopStartDate");
+      const endInput = document.querySelector("#soopEndDate");
+
+      if (startInput) startInput.value = "";
+      if (endInput) endInput.value = "";
+
+      document
+        .querySelectorAll(".soop-period-button")
+        .forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+
+      await loadSoopClips(1);
+    });
   });
+
+
+/* =========================
+   날짜 직접 선택
+========================= */
+
+const soopStartDateInput =
+  document.querySelector("#soopStartDate");
+
+const soopEndDateInput =
+  document.querySelector("#soopEndDate");
+
+const soopDateApply =
+  document.querySelector("#soopDateApply");
+
+const soopDateReset =
+  document.querySelector("#soopDateReset");
+
+// 날짜 적용
+soopDateApply?.addEventListener("click", () => {
+  const startDate = soopStartDateInput?.value || "";
+  const endDate = soopEndDateInput?.value || "";
+
+  if (!startDate || !endDate) {
+    alert("시작일과 종료일을 모두 선택해 주세요.");
+    return;
+  }
+
+  if (startDate > endDate) {
+    alert("시작일이 종료일보다 늦을 수 없어요.");
+    return;
+  }
+
+  selectedSoopStartDate = startDate;
+  selectedSoopEndDate = endDate;
+  selectedPeriod = "all";
+  soopCurrentPage = 1;
+
+  document
+    .querySelectorAll(".soop-period-button")
+    .forEach(button => {
+      button.classList.remove("active");
+    });
+
+  soopPageCache.clear();
+  loadSoopClips(1);
+});
+
+// 날짜 초기화
+soopDateReset?.addEventListener("click", () => {
+  if (soopStartDateInput) soopStartDateInput.value = "";
+  if (soopEndDateInput) soopEndDateInput.value = "";
+
+  selectedSoopStartDate = "";
+  selectedSoopEndDate = "";
+  selectedPeriod = "all";
+  soopCurrentPage = 1;
+
+  document
+    .querySelectorAll(".soop-period-button")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.period === "all"
+      );
+    });
+
+  soopPageCache.clear();
+  loadSoopClips(1);
+});
 
 
 /* =========================
