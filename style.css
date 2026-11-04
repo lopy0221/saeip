@@ -4224,3 +4224,130 @@ body:has(#clips.active-page) .fullpage {
     font-size: 9px;
   }
 }
+
+/* ======================================
+   새잎 VOD 필터 디자인
+====================================== */
+
+#clips .soop-clips-filter-box {
+  background: linear-gradient(145deg, #f9fcff, #eaf4ff);
+  border: 1px solid #cfe3fa;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(90, 145, 210, 0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#clips .soop-filter-row {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid #e0edfc;
+  border-radius: 18px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+#clips .soop-filter-row > strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: #416a99;
+}
+
+#clips .soop-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+}
+
+#clips .soop-filter-button,
+#clips .soop-sort-button,
+#clips .soop-period-button {
+  border: 1px solid #dbe9f9;
+  background: #f3f8ff;
+  color: #597595;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#clips .soop-filter-button:hover,
+#clips .soop-sort-button:hover,
+#clips .soop-period-button:hover {
+  background: #e2efff;
+  transform: translateY(-2px);
+}
+
+#clips .soop-filter-button.active,
+#clips .soop-sort-button.active,
+#clips .soop-period-button.active {
+  background: #92BCEF;
+  border-color: #92BCEF;
+  color: #173b68;
+  box-shadow: 0 4px 12px rgba(146, 188, 239, 0.3);
+}
+
+#clips .soop-hide-replay {
+  margin-left: auto;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #edf5ff;
+  color: #597595;
+}
+
+#clips .soop-custom-date-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+#clips .soop-pretty-date {
+  background: #fff;
+  border: 1px solid #cfe3fa;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+#clips #soopDateApply {
+  background: #92BCEF;
+  color: #173b68;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+#clips #soopDateReset {
+  background: #edf5ff;
+  color: #597595;
+  border: 1px solid #dbe9f9;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  #clips .soop-clips-filter-box {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  #clips .soop-filter-row {
+    padding: 14px;
+  }
+
+  #clips .soop-hide-replay {
+    margin-left: 0;
+  }
+}
