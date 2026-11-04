@@ -822,19 +822,23 @@ or
           <div class="soop-custom-date-filter">
   <label for="soopStartDate">시작일</label>
   <input
-    type="date"
-    id="soopStartDate"
-    min="2024-09-05"
-  >
+  type="text"
+  id="soopStartDate"
+  class="soop-pretty-date"
+  placeholder="연도-월-일"
+  readonly
+>
 
   <span>~</span>
 
   <label for="soopEndDate">종료일</label>
   <input
-    type="date"
-    id="soopEndDate"
-    min="2024-09-05"
-  >
+  type="text"
+  id="soopEndDate"
+  class="soop-pretty-date"
+  placeholder="연도-월-일"
+  readonly
+>
 
   <button
     type="button"
@@ -848,9 +852,28 @@ or
     id="soopDateReset"
   >
     초기화
-  </button>
+  </button>         
 </div>
-          
+         <!-- 새잎 커스텀 날짜 달력 -->
+<div id="soopPrettyCalendar" class="soop-pretty-calendar" hidden>
+  <div class="soop-calendar-header">
+    <button type="button" id="soopCalendarPrev" aria-label="이전 달">‹</button>
+    <strong id="soopCalendarTitle"></strong>
+    <button type="button" id="soopCalendarNext" aria-label="다음 달">›</button>
+  </div>
+
+  <div class="soop-calendar-weekdays">
+    <span>일</span><span>월</span><span>화</span>
+    <span>수</span><span>목</span><span>금</span><span>토</span>
+  </div>
+
+  <div id="soopCalendarDays" class="soop-calendar-days"></div>
+
+  <div class="soop-calendar-footer">
+    <button type="button" id="soopCalendarClear">삭제</button>
+    <button type="button" id="soopCalendarToday">오늘</button>
+  </div>
+</div> 
         </div>
 
       </div>
