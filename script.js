@@ -3289,3 +3289,130 @@ document.addEventListener(
   }
 );
 
+/* =====================================
+   새잎 VOD 페이지 이동 팝업
+===================================== */
+
+document.addEventListener("click", async (event) => {
+  const jumpButton = event.target.closest(".soop-page-jump");
+
+  if (!jumpButton) return;
+
+  // 기존 팝업이 있다면 닫기
+  document.querySelector(".saeip-page-popup")?.remove();
+
+  const total = soopTotalPages;
+
+  // 팝업 생성
+  const popup = document.createElement("div");
+  popup.className = "saeip-page-popup";
+
+  popup.innerHTML = `
+    <div class="saeip-page-popup-header">
+      <span>🩵 페이지 바로 이동</span>
+      <button type="button" class="saeip-page-close">×</button>
+    </div>
+
+    <p class="saeip-page-description">
+      1 ~ ${total}페이지 중 원하는 페이지를 선택해 주세요.
+    </p>
+
+    <div class="saeip-page-input-row">
+      <input
+        type="number"
+        class="saeip-page-input"
+        min="1"
+        max="${total}"
+        value="${soopCurrentPage}"
+      >
+      <button type="button" class="saeip-page-go">이동</button>
+    </div>
+
+    <div class="saeip-page-quick">
+      ${[10, 20, 30, 40, 50]
+        .filter(page => page <= total)
+        .map(page => `
+          <button type="button" data-page="${page}">
+            ${page}페이지
+          </button>
+        `).join("")}
+    </div>
+
+    <p class="saeip-page-error" hidden></p>
+  `;
+
+  document.body.appendChild(popup);
+
+  // 팝업 위치: ... 버튼 위
+  const rect = jumpButton.getBoundingClientRect();
+
+  popup.style.position = "fixed";
+  popup.style.left = `${Math.max(
+    12,
+    Math.min(rect.left, window.innerWidth - popup.offsetWidth - 12)
+  )}px`;
+
+  popup.style.top = `${Math.max(
+    12,
+    rect.top - popup.offsetHeight - 12
+  )}px`;
+
+  const input = popup.querySelector(".saeip-page-input");
+  const error = popup.querySelector(".saeip-page-error");
+
+  async function goToPage(page) {
+    if (!Number.isInteger(page) || page < 1 || page > total) {
+      error.hidden = false;
+      error.textContent = `1~${total} 사이의 페이지를 입력해 주세요.`;
+      return;
+    }
+
+    if (soopLoading) return;
+
+    popup.remove();
+
+    if (page === soopCurrentPage) return;
+
+    await loadSoopClips(page);
+
+    document.querySelector("#clips")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  popup.querySelector(".saeip-page-go").addEventListener("click", () => {
+    goToPage(Number(input.value));
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      goToPage(Number(input.value));
+    }
+  });
+
+  popup.querySelectorAll("[data-page]").forEach(button => {
+    button.addEventListener("click", () => {
+      goToPage(Number(button.dataset.page));
+    });
+  });
+
+  popup.querySelector(".saeip-page-close").addEventListener("click", () => {
+    popup.remove();
+  });
+
+  input.focus();
+});
+
+// 팝업 밖을 클릭하면 닫기
+document.addEventListener("click", (event) => {
+  const popup = document.querySelector(".saeip-page-popup");
+
+  if (
+    popup &&
+    !popup.contains(event.target) &&
+    !event.target.closest(".soop-page-jump")
+  ) {
+    popup.remove();
+  }
+});
