@@ -2035,9 +2035,9 @@ body.dark-mode .schedule-view-item small {
 .vod-modal-card {
   position: relative;
 
-  width: min(1500px, 96vw, calc((100vh - 90px) * 16 / 9));
+  width: min(1400px, 95vw);
 
-  padding: 12px;
+  padding: 18px;
 
   background: #ffffff;
   border: 1px solid rgba(146, 188, 239, 0.45);
@@ -3479,8 +3479,9 @@ body.dark-mode .schedule-view-item small {
 .clip-modal-card {
   position: relative;
 
-  width: min(960px, 92vw);
-  padding: 14px;
+  width: min(1400px, 96vw);
+max-height: 94vh;
+padding: 12px;
 
   background: #f7fbff;
   border: 1px solid rgba(146, 188, 239, 0.55);
