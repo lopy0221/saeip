@@ -4532,3 +4532,184 @@ body.dark-mode .soop-pagination .soop-page-button.active {
   border-color: #92bcef;
   color: #356ba9;
 }
+
+/* =====================================
+   새잎 VOD 페이지 이동 팝업
+===================================== */
+
+.saeip-page-popup {
+  z-index: 99999;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  padding: 20px;
+  box-sizing: border-box;
+
+  background: linear-gradient(145deg, #ffffff, #edf6ff);
+  border: 1px solid #c8e0fc;
+  border-radius: 20px;
+
+  box-shadow: 0 12px 40px rgba(70, 120, 190, 0.2);
+  color: #355b88;
+  animation: saeipPopupAppear 0.2s ease;
+}
+
+/* 팝업 등장 애니메이션 */
+@keyframes saeipPopupAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 제목 영역 */
+.saeip-page-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.saeip-page-popup-header span {
+  font-size: 16px;
+  font-weight: 800;
+  color: #3d6caa;
+}
+
+/* 닫기 버튼 */
+.saeip-page-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: #e3f0ff;
+  color: #648bb8;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.saeip-page-close:hover {
+  background: #d1e6ff;
+}
+
+/* 안내 문구 */
+.saeip-page-description {
+  margin: 0 0 16px;
+  color: #7895b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 입력창과 이동 버튼 */
+.saeip-page-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.saeip-page-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid #c9def8;
+  border-radius: 11px;
+
+  color: #355b88;
+  font-size: 14px;
+  outline: none;
+}
+
+.saeip-page-input:focus {
+  border-color: #92bcef;
+  box-shadow: 0 0 0 3px rgba(146, 188, 239, 0.2);
+}
+
+/* 이동 버튼 */
+.saeip-page-go {
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 11px;
+
+  background: #92bcef;
+  color: #173b68;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.saeip-page-go:hover {
+  background: #7daeea;
+}
+
+/* 빠른 페이지 선택 */
+.saeip-page-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.saeip-page-quick button {
+  padding: 7px 11px;
+  background: #ffffff;
+  border: 1px solid #d4e5fa;
+  border-radius: 10px;
+
+  color: #6285b1;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.saeip-page-quick button:hover {
+  background: #e1efff;
+  border-color: #92bcef;
+}
+
+/* 오류 안내 */
+.saeip-page-error {
+  margin: 10px 0 0;
+  color: #e36b7a;
+  font-size: 12px;
+}
+
+.saeip-page-error[hidden] {
+  display: none;
+}
+
+/* 다크모드 */
+body.dark-mode .saeip-page-popup {
+  background: linear-gradient(145deg, #26364b, #1d2b3e);
+  border-color: #405674;
+  color: #e2eeff;
+}
+
+body.dark-mode .saeip-page-popup-header span {
+  color: #a8ceff;
+}
+
+body.dark-mode .saeip-page-input,
+body.dark-mode .saeip-page-quick button {
+  background: #31445e;
+  border-color: #506786;
+  color: #e2eeff;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .saeip-page-popup {
+    width: 290px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+}
