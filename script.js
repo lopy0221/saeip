@@ -2574,11 +2574,13 @@ function renderSoopPagination() {
   */
   if (startPage > 2) {
     html += `
-      <span
-        class="soop-page-dots"
-      >
-        ...
-      </span>
+      <button
+  type="button"
+  class="soop-page-dots soop-page-jump"
+  aria-label="페이지 바로 이동"
+>
+  ...
+</button>
     `;
   }
 
@@ -2599,11 +2601,13 @@ function renderSoopPagination() {
     soopTotalPages - 1
   ) {
     html += `
-      <span
-        class="soop-page-dots"
-      >
-        ...
-      </span>
+      <button
+  type="button"
+  class="soop-page-dots soop-page-jump"
+  aria-label="페이지 바로 이동"
+>
+  ...
+</button>
     `;
   }
 
@@ -3284,3 +3288,37 @@ document.addEventListener(
 
   }
 );
+
+// VOD 페이지 ... 클릭 시 원하는 페이지로 이동
+document.addEventListener("click", async event => {
+  const jumpButton = event.target.closest(".soop-page-jump");
+
+  if (!jumpButton) return;
+
+  const answer = prompt(
+    `이동할 페이지를 입력해 주세요. (1~${soopTotalPages})`,
+    String(soopCurrentPage)
+  );
+
+  if (answer === null) return;
+
+  const page = Number(answer.trim());
+
+  if (
+    !Number.isInteger(page) ||
+    page < 1 ||
+    page > soopTotalPages
+  ) {
+    alert(`1부터 ${soopTotalPages} 사이의 페이지 번호를 입력해 주세요.`);
+    return;
+  }
+
+  if (page === soopCurrentPage || soopLoading) return;
+
+  await loadSoopClips(page);
+
+  document.querySelector("#clips")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
