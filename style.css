@@ -4082,3 +4082,71 @@ body:has(#clips.active-page) .fullpage {
     width: 140px;
   }
 }
+
+/* =========================
+   VOD 썸네일 종류 배지
+========================= */
+
+.soop-vod-type-badge {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 5;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 10px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+.soop-vod-type-badge svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* 다시보기 - 파란색 */
+.soop-vod-type-badge.vod {
+  background: #2998ff;
+  color: #ffffff;
+}
+
+/* 클립 - 흰색 */
+.soop-vod-type-badge.clip {
+  background: #ffffff;
+  color: #9955e8;
+  border-color: #b78aff;
+}
+
+/* 캐치 - 노란색 */
+.soop-vod-type-badge.catch {
+  background: #ffbf35;
+  color: #ffffff;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .soop-vod-type-badge {
+    top: 6px;
+    left: 6px;
+    padding: 4px 8px;
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  .soop-vod-type-badge svg {
+    width: 13px;
+    height: 13px;
+  }
+}
