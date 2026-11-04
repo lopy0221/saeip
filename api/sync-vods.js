@@ -77,10 +77,10 @@ function normalizeItem(item, type) {
     "";
 
   let thumbnail =
-    item.ucc?.thumb ||
-    item.thumbnail ||
-    item.thumb ||
-    "";
+  item.ucc?.thumb ||
+  item.thumbnail ||
+  item.thumb ||
+  "https://res.sooplive.com/images/thumb/vod/0082_480x270_light.png";
 
   if (
     thumbnail &&
