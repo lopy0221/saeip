@@ -222,11 +222,14 @@ await fetch(
 return selectedVideo;
 }
 
-const kyVideo =
-  await searchKaraoke("ky");
+const [kyVideo, tjVideo] = await Promise.all([
+  searchKaraoke("ky"),
+  searchKaraoke("tj")
+]);
 
 const videos = [
-  kyVideo
+  kyVideo,
+  tjVideo
 ].filter(Boolean);
 
 if (!videos.length) {
