@@ -3773,3 +3773,22 @@ body:has(#clips.active-page) .fullpage {
     border-left: none;
   }
 }
+
+/* SOOP 날짜 필터 최종 간격 조정 */
+
+.soop-custom-date-filter {
+  margin-left: 10px;
+  padding-left: 12px;
+  gap: 6px;
+}
+
+.soop-custom-date-filter input[type="date"] {
+  width: 120px;
+}
+
+@media (max-width: 900px) {
+  .soop-custom-date-filter {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
