@@ -4150,3 +4150,42 @@ body:has(#clips.active-page) .fullpage {
     height: 13px;
   }
 }
+
+/* =========================
+   썸네일 종류 배지 크기 축소
+========================= */
+
+.soop-vod-type-badge {
+  top: 7px;
+  left: 7px;
+
+  gap: 4px;
+  padding: 3px 7px;
+
+  border-width: 1px;
+  border-radius: 999px;
+
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.soop-vod-type-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .soop-vod-type-badge {
+    top: 5px;
+    left: 5px;
+    padding: 3px 6px;
+    gap: 3px;
+    font-size: 9px;
+  }
+
+  .soop-vod-type-badge svg {
+    width: 11px;
+    height: 11px;
+  }
+}
