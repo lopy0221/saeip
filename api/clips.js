@@ -26,10 +26,16 @@ module.exports = async function handler(req, res) {
       req.query.sort || "latest";
 
     const period =
-      req.query.period || "all";
+  req.query.period || "all";
 
-    const hideReplay =
-      req.query.hideReplay === "true";
+const startDate =
+  String(req.query.startDate || "");
+
+const endDate =
+  String(req.query.endDate || "");
+
+const hideReplay =
+  req.query.hideReplay === "true";
 
     /*
       Supabase 조회 범위
@@ -80,36 +86,101 @@ module.exports = async function handler(req, res) {
     }
 
     /*
-      기간 필터
-    */
-    if (period !== "all") {
-      const limitDate =
-        new Date();
+  기간 필터
+  직접 입력한 날짜가 있으면 우선 적용
+*/
+const isValidDate = value => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
 
-      if (period === "3month") {
-        limitDate.setMonth(
-          limitDate.getMonth() - 3
-        );
-      }
+  const date = new Date(`${value}T00:00:00Z`);
 
-      if (period === "6month") {
-        limitDate.setMonth(
-          limitDate.getMonth() - 6
-        );
-      }
+  return (
+    !Number.isNaN(date.getTime()) &&
+    date.toISOString().slice(0, 10) === value
+  );
+};
 
-      if (period === "1year") {
-        limitDate.setFullYear(
-          limitDate.getFullYear() - 1
-        );
-      }
+if (
+  (startDate && !isValidDate(startDate)) ||
+  (endDate && !isValidDate(endDate))
+) {
+  return res.status(400).json({
+    success: false,
+    error: "날짜 형식이 올바르지 않습니다."
+  });
+}
 
-      params.set(
-        "reg_date",
-        `gte.${limitDate.toISOString()}`
-      );
-    }
+if (
+  startDate &&
+  endDate &&
+  startDate > endDate
+) {
+  return res.status(400).json({
+    success: false,
+    error: "시작일이 종료일보다 늦을 수 없습니다."
+  });
+}
 
+if (startDate || endDate) {
+  const dateFilters = [];
+
+  if (startDate) {
+    dateFilters.push(
+      `gte.${startDate}T00:00:00+09:00`
+    );
+  }
+
+  if (endDate) {
+    const nextDay = new Date(
+      `${endDate}T00:00:00+09:00`
+    );
+
+    nextDay.setUTCDate(
+      nextDay.getUTCDate() + 1
+    );
+
+    dateFilters.push(
+      `lt.${nextDay.toISOString()}`
+    );
+  }
+
+  if (dateFilters.length === 1) {
+  params.set("reg_date", dateFilters[0]);
+} else {
+  params.set(
+    "and",
+    `(${dateFilters.map(filter => `reg_date.${filter}`).join(",")})`
+  );
+}
+
+} else if (period !== "all") {
+  const limitDate = new Date();
+
+  if (period === "3month") {
+    limitDate.setMonth(
+      limitDate.getMonth() - 3
+    );
+  }
+
+  if (period === "6month") {
+    limitDate.setMonth(
+      limitDate.getMonth() - 6
+    );
+  }
+
+  if (period === "1year") {
+    limitDate.setFullYear(
+      limitDate.getFullYear() - 1
+    );
+  }
+
+  params.set(
+    "reg_date",
+    `gte.${limitDate.toISOString()}`
+  );
+}
     /*
       정렬
     */
