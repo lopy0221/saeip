@@ -4433,3 +4433,85 @@ body:has(#clips.active-page) .fullpage {
   margin-right: 0;
   flex-shrink: 0;
 }
+
+/* =================================
+   새잎 VOD 페이지 버튼 디자인
+================================= */
+
+#soopPagination,
+.soop-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 30px auto 45px;
+  padding: 0;
+}
+
+/* 기본 페이지 버튼 */
+.soop-pagination .soop-page-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+  border: 1px solid #d7e7fc;
+  border-radius: 11px;
+
+  color: #54739a;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: background 0.2s, border-color 0.2s,
+              transform 0.2s;
+}
+
+/* 마우스를 올렸을 때 */
+.soop-pagination .soop-page-button:hover {
+  background: #eaf4ff;
+  border-color: #92bcef;
+  transform: translateY(-2px);
+}
+
+/* 현재 선택된 페이지 */
+.soop-pagination .soop-page-button.active {
+  background: #92bcef;
+  border-color: #92bcef;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(146, 188, 239, 0.3);
+}
+
+/* 이전 / 다음 버튼 */
+.soop-pagination .soop-page-arrow {
+  font-size: 21px;
+  font-weight: 500;
+}
+
+/* 페이지 사이 ... */
+.soop-pagination .soop-page-dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  color: #91a8c5;
+  font-size: 14px;
+}
+
+/* 다크모드 */
+body.dark-mode .soop-pagination .soop-page-button {
+  background: #26364b;
+  border-color: #405674;
+  color: #d9e9ff;
+}
+
+body.dark-mode .soop-pagination .soop-page-button.active {
+  background: #92bcef;
+  border-color: #92bcef;
+  color: #173b68;
+}
