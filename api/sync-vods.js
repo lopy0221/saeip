@@ -111,9 +111,9 @@ function normalizeItem(item, type) {
   thumbnail,
   view_count: viewCount,
   reg_date: regDate,
-  auth_no: item.authNo == null
-    ? null
-    : Number(item.authNo)
+  auth_no: item.auth_no == null && item.authNo == null
+  ? null
+  : Number(item.auth_no ?? item.authNo)
 };
 }
 
