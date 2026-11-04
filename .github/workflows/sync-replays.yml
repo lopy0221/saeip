@@ -1,3 +1,4 @@
+
 name: Sync SOOP Replays
 
 on:
@@ -5,6 +6,9 @@ on:
     - cron: "0 * * * *"
 
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   sync:
@@ -14,4 +18,7 @@ jobs:
       - name: Sync replays
         run: |
           curl --fail --silent --show-error \
+            --retry 2 \
+            --max-time 120 \
+            -H "Authorization: Bearer ${{ secrets.SOOP_SYNC_TOKEN }}" \
             "https://saeip.vercel.app/api/sync-replays"
