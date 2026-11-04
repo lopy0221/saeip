@@ -55,7 +55,7 @@ const hideReplay =
 
     params.set(
       "select",
-      "title_no,vod_type,title,thumbnail,view_count,reg_date"
+      "title_no,vod_type,title,thumbnail,view_count,reg_date,auth_no"
     );
 
     /*
@@ -286,8 +286,11 @@ if (startDate || endDate) {
           ),
 
         reg_date:
-          item.reg_date
-      }));
+  item.reg_date,
+
+auth_no:
+  item.auth_no
+}));
 
     res.setHeader(
       "Cache-Control",
