@@ -2426,6 +2426,10 @@ function renderSoopClips() {
 
   ${getSoopVodTypeBadge(item.vod_type)}
 
+  ${item.is_subplus === true
+  ? `<span class="soop-subplus-badge">구독+</span>`
+  : ""}
+
   ${
     thumbnail
       ? `
