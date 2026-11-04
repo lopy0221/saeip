@@ -1,0 +1,24 @@
+
+name: SOOP VOD Auto Sync
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync latest SOOP VODs
+        run: |
+          curl --fail --show-error --silent \
+            --retry 2 \
+            --max-time 120 \
+            -H "Authorization: Bearer ${{ secrets.SOOP_SYNC_TOKEN }}" \
+            "https://saeip.vercel.app/api/sync-vods?page=1"
