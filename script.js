@@ -2298,6 +2298,46 @@ if (selectedSoopEndDate) {
   }
 }
 
+/* =========================
+   SOOP 썸네일 종류 배지
+========================= */
+
+function getSoopVodTypeBadge(type) {
+  const value = String(type || "").toLowerCase();
+
+  let badgeType = "";
+
+  if (["replay", "review", "vod", "normal"].includes(value)) {
+    badgeType = "vod";
+  } else if (["clip", "clips"].includes(value)) {
+    badgeType = "clip";
+  } else if (["catch", "catchstory"].includes(value)) {
+    badgeType = "catch";
+  } else {
+    return "";
+  }
+
+  const labels = {
+    vod: "다시보기",
+    clip: "클립",
+    catch: "캐치"
+  };
+
+  const icons = {
+    vod: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="5"/><path d="m10 8 6 4-6 4z"/></svg>`,
+
+    clip: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M3 8V4a2 2 0 0 1 2-2h14l2 6"/><path d="m7 2 4 6M14 2l4 6"/></svg>`,
+
+    catch: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5a9 9 0 1 0 0 14"/><path d="m11 8 6 4-6 4z"/></svg>`
+  };
+
+  return `
+    <span class="soop-vod-type-badge ${badgeType}">
+      ${icons[badgeType]}
+      ${labels[badgeType]}
+    </span>
+  `;
+}
 
 /* =========================
    SOOP 카드 표시
@@ -2382,7 +2422,9 @@ function renderSoopClips() {
             )}"
           >
 
-            <div class="soop-clip-thumbnail">
+            <div class="soop-clip-thumbnail" style="position: relative;">
+
+  ${getSoopVodTypeBadge(item.vod_type)}
 
   ${
     thumbnail
@@ -2898,6 +2940,70 @@ const prettyMinDate = "2024-09-05";
 
 let prettyActiveInput = null;
 let prettyViewDate = new Date();
+
+/* =========================
+   VOD 종류별 배지
+========================= */
+
+function getSoopVodTypeBadge(type) {
+  const value = String(type ?? "").toLowerCase();
+
+  // SOOP API의 유형 값에 맞게 분류
+  let badgeType = "";
+
+  if (["review", "vod", "replay", "normal"].includes(value)) {
+    badgeType = "vod";
+  } else if (["clip", "clips"].includes(value)) {
+    badgeType = "clip";
+  } else if (["catch", "catchstory"].includes(value)) {
+    badgeType = "catch";
+  } else {
+    return "";
+  }
+
+  const icons = {
+    vod: `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="5"/>
+        <path d="m10 8 6 4-6 4z"/>
+      </svg>
+    `,
+
+    clip: `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="13" rx="2"/>
+        <path d="M3 8V4a2 2 0 0 1 2-2h14l2 6"/>
+        <path d="m7 2 4 6M14 2l4 6"/>
+      </svg>
+    `,
+
+    catch: `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 5a9 9 0 1 0 0 14"/>
+        <path d="m11 8 6 4-6 4z"/>
+      </svg>
+    `
+  };
+
+  const labels = {
+    vod: "다시보기",
+    clip: "클립",
+    catch: "캐치"
+  };
+
+  return `
+    <span class="soop-vod-type-badge ${badgeType}">
+      ${icons[badgeType]}
+      ${labels[badgeType]}
+    </span>
+  `;
+}
 
 function prettyFormatDate(date) {
   const year = date.getFullYear();
