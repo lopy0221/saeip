@@ -3629,3 +3629,53 @@ body:has(#clips.active-page) .fullpage {
   padding-top: 48px;
   padding-bottom: 80px;
 }
+
+/* SOOP 날짜 직접 선택 */
+
+.soop-custom-date-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.soop-custom-date-filter label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.soop-custom-date-filter input[type="date"] {
+  padding: 8px 10px;
+  border: 1px solid #c9def6;
+  border-radius: 10px;
+  background: #fff;
+  color: #34465d;
+  font: inherit;
+  max-width: 160px;
+}
+
+.soop-custom-date-filter button {
+  padding: 8px 12px;
+  border: 1px solid #92bcef;
+  border-radius: 10px;
+  background: #edf5ff;
+  color: #315b8c;
+  cursor: pointer;
+}
+
+#soopDateApply {
+  background: #92bcef;
+  color: #fff;
+}
+
+/* 다크모드 */
+.dark-mode .soop-custom-date-filter input[type="date"] {
+  background: #263244;
+  color: #fff;
+  border-color: #526780;
+}
+
+.dark-mode .soop-custom-date-filter button {
+  background: #34465d;
+  color: #fff;
+}
