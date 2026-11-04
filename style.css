@@ -4515,3 +4515,20 @@ body.dark-mode .soop-pagination .soop-page-button.active {
   border-color: #92bcef;
   color: #173b68;
 }
+
+/* 페이지 ... 버튼 */
+.soop-pagination .soop-page-jump {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  padding: 6px 10px;
+  color: #779bc8;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.soop-pagination .soop-page-jump:hover {
+  background: #e4f0ff;
+  border-color: #92bcef;
+  color: #356ba9;
+}
