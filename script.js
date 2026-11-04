@@ -3352,10 +3352,8 @@ document.addEventListener("click", async (event) => {
     Math.min(rect.left, window.innerWidth - popup.offsetWidth - 12)
   )}px`;
 
-  popup.style.top = `${Math.max(
-    12,
-    rect.top - popup.offsetHeight - 12
-  )}px`;
+  // 팝업을 ... 버튼 아래쪽에 표시
+popup.style.top = `${rect.bottom + 12}px`;
 
   const input = popup.querySelector(".saeip-page-input");
   const error = popup.querySelector(".saeip-page-error");
