@@ -2,9 +2,48 @@ const SUPABASE_URL = "https://txwlwxldagplfhlgopyl.supabase.co";
 const SUPABASE_KEY = "sb_publishable_L0rNucD4rLdHlte3wwWipg_sdl5j5WE";
 const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
 
+
 module.exports = async function handler(req, res) {
   try {
+    if (req.method !== "GET") {
+      res.setHeader("Allow", "GET");
+      return res.status(405).json({
+        success: false,
+        error: "허용되지 않은 요청입니다."
+      });
+    }
+
+    const token = process.env.SOOP_SYNC_TOKEN;
+
+    if (!token) {
+      return res.status(503).json({
+        success: false,
+        error: "동기화 토큰이 설정되지 않았습니다."
+      });
+    }
+
+    const crypto = require("node:crypto");
+
+    const received = Buffer.from(
+      req.headers.authorization || ""
+    );
+
+    const expected = Buffer.from(
+      `Bearer ${token}`
+    );
+
+    if (
+      received.length !== expected.length ||
+      !crypto.timingSafeEqual(received, expected)
+    ) {
+      return res.status(401).json({
+        success: false,
+        error: "인증되지 않은 요청입니다."
+      });
+    }
+
     const SOOP_ID = "likey0u";
+
 
     // 1. SOOP 다시보기 가져오기
     const soopUrl =
