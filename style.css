@@ -4719,3 +4719,25 @@ body.dark-mode .saeip-page-quick button {
 .soop-pagination {
   margin-bottom: 320px;
 }
+
+/* 페이지 바로 이동 팝업 가로 크기 확대 */
+.soop-page-jump-popup {
+  width: 370px !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+/* 빠른 페이지 이동 버튼 한 줄 정렬 */
+.soop-page-jump-popup .quick-pages {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  width: 100%;
+}
+
+/* 버튼 크기 균등하게 */
+.soop-page-jump-popup .quick-pages button {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  padding: 7px 4px !important;
+}
