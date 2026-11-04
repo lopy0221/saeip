@@ -4189,3 +4189,38 @@ body:has(#clips.active-page) .fullpage {
     height: 11px;
   }
 }
+
+/* 구독플러스 전용 VOD 배지 */
+
+.soop-subplus-badge {
+  position: absolute;
+  top: 7px;
+  left: 88px;
+  z-index: 6;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 7px;
+  border: 1px solid #d38a16;
+  border-radius: 999px;
+
+  background: rgba(55, 35, 5, 0.94);
+  color: #ffba43;
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .soop-subplus-badge {
+    top: 5px;
+    left: 78px;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+}
