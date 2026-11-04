@@ -4425,3 +4425,11 @@ body:has(#clips.active-page) .fullpage {
     gap: 7px;
   }
 }
+
+/* 다시보기 숨기기를 캐치 버튼 바로 옆으로 이동 */
+
+#clips .soop-hide-replay {
+  margin-left: 4px !important;
+  margin-right: 0;
+  flex-shrink: 0;
+}
