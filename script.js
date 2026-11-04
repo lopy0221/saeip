@@ -2828,7 +2828,7 @@ document.addEventListener(
     }
 
     clipPlayer.src =
-  `https://vod.sooplive.com/player/${titleNo}/embed`;
+  `https://vod.sooplive.com/player/${titleNo}/embed?showWater=false&autoPlay=true&mutePlay=false`;
 
     clipModal.classList.add(
       "show"
