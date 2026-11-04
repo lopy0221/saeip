@@ -2363,27 +2363,33 @@ function renderSoopClips() {
 
             <div class="soop-clip-thumbnail">
 
-              ${
-                thumbnail
-                  ? `
-                    <img
-                      src="${escapeHTML(
-                        thumbnail
-                      )}"
-                      alt="${escapeHTML(
-                        title
-                      )}"
-                      loading="lazy"
-                    >
-                  `
-                  : `
-                    <div class="soop-clip-no-image">
-                      SAEIP
-                    </div>
-                  `
-              }
+  ${
+    thumbnail
+      ? `
+        <img
+          src="${escapeHTML(thumbnail)}"
+          alt="${escapeHTML(title)}"
+          loading="lazy"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+          "
+        >
+        <div
+          class="soop-clip-no-image"
+          style="display:none;"
+        >
+          ${item.vod_type === "replay" ? "다시보기" : "SOOP VOD"}
+        </div>
+      `
+      : `
+        <div class="soop-clip-no-image">
+          ${item.vod_type === "replay" ? "다시보기" : "SOOP VOD"}
+        </div>
+      `
+  }
 
-            </div>
+</div>
 
             <div class="soop-clip-info">
 
