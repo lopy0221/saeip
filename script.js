@@ -2828,7 +2828,7 @@ document.addEventListener(
     }
 
     clipPlayer.src =
-      `https://vod.sooplive.co.kr/player/${titleNo}`;
+  `https://vod.sooplive.com/player/${titleNo}/embed`;
 
     clipModal.classList.add(
       "show"
