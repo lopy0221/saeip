@@ -2873,6 +2873,194 @@ soopDateReset?.addEventListener("click", () => {
 
   soopPageCache.clear();
   loadSoopClips(1);
+  });  
+
+  /* =========================
+   새잎 커스텀 날짜 달력
+========================= */
+
+const prettyCalendar =
+  document.querySelector("#soopPrettyCalendar");
+
+const prettyCalendarTitle =
+  document.querySelector("#soopCalendarTitle");
+
+const prettyCalendarDays =
+  document.querySelector("#soopCalendarDays");
+
+const prettyStartInput =
+  document.querySelector("#soopStartDate");
+
+const prettyEndInput =
+  document.querySelector("#soopEndDate");
+
+const prettyMinDate = "2024-09-05";
+
+let prettyActiveInput = null;
+let prettyViewDate = new Date();
+
+function prettyFormatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function prettyRenderCalendar() {
+  if (!prettyCalendar || !prettyCalendarDays) return;
+
+  const year = prettyViewDate.getFullYear();
+  const month = prettyViewDate.getMonth();
+
+  prettyCalendarTitle.textContent =
+    `${year}년 ${month + 1}월`;
+
+  prettyCalendarDays.innerHTML = "";
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDay = new Date(year, month + 1, 0).getDate();
+
+  // 첫 번째 날짜 앞의 빈 칸
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("span");
+    prettyCalendarDays.appendChild(empty);
+  }
+
+  const today = prettyFormatDate(new Date());
+
+  for (let day = 1; day <= lastDay; day++) {
+    const date = new Date(year, month, day);
+    const dateString = prettyFormatDate(date);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = day;
+
+    // 일요일 / 토요일 색상
+    if (date.getDay() === 0) {
+      button.style.color = "#ef91a7";
+    } else if (date.getDay() === 6) {
+      button.style.color = "#79a7e8";
+    }
+
+    if (dateString === today) {
+      button.classList.add("today");
+    }
+
+    if (dateString === prettyActiveInput?.value) {
+      button.classList.add("selected");
+    }
+
+    if (dateString < prettyMinDate) {
+      button.disabled = true;
+    }
+
+    button.addEventListener("click", () => {
+      if (!prettyActiveInput) return;
+
+      prettyActiveInput.value = dateString;
+      prettyCalendar.hidden = true;
+    });
+
+    prettyCalendarDays.appendChild(button);
+  }
+}
+
+// 날짜 입력창 클릭 시 달력 열기
+function prettyOpenCalendar(input) {
+  if (!prettyCalendar) return;
+
+  prettyActiveInput = input;
+
+  if (input.value) {
+    const [year, month] = input.value.split("-").map(Number);
+    prettyViewDate = new Date(year, month - 1, 1);
+  } else {
+    prettyViewDate = new Date();
+  }
+
+  prettyRenderCalendar();
+
+  const rect = input.getBoundingClientRect();
+
+  prettyCalendar.hidden = false;
+
+  const calendarWidth = prettyCalendar.offsetWidth;
+  const calendarHeight = prettyCalendar.offsetHeight;
+
+  const left = Math.max(
+    8,
+    Math.min(rect.left, window.innerWidth - calendarWidth - 8)
+  );
+
+  const top =
+    rect.bottom + calendarHeight + 8 <= window.innerHeight
+      ? rect.bottom + 8
+      : Math.max(8, rect.top - calendarHeight - 8);
+
+  prettyCalendar.style.left = `${left}px`;
+  prettyCalendar.style.top = `${top}px`;
+}
+
+prettyStartInput?.addEventListener("click", () => {
+  prettyOpenCalendar(prettyStartInput);
+});
+
+prettyEndInput?.addEventListener("click", () => {
+  prettyOpenCalendar(prettyEndInput);
+});
+
+// 이전 달
+document
+  .querySelector("#soopCalendarPrev")
+  ?.addEventListener("click", () => {
+    prettyViewDate.setMonth(prettyViewDate.getMonth() - 1);
+    prettyRenderCalendar();
+  });
+
+// 다음 달
+document
+  .querySelector("#soopCalendarNext")
+  ?.addEventListener("click", () => {
+    prettyViewDate.setMonth(prettyViewDate.getMonth() + 1);
+    prettyRenderCalendar();
+  });
+
+// 오늘 선택
+document
+  .querySelector("#soopCalendarToday")
+  ?.addEventListener("click", () => {
+    if (!prettyActiveInput) return;
+
+    prettyActiveInput.value = prettyFormatDate(new Date());
+    prettyCalendar.hidden = true;
+  });
+
+// 선택한 날짜 삭제
+document
+  .querySelector("#soopCalendarClear")
+  ?.addEventListener("click", () => {
+    if (!prettyActiveInput) return;
+
+    prettyActiveInput.value = "";
+    prettyCalendar.hidden = true;
+  });
+
+// 달력 바깥 클릭 시 닫기
+document.addEventListener("click", event => {
+  if (!prettyCalendar || prettyCalendar.hidden) return;
+
+  const clickedInput =
+    event.target === prettyStartInput ||
+    event.target === prettyEndInput;
+
+  if (
+    !clickedInput &&
+    !prettyCalendar.contains(event.target)
+  ) {
+    prettyCalendar.hidden = true;
+  }
 });
 
 
