@@ -4713,3 +4713,9 @@ body.dark-mode .saeip-page-quick button {
     border-radius: 16px;
   }
 }
+
+/* 페이지 이동 팝업이 아래로 펼쳐질 공간 확보 */
+#soopPagination,
+.soop-pagination {
+  margin-bottom: 320px;
+}
