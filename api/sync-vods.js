@@ -1,3 +1,4 @@
+
 const SOOP_ID = "likey0u";
 
 const SUPABASE_URL =
@@ -5,6 +6,9 @@ const SUPABASE_URL =
 
 const SUPABASE_SECRET_KEY =
   process.env.SUPABASE_SECRET_KEY;
+
+const SOOP_SYNC_TOKEN =
+  process.env.SOOP_SYNC_TOKEN;
 
 const PAGES_PER_RUN = 5;
 
@@ -190,17 +194,73 @@ async function fetchPage(page) {
 
 module.exports = async function handler(req, res) {
   try {
+    // 1. GET 요청만 허용
+    if (req.method !== "GET") {
+      res.setHeader("Allow", "GET");
+
+      return res.status(405).json({
+        success: false,
+        error: "허용되지 않은 요청 방식입니다."
+      });
+    }
+
+    // 2. 비밀 토큰 설정 확인
+    if (!SOOP_SYNC_TOKEN) {
+      console.error(
+        "SOOP_SYNC_TOKEN 환경변수가 없습니다."
+      );
+
+      return res.status(503).json({
+        success: false,
+        error: "동기화 인증 설정이 필요합니다."
+      });
+    }
+
+    // 3. GitHub Actions 인증 확인
+    const authorization =
+      req.headers.authorization || "";
+
+    const expectedAuthorization =
+      `Bearer ${SOOP_SYNC_TOKEN}`;
+
+    const crypto = require("node:crypto");
+
+    const received =
+      Buffer.from(authorization);
+
+    const expected =
+      Buffer.from(expectedAuthorization);
+
+    const authorized =
+      received.length === expected.length &&
+      crypto.timingSafeEqual(
+        received,
+        expected
+      );
+
+    if (!authorized) {
+      return res.status(401).json({
+        success: false,
+        error: "인증되지 않은 요청입니다."
+      });
+    }
+
+    // 4. Supabase 설정 확인
     if (!SUPABASE_SECRET_KEY) {
       throw new Error(
         "SUPABASE_SECRET_KEY가 설정되지 않았습니다."
       );
     }
 
+    // 5. 시작 페이지 확인
+    const requestedPage =
+      Number(req.query.page);
+
     const startPage =
-      Math.max(
-        1,
-        Number(req.query.page) || 1
-      );
+      Number.isSafeInteger(requestedPage) &&
+      requestedPage >= 1
+        ? requestedPage
+        : 1;
 
     let totalSaved = 0;
     let lastPage = startPage;
@@ -208,6 +268,7 @@ module.exports = async function handler(req, res) {
 
     const results = [];
 
+    // 6. SOOP 영상 수집 및 저장
     for (
       let i = 0;
       i < PAGES_PER_RUN;
@@ -238,10 +299,7 @@ module.exports = async function handler(req, res) {
           result.counts
       });
 
-      /*
-        세 종류 모두 마지막 페이지라면
-        여기서 종료
-      */
+      // 세 종류 모두 마지막 페이지면 종료
       if (!hasMore) {
         break;
       }
