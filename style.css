@@ -3743,3 +3743,33 @@ body:has(#clips.active-page) .fullpage {
     width: 125px;
   }
 }
+
+/* SOOP 기간 필터 정렬 */
+
+.soop-custom-date-filter {
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid #dce8f7;
+}
+
+.soop-custom-date-filter label {
+  font-size: 11px;
+  letter-spacing: -0.3px;
+}
+
+.soop-custom-date-filter input[type="date"] {
+  width: 125px;
+}
+
+.dark-mode .soop-custom-date-filter {
+  border-left-color: #526780;
+}
+
+/* 화면이 좁을 때 구분선 제거 */
+@media (max-width: 900px) {
+  .soop-custom-date-filter {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+}
