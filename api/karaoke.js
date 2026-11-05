@@ -222,10 +222,23 @@ await fetch(
 return selectedVideo;
 }
 
-const [kyVideo, tjVideo] = await Promise.all([
-  searchKaraoke("ky"),
-  searchKaraoke("tj")
-]);
+const requestedType =
+  String(req.query.type || "").toLowerCase();
+
+const searchTypes =
+  requestedType === "ky" || requestedType === "tj"
+    ? [requestedType]
+    : ["ky", "tj"];
+
+const results = await Promise.all(
+  searchTypes.map(type => searchKaraoke(type))
+);
+
+const kyVideo =
+  results.find(video => video?.type === "ky") || null;
+
+const tjVideo =
+  results.find(video => video?.type === "tj") || null;
 
 const videos = [
   kyVideo,
