@@ -4766,3 +4766,24 @@ body.dark-mode .saeip-page-quick button {
   padding: 8px 4px !important;
   font-size: 11px !important;
 }
+
+.nav-logo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.nav-logo-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.nav-logo-btn:hover img {
+  transform: scale(1.12);
+}
