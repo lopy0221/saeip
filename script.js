@@ -394,6 +394,7 @@ Object.values(streamSchedule).forEach(events => {
 
     renderCalendar();
 renderWeeklySchedule();
+renderHomeAnniversaries();
 
   } catch (error) {
     console.error("방송 일정을 불러오지 못했습니다.", error);
@@ -410,6 +411,71 @@ renderWeeklySchedule();
 
     renderCalendar();
   }
+}
+
+// 홈 화면 기념일 D-day 표시 --------------------------------------------
+
+function renderHomeAnniversaries() {
+  const list = document.querySelector("#homeAnniversaryList");
+  if (!list) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const todayUTC = Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const anniversaries = Object.entries(streamSchedule)
+    .flatMap(([date, events]) =>
+      events
+        .filter(event => event.type === "etc")
+        .map(event => {
+          const [year, month, day] = date.split("-").map(Number);
+
+          const targetUTC = Date.UTC(year, month - 1, day);
+          const remainingDays = Math.round(
+            (targetUTC - todayUTC) / 86400000
+          );
+
+          return {
+            title: event.title || "기념일",
+            date,
+            remainingDays
+          };
+        })
+    )
+    .filter(event => event.remainingDays >= 0)
+    .sort((a, b) => a.remainingDays - b.remainingDays)
+    .slice(0, 3);
+
+  if (!anniversaries.length) {
+    list.innerHTML = `
+      <div class="anniversary-item">
+        <span class="anniversary-name">
+          예정된 기념일이 없어요 🩵
+        </span>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = anniversaries
+    .map(event => `
+      <div class="anniversary-item">
+        <span class="anniversary-name">
+          ${escapeHTML(event.title)}
+        </span>
+        <span class="anniversary-dday">
+          ${event.remainingDays === 0
+            ? "D-DAY"
+            : `D-${event.remainingDays}`}
+        </span>
+      </div>
+    `)
+    .join("");
 }
 
 // 메인화면 주간 일정표 --------------------------------------------
