@@ -5110,3 +5110,87 @@ body.dark-mode .saeip-page-quick button {
     padding: 2px 3px;
   }
 }
+
+/* 모바일 홈 화면 마무리 */
+@media (max-width: 700px) {
+
+  /* 주간 일정표 제목 여백 */
+  .home-weekly {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .home-weekly-title {
+    margin-left: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* 다크모드 버튼을 일정표 위쪽으로 이동 */
+  .theme-toggle {
+    bottom: 185px !important;
+    right: 15px !important;
+  }
+}
+
+/* =====================================
+   모바일 주간 일정표 가로 스크롤
+===================================== */
+
+@media (max-width: 700px) {
+
+  .home-weekly {
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 30px !important;
+  }
+
+  /* 요일들을 좌우로 넘길 수 있게 */
+  .weekly-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+  }
+
+  .weekly-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 날짜 칸을 넓게 */
+  .weekly-day {
+    flex: 0 0 42% !important;
+    min-width: 42% !important;
+    min-height: 180px !important;
+
+    padding: 16px 10px !important;
+
+    scroll-snap-align: start;
+    text-align: center;
+  }
+
+  .weekly-day small {
+    font-size: 11px !important;
+  }
+
+  .weekly-day b {
+    font-size: 14px !important;
+  }
+
+  .weekly-day strong {
+    font-size: 14px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .weekly-day span {
+    font-size: 12px !important;
+  }
+}
