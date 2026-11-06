@@ -4857,6 +4857,9 @@ body.dark-mode .saeip-page-quick button {
 }
 
 /* 기념일 사이 구분선 */
+/* 기념일 사이 구분선 */
 .anniversary-item + .anniversary-item {
   border-top: 1px solid rgba(146, 188, 239, 0.6);
+  padding-top: 11px;
+  margin-top: 4px;
 }
