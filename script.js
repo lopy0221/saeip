@@ -3479,3 +3479,53 @@ document.addEventListener("click", (event) => {
     popup.remove();
   }
 });
+
+// 새잎 LIVE 방송 상태 확인
+async function updateSaeipLiveStatus() {
+  const liveBtn = document.getElementById("saeipLiveBtn");
+  if (!liveBtn) return;
+
+  try {
+    const response = await fetch("/api/live-status", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("LIVE 상태 조회 실패");
+    }
+
+    const data = await response.json();
+
+    const isLive = data.success === true && data.isLive === true;
+
+    liveBtn.classList.toggle("is-live", isLive);
+
+    if (isLive && data.url) {
+      liveBtn.href = data.url;
+      liveBtn.target = "_blank";
+      liveBtn.rel = "noopener noreferrer";
+      liveBtn.removeAttribute("aria-disabled");
+      liveBtn.setAttribute("aria-label", "새잎 LIVE 방송 보러 가기");
+    } else {
+      liveBtn.removeAttribute("href");
+      liveBtn.removeAttribute("target");
+      liveBtn.removeAttribute("rel");
+      liveBtn.setAttribute("aria-disabled", "true");
+      liveBtn.setAttribute("aria-label", "새잎 방송 종료");
+    }
+
+  } catch (error) {
+    console.error("LIVE 상태 확인 오류:", error);
+
+    liveBtn.classList.remove("is-live");
+    liveBtn.removeAttribute("href");
+    liveBtn.removeAttribute("target");
+    liveBtn.removeAttribute("rel");
+    liveBtn.setAttribute("aria-disabled", "true");
+    liveBtn.setAttribute("aria-label", "방송 상태 확인 불가");
+  }
+}
+
+// 페이지가 열리면 즉시 확인하고 30초마다 갱신
+updateSaeipLiveStatus();
+setInterval(updateSaeipLiveStatus, 30000);
