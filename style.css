@@ -4923,3 +4923,40 @@ body.dark-mode .saeip-page-quick button {
   color: #9ca3af;
   border-color: #9ca3af;
 }
+
+/* LIVE 버튼 디자인 강제 적용 */
+#saeipLiveBtn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 8px 18px !important;
+  border: 2px solid #9ca3af !important;
+  border-radius: 999px !important;
+
+  background: transparent !important;
+  color: #9ca3af !important;
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+#saeipLiveBtn .live-dot {
+  display: inline-block !important;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+#saeipLiveBtn.is-live {
+  color: #ef3340 !important;
+  border-color: #ef3340 !important;
+  cursor: pointer;
+}
