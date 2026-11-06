@@ -5260,3 +5260,69 @@ body.dark-mode .saeip-page-quick button {
   }
 
 }
+
+/* 모바일 노래책 추가 수정 */
+@media (max-width: 700px) {
+
+  /* 검색창 영역 */
+  #songs .songbook-search {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    margin-bottom: 18px;
+  }
+
+  #songs .songbook-search input {
+    position: static;
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 42px;
+    box-sizing: border-box;
+  }
+
+  #songs .songbook-search > span {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    z-index: 1;
+  }
+
+  /* 랜덤 노래 버튼을 검색창 아래로 */
+  #songs .random-song-button {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    display: block;
+    align-self: flex-end;
+    width: auto;
+    height: 42px;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* 장르 영역과 간격 */
+  #songs .songbook-genre-filter {
+    position: relative;
+    margin-top: 12px;
+    clear: both;
+  }
+
+  /* 노래 목록 가로 스크롤 */
+  #songs .songbook-list {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #songs .songbook-list > * {
+    min-width: 650px;
+  }
+
+}
