@@ -5177,3 +5177,86 @@ body.dark-mode .saeip-page-quick button {
     transform: translateX(50px) rotate(-3deg) !important;
   }
 }
+
+/* 모바일 노래책 레이아웃 */
+@media (max-width: 700px) {
+
+  #songs .songbook {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+
+  /* 국가 필터와 검색창을 위아래로 배치 */
+  #songs .songbook-top-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  /* KPOP / JPOP */
+  #songs .songbook-country-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* 필터 글자 세로 표시 방지 */
+  #songs .song-filter-btn,
+  #songs .song-genre-btn {
+    width: auto;
+    min-width: 0;
+    height: auto;
+    flex: 0 0 auto;
+    padding: 10px 15px;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+    word-break: keep-all;
+    font-size: 13px;
+    border-radius: 999px;
+  }
+
+  /* 검색창과 랜덤 노래 버튼 */
+  #songs .songbook-search {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  #songs .songbook-search input {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #songs .random-song-button {
+    position: static;
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  /* 장르 필터 */
+  #songs .songbook-genre-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  #songs .songbook-genre-filter > strong {
+    flex: 0 0 100%;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+  }
+
+}
