@@ -4975,3 +4975,83 @@ body.dark-mode .saeip-page-quick button {
 #saeipLiveBtn.is-live .live-dot {
   background: #ef3340 !important;
 }
+
+/* =====================================
+   모바일 상단 메뉴바
+===================================== */
+
+@media (max-width: 700px) {
+
+  .topbar {
+    height: 64px !important;
+    padding: 0 18px !important;
+    gap: 12px !important;
+    justify-content: space-between;
+  }
+
+  /* 새잎 로고 */
+  .topbar .brand {
+    flex: 0 0 auto;
+    gap: 5px;
+  }
+
+  .topbar .brand-name {
+    font-size: 28px;
+  }
+
+  .topbar .brand-light {
+    font-size: 12px;
+  }
+
+  /* LIVE 버튼 */
+  #saeipLiveBtn {
+    padding: 7px 14px !important;
+    font-size: 13px;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+
+  /* 햄버거 버튼 */
+  .topbar .menu-toggle {
+    display: block !important;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* 평소에는 메뉴 숨기기 */
+  .topbar #mainNav {
+    display: none !important;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+
+    margin: 0;
+    padding: 16px 20px 22px;
+
+    background: #F1F7FF;
+    border-bottom: 1px solid #dbe8f8;
+
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+
+    max-height: calc(100svh - 64px);
+    overflow-y: auto;
+  }
+
+  /* 햄버거 버튼을 눌렀을 때만 표시 */
+  .topbar #mainNav.open {
+    display: flex !important;
+  }
+
+  .topbar #mainNav a {
+    font-size: 14px;
+  }
+
+  /* 다크모드 */
+  body.dark-mode .topbar #mainNav {
+    background: #091426;
+    border-color: #1d3452;
+  }
+}
