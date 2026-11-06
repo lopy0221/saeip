@@ -5132,3 +5132,41 @@ body.dark-mode .saeip-page-quick button {
   }
 }
 
+
+/* 모바일 기념일 박스 */
+@media (max-width: 700px) {
+  .home-anniversary {
+    top: auto !important;
+    left: auto !important;
+    right: 12px !important;
+    bottom: 265px !important;
+
+    width: 190px !important;
+    max-width: calc(100% - 24px) !important;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .anniversary-title {
+    font-size: 14px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .anniversary-item {
+    padding: 5px 2px !important;
+    gap: 8px !important;
+  }
+
+  .anniversary-name {
+    font-size: 11px !important;
+  }
+
+  .anniversary-dday {
+    font-size: 13px !important;
+  }
+
+  /* 모바일에서는 가장 가까운 기념일만 표시 */
+  .anniversary-item:nth-child(n + 2) {
+    display: none !important;
+  }
+}
