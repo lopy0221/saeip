@@ -605,24 +605,48 @@ or
         </button>
 </div>
 
-<div class="songbook-search">
-  <span>⌕</span>
+/* 모바일 노래책 검색창 정리 */
+@media (max-width: 768px) {
 
-  <input
-    id="songSearch"
-    type="search"
-    placeholder="곡 제목 또는 가수 검색"
-    aria-label="노래 검색"
-  >
+  #songs .songbook-search-area {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
 
-  <button
-  type="button"
-  class="random-song-button"
-  id="randomSongButton"
->
-  🎲 랜덤 노래
-</button>
-</div>
+  #songs .songbook-search {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  #songs .songbook-search input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  #songs .random-song-button {
+    position: static;
+    transform: none;
+    align-self: flex-end;
+    width: auto;
+    height: 42px;
+    margin: 0;
+  }
+
+}
 
 </div>
 
