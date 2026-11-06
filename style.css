@@ -5055,3 +5055,58 @@ body.dark-mode .saeip-page-quick button {
     border-color: #1d3452;
   }
 }
+
+/* =====================================
+   모바일 홈 주간 일정표
+===================================== */
+
+@media (max-width: 700px) {
+
+  .home-weekly {
+    left: 50% !important;
+    bottom: 30px !important;
+    transform: translateX(-50%) !important;
+
+    width: calc(100% - 20px) !important;
+    max-width: 100% !important;
+  }
+
+  .weekly-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+
+  .weekly-day {
+    min-width: 0 !important;
+    min-height: 120px !important;
+    padding: 12px 4px !important;
+    align-items: center !important;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .weekly-day small {
+    font-size: 8px !important;
+  }
+
+  .weekly-day b {
+    font-size: 10px !important;
+  }
+
+  .weekly-day strong {
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .weekly-day span {
+    font-size: 9px !important;
+  }
+
+  .weekly-day.today::after {
+    top: 2px;
+    right: 2px;
+    font-size: 6px;
+    padding: 2px 3px;
+  }
+}
