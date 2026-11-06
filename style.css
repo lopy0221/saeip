@@ -4806,11 +4806,26 @@ body.dark-mode .saeip-page-quick button {
 }
 
 .anniversary-title {
-  color: #568bc5;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
+  color: #6CA5E8;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 14px;
+  text-shadow:
+    1px 1px 0 #ffffff,
+    -1px -1px 0 #ffffff,
+    0 2px 5px rgba(92, 150, 220, 0.25);
+}
+
+.anniversary-title::before {
+  content: "♡ ";
+  color: #92BCEF;
+}
+
+.anniversary-title::after {
+  content: " ♡";
+  color: #92BCEF;
 }
 
 .anniversary-list {
