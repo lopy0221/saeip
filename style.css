@@ -4787,3 +4787,71 @@ body.dark-mode .saeip-page-quick button {
 .nav-logo-btn:hover img {
   transform: scale(1.12);
 }
+
+/* 홈 화면 기념일 D-day */
+
+.home-anniversary {
+  position: absolute;
+  top: 10%;
+  left: 4%;
+  width: 300px;
+  max-width: 90%;
+  padding: 18px;
+  background: rgba(235, 245, 255, 0.82);
+  border: 1px solid rgba(146, 188, 239, 0.5);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(60, 110, 170, 0.12);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+}
+
+.anniversary-title {
+  color: #568bc5;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.anniversary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.anniversary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 11px;
+}
+
+.anniversary-name {
+  color: #344866;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.anniversary-dday {
+  color: #619bde;
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .home-anniversary {
+    top: 12%;
+    left: 4%;
+    width: 260px;
+    padding: 13px;
+  }
+
+  .anniversary-item {
+    padding: 9px;
+  }
+}
