@@ -5557,3 +5557,41 @@ body.dark-mode .saeip-page-quick button {
     margin: 0 !important;
   }
 }
+
+/* 모바일 국가 필터 + 랜덤 노래 버튼 */
+@media (max-width: 700px) {
+
+  #songs .songbook-country-filter {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  #songs .songbook-country-filter .song-filter-btn {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    padding: 9px 11px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  #songs .songbook-country-filter .random-song-button {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+
+    flex: 0 0 auto !important;
+    align-self: center !important;
+
+    width: auto !important;
+    height: 38px !important;
+    padding: 0 9px !important;
+    margin: 0 0 0 auto !important;
+
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+}
