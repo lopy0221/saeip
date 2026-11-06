@@ -4960,3 +4960,18 @@ body.dark-mode .saeip-page-quick button {
   border-color: #ef3340 !important;
   cursor: pointer;
 }
+
+#saeipLiveBtn .live-dot {
+  display: inline-block !important;
+  width: 9px !important;
+  height: 9px !important;
+  background: #9ca3af !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+}
+
+#saeipLiveBtn.is-live .live-dot {
+  background: #ef3340 !important;
+}
