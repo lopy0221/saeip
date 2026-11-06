@@ -4816,7 +4816,7 @@ body.dark-mode .saeip-page-quick button {
 .anniversary-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 4px;
 }
 
 .anniversary-item {
@@ -4824,7 +4824,7 @@ body.dark-mode .saeip-page-quick button {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 11px 12px;
+  padding: 7px 12px;
   background: transparent;
   border-radius: 0;
 }
