@@ -5515,3 +5515,45 @@ body.dark-mode .saeip-page-quick button {
     line-height: 1.2 !important;
   }
 }
+
+/* 모바일 노래책 검색 영역 */
+@media (max-width: 700px) {
+
+  #songs .songbook-search {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+  }
+
+  #songs .songbook-search input {
+    position: static !important;
+    display: block !important;
+    flex: none !important;
+
+    width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 0 14px 0 40px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  #songs .random-song-button {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+
+    align-self: flex-end !important;
+    flex: none !important;
+
+    width: auto !important;
+    height: 40px !important;
+    margin: 0 !important;
+  }
+}
